@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.os.Bundle;
 
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Layout;
 import android.text.StaticLayout;
@@ -23,12 +24,10 @@ import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
-
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.Theme;
 import com.github.clans.fab.FloatingActionButton;
 
 import java.io.File;
@@ -36,6 +35,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import static com.denizugur.deniz.ninegagsaver.MainActivity.*;
+
+/** This class only requires to improve text size method
+ *
+ */
 
 public class DisplayReceivedImage extends AppCompatActivity implements View.OnClickListener {
 
@@ -129,6 +132,9 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
 
     private void drawText(Canvas canvas, Bitmap bitmap, int percent, Boolean isShort) {
 
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        Boolean isGradient = prefs.getBoolean("gradientKey", true);
+
         int size = 0;
         int smallDummyHeight = 0;
         while (smallDummyHeight < ((bitmap.getHeight() / 100) * percent)) {
@@ -157,13 +163,14 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
             Rect rectText = new Rect();
             paintText.getTextBounds(gagTitle, 0, gagTitle.length(), rectText);
 
+            if (isGradient) {
+                int GRADIENT_HEIGHT = rectText.height();
 
-            int GRADIENT_HEIGHT = rectText.height();
-
-            Paint paint = new Paint();
-            LinearGradient shader = new LinearGradient(0, 0, 0, GRADIENT_HEIGHT, Color.BLACK, Color.TRANSPARENT, Shader.TileMode.CLAMP);
-            paint.setShader(shader);
-            canvas.drawRect(0, 0, newBitmap.getWidth(), GRADIENT_HEIGHT, paint);
+                Paint paint = new Paint();
+                LinearGradient shader = new LinearGradient(0, 0, 0, GRADIENT_HEIGHT, Color.BLACK, Color.TRANSPARENT, Shader.TileMode.CLAMP);
+                paint.setShader(shader);
+                canvas.drawRect(0, 0, newBitmap.getWidth(), GRADIENT_HEIGHT, paint);
+            }
 
             canvas.drawText(gagTitle, 0, 0, paintText);
         } else {
@@ -187,12 +194,14 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
                     0.0f,
                     false);
 
-            int GRADIENT_HEIGHT = mTextLayout.getHeight();
+            if (isGradient) {
+                int GRADIENT_HEIGHT = mTextLayout.getHeight();
 
-            Paint paint = new Paint();
-            LinearGradient shader = new LinearGradient(0, 0, 0, GRADIENT_HEIGHT, Color.BLACK, Color.TRANSPARENT, Shader.TileMode.CLAMP);
-            paint.setShader(shader);
-            canvas.drawRect(0, 0, newBitmap.getWidth(), GRADIENT_HEIGHT, paint);
+                Paint paint = new Paint();
+                LinearGradient shader = new LinearGradient(0, 0, 0, GRADIENT_HEIGHT, Color.BLACK, Color.TRANSPARENT, Shader.TileMode.CLAMP);
+                paint.setShader(shader);
+                canvas.drawRect(0, 0, newBitmap.getWidth(), GRADIENT_HEIGHT, paint);
+            }
 
             canvas.save();
             canvas.translate(pL, pT);

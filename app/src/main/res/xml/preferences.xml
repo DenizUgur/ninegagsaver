@@ -1,0 +1,29 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <CheckBoxPreference
+        android:title="Back to 9GAG"
+        android:defaultValue="true"
+        android:summary="Check this if you want to go back 9gag by clicking Back in Photo page."
+        android:key="backTo9gag" />
+
+    <CheckBoxPreference
+        android:title="Use Gradient"
+        android:defaultValue="true"
+        android:key="gradientKey"
+        android:summary="Weather use gradient on gag or not." />
+
+    <Preference
+        android:title="Choose Folder"
+        android:key="chooseFolder">
+        <intent
+            android:action="android.intent.action.GET_CONTENT"
+            android:targetPackage="com.denizugur.deniz.ninegagsaver"
+            android:targetClass="com.nononsenseapps.filepicker.FilePickerActivity" />
+    </Preference>
+
+    <Preference
+        android:title="Clear stored gags for this application"
+        android:summary="This will only delete gags shown on Main Menu, your stored gags will remain on this device."
+        android:key="clearGags" />
+
+</PreferenceScreen>

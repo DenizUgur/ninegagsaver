@@ -1,104 +1,51 @@
 package com.denizugur.deniz.ninegagsaver;
 
-import android.app.Activity;
-
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-
 import android.graphics.Point;
 import android.net.Uri;
-
 import android.os.Environment;
-
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-
 import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
-
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
-import com.nononsenseapps.filepicker.FilePickerActivity;
-
-import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
     public final static String GAG_TITLE = "com.denizugur.deniz.ninegagsaver.GAG_TITLE";
-    public final static String APP_PREFS = "com.denizugur.deniz.ninegagsaver.PREFS";
-    private final static int FILE_CODE = 0;
-    private final static int EXITAPP = 0;
+    private final static int EXIT_APP = 0;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == FILE_CODE && resultCode == Activity.RESULT_OK) {
-            Uri uri = data.getData();
-            File folder = new File(uri.getPath());
-
-            SharedPreferences prefs = getApplicationContext().getSharedPreferences(APP_PREFS, MODE_PRIVATE);
-
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putString("path", folder.toString());
-            editor.apply();
-
-            TextView pathToFolder = (TextView) findViewById(R.id.pathToFolder);
-            pathToFolder.setText(folder.toString());
-        } else if (requestCode == EXITAPP && resultCode == RESULT_CANCELED) {
-            finish();
+        if (requestCode == EXIT_APP && resultCode == RESULT_CANCELED) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+            Boolean boo = prefs.getBoolean("backTo9gag", true);
+            if (boo) {
+                finish();
+            } else {
+                Intent i = new Intent(this, HomeCardActivity.class);
+                startActivity(i);
+                finish();
+            }
         }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        findViewById(R.id.choose_folder).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent i = new Intent(getApplicationContext(), FilePickerActivity.class);
-
-                i.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, false);
-                i.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, true);
-                i.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_DIR);
-
-                i.putExtra(FilePickerActivity.EXTRA_START_PATH, Environment.getExternalStorageDirectory().getPath());
-
-                startActivityForResult(i, FILE_CODE);
-
-            }
-        });
-
-        File sdCard = Environment.getExternalStorageDirectory();
-        File dir = new File(sdCard.getAbsolutePath() + "/Pictures/9GAG");
-
-        SharedPreferences prefs = getApplicationContext().getSharedPreferences(APP_PREFS, MODE_PRIVATE);
-
-        if (!prefs.getBoolean("firstTime", false)) {
-            SharedPreferences.Editor editor = prefs.edit();
-
-            editor.putString("path", String.valueOf(dir));
-            editor.putBoolean("firstTime", true);
-
-            editor.apply();
-        }
-
-        String pathKey = prefs.getString("path", null);
-
-        TextView pathToFolder = (TextView) findViewById(R.id.pathToFolder);
-        pathToFolder.setText(pathKey);
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         // Get intent, action and MIME type
         Intent intent = getIntent();
@@ -109,6 +56,10 @@ public class MainActivity extends AppCompatActivity {
             if ("text/plain".equals(type)) {
                 handleSendText(intent);
             }
+        } else {
+            Intent i = new Intent(this, HomeCardActivity.class);
+            startActivity(i);
+            finish();
         }
     }
 
@@ -131,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
                         .title("Loading")
                         .content("Please wait...")
                         .progress(true, 0)
+                        .theme(Theme.DARK)
                         .show();
 
                 final fetchGAG f = new fetchGAG();
@@ -192,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
                             intentImage.putExtra(GAG_TITLE, f.getTitle());
                             md.dismiss();
                             unregisterReceiver(this);
-                            startActivityForResult(intentImage, EXITAPP);
+                            startActivityForResult(intentImage, EXIT_APP);
                         }
                     };
 

@@ -5,6 +5,8 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="NoActionBar" parent="Theme.AppCompat.NoActionBar"></style>
+
     <style name="FilePickerTheme" parent="NNF_BaseTheme">
         <!-- Set these to match your theme -->
         <item name="colorPrimary">@color/black</item>

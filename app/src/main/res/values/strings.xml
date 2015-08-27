@@ -2,6 +2,7 @@
     <string name="app_name">9GAG Saver</string>
     <string name="choose">Choose</string>
     <string name="title_activity_display_received_image">Photo</string>
+    <string name="action_about">About</string>
     <string name="action_save">Save</string>
     <string name="action_share">Share</string>
     <string name="app_desc">
@@ -11,4 +12,8 @@
     <string name="logo">logo</string>
     <string name="gag_image">Gag Image</string>
     <string name="intent_label">Save with Title</string>
+    <string name="title_activity_home_card">HomeCardActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 </resources>

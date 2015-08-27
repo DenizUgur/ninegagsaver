@@ -14,13 +14,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imageViewPhoto"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:adjustViewBounds="true"
         android:contentDescription="@string/gag_image" />
 
     <com.github.clans.fab.FloatingActionMenu
@@ -29,21 +22,22 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        fab:menu_backgroundColor="@android:color/transparent">
+        fab:menu_backgroundColor="@android:color/transparent"
+        android:layout_gravity="right|bottom">
 
-    <com.github.clans.fab.FloatingActionButton
-        android:id="@+id/save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        fab:fab_size="mini"
-        fab:fab_label="Save" />
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_size="mini"
+            fab:fab_label="Save" />
 
-    <com.github.clans.fab.FloatingActionButton
-        android:id="@+id/share"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        fab:fab_size="mini"
-        fab:fab_label="Share" />
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_size="mini"
+            fab:fab_label="Share" />
 
     </com.github.clans.fab.FloatingActionMenu>
 
