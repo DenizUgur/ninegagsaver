@@ -6,6 +6,3 @@ Grabs gag from 9gag and adds gag's title to make it better.
 # Future
 * Best text size algoritym will be improved
 * Comments button will be added on cards
-
-# LICENSE
-?
