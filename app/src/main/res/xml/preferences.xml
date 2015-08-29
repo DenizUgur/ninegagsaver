@@ -1,29 +1,39 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <CheckBoxPreference
-        android:title="Back to 9GAG"
         android:defaultValue="true"
+        android:key="backTo9gag"
         android:summary="Check this if you want to go back 9gag by clicking Back in Photo page."
-        android:key="backTo9gag" />
+        android:title="Back to 9GAG" />
 
     <CheckBoxPreference
-        android:title="Use Gradient"
         android:defaultValue="true"
         android:key="gradientKey"
-        android:summary="Weather use gradient on gag or not." />
+        android:summary="Weather use gradient on gag or not."
+        android:title="Use Gradient" />
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="useTitleAsMessage"
+        android:summary="Use title as photo message."
+        android:title="Use title when sharing" />
 
     <Preference
-        android:title="Choose Folder"
-        android:key="chooseFolder">
+        android:key="chooseFolder"
+        android:title="Choose Folder">
         <intent
             android:action="android.intent.action.GET_CONTENT"
-            android:targetPackage="com.denizugur.deniz.ninegagsaver"
-            android:targetClass="com.nononsenseapps.filepicker.FilePickerActivity" />
+            android:targetClass="com.nononsenseapps.filepicker.FilePickerActivity"
+            android:targetPackage="com.denizugur.deniz.ninegagsaver" />
     </Preference>
 
     <Preference
-        android:title="Clear stored gags for this application"
+        android:key="clearGags"
         android:summary="This will only delete gags shown on Main Menu, your stored gags will remain on this device."
-        android:key="clearGags" />
+        android:title="Clear stored gags for this application" />
+
+    <Preference
+        android:summary="* Title size on Image will be improved\n* Comments button will be added on cards"
+        android:title="Future" />
 
 </PreferenceScreen>

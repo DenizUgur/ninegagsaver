@@ -5,7 +5,9 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="NoActionBar" parent="Theme.AppCompat.NoActionBar"></style>
+    <style name="NoActionBar" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme here. -->
+    </style>
 
     <style name="FilePickerTheme" parent="NNF_BaseTheme">
         <!-- Set these to match your theme -->

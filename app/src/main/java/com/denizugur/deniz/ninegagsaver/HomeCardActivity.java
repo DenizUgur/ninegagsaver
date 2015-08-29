@@ -1,67 +1,169 @@
 package com.denizugur.deniz.ninegagsaver;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
+import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.Theme;
+import com.github.clans.fab.FloatingActionButton;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class HomeCardActivity extends AppCompatActivity {
 
+    public static final String GAGS = "com.denizugur.deniz.ninegagsaver.gags";
+    public List<gagInfo> list;
+
     /**
-     * Card contents:
-     * photo
-     * title
-     * saved date
-     * likes
-     * comments
-     * comments button
-     * share
-     *
-     * FAB
-     * @param savedInstanceState
+     * Cards, Comments
      */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_card);
+        if (prefsCheck()) {
+            RelativeLayout relativeLayout = new RelativeLayout(this);
+            RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT);
 
-        RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
-        recList.setHasFixedSize(true);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recList.setLayoutManager(llm);
+            TextView tv = new TextView(this);
+            tv.setText("There is no saved gag, go save some to see them here");
+            tv.setTextSize(30);
+            tv.setGravity(Gravity.CENTER);
+            tv.setTextColor(Color.GRAY);
 
-        gagAdapter ca = new gagAdapter(createList(4));
-        recList.setAdapter(ca);
+            FloatingActionButton fab = new FloatingActionButton(this);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(rlp);
+            params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            params.addRule(RelativeLayout.ALIGN_PARENT_END);
+            params.addRule(Gravity.RIGHT);
+            fab.setImageResource(R.drawable.fab_add);
+            fab.setLayoutParams(params);
 
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT);
+            lp.addRule(RelativeLayout.CENTER_IN_PARENT);
+            tv.setLayoutParams(lp);
+            relativeLayout.addView(tv);
+            relativeLayout.addView(fab);
+
+            setContentView(relativeLayout, rlp);
+
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    customPhoto();
+                }
+            });
+
+        } else {
+            setContentView(R.layout.activity_home_card);
+
+            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    customPhoto();
+                }
+            });
+
+            RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
+            recList.setHasFixedSize(true);
+            LinearLayoutManager llm = new LinearLayoutManager(this);
+            llm.setOrientation(LinearLayoutManager.VERTICAL);
+            recList.setLayoutManager(llm);
+
+            getList();
+
+            gagAdapter ca = new gagAdapter(list);
+            recList.setAdapter(ca);
+        }
     }
 
-    private List<gagInfo> createList(int size) {
+    private void customPhoto() {
+        Intent i = new Intent(this, DisplayReceivedImage.class);
+        i.putExtra("isCustom", true);
+        startActivity(i);
+    }
 
-        List<gagInfo> result = new ArrayList<gagInfo>();
-        for (int i=1; i <= size; i++) {
-            gagInfo ci = new gagInfo();
-            ci.photoId = gagInfo.PHOTO_PREFIX + i;
-            ci.title = gagInfo.TITLE_PREFIX + i;
-            ci.saved_date = gagInfo.SAVED_DATE_PREFIX + i;
-            ci.likes = gagInfo.LIKES_PREFIX + i;
-            ci.comments = gagInfo.COMMENTS_PREFIX + i;
-
-            result.add(ci);
+    private Boolean prefsCheck() {
+        File directory_gags = new File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "gags");
+        File null_object = new File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "gags" + File.separator + "null");
+        File[] contents = directory_gags.listFiles();
+        if (contents.length == 0) {
+            SharedPreferences prefs = getSharedPreferences(GAGS, 0);
+            prefs.edit().clear().apply();
+            return true;
+        } else if (null_object.exists()) {
+            for (File content : contents) {
+                if (content.equals(null_object)) {
+                    null_object.delete();
+                }
+            }
+            return true;
+        } else {
+            return false;
         }
+    }
 
-        return result;
+    private void getList() {
+
+        SharedPreferences prefs = getSharedPreferences(GAGS, MODE_PRIVATE);
+
+        Map<String, ?> allEntries = prefs.getAll();
+        list = new ArrayList<>();
+        JSONObject obj;
+        String keyObject;
+        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+            String entryValue = entry.getValue().toString();
+            keyObject = entry.getKey();
+
+            try {
+                JSONObject entryObject = new JSONObject(entryValue);
+                obj = entryObject.getJSONObject("nameValuePairs");
+                gagInfo gi = new gagInfo();
+                    Log.d("JSON", "Processing... " + keyObject);
+
+                    try {
+                        gi.title = obj.getString("title");
+                        gi.likes = obj.getString("likes");
+                        gi.comments = obj.getString("comments");
+                        gi.saved_date = obj.getString("saved_date");
+                        gi.file_path = obj.getString("file_path");
+                        gi.photoId = obj.getString("photoId");
+
+                        list.add(gi);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.remove(keyObject);
+                        editor.apply();
+                    }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -82,14 +184,13 @@ public class HomeCardActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             Intent i = new Intent(this, SettingsActivity.class);
             startActivity(i);
+            finish();
             return true;
         } else if (id == R.id.action_about) {
-            new MaterialDialog.Builder(this)
-                    .title("@string/action_about")
-                    .content("will be added later")
-                    .theme(Theme.DARK)
-                    .cancelable(false)
-                    .show();
+            /** About Material dialog
+             *  will be added when project finishes.
+             */
+        return true;
         }
 
         return super.onOptionsItemSelected(item);

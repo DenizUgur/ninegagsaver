@@ -31,6 +31,14 @@ import java.io.File;
 public class SettingsActivity extends AppCompatActivity {
 
     private final static int FILE_CODE = 0;
+    private static String gags_dir = null;
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(this, HomeCardActivity.class);
+        startActivity(i);
+        finish();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +49,10 @@ public class SettingsActivity extends AppCompatActivity {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
+
+        File _dir = new File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "gags");
+        gags_dir = _dir.toString();
+
         getFragmentManager().beginTransaction().replace(android.R.id.content, new SettingsPreferenceFragment()).commit();
     }
 
@@ -48,6 +60,8 @@ public class SettingsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                Intent i = new Intent(this, HomeCardActivity.class);
+                startActivity(i);
                 finish();
                 return true;
             default:
@@ -63,10 +77,9 @@ public class SettingsActivity extends AppCompatActivity {
             addPreferencesFromResource(R.xml.preferences);
 
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            Preference editTextPref = findPreference("chooseFolder");
-            editTextPref.setSummary(prefs.getString("path", Environment.getExternalStorageDirectory().getPath() + "/Pictures/9GAG"));
-
             Preference chooseFolder = findPreference("chooseFolder");
+            chooseFolder.setSummary(prefs.getString("path", Environment.getExternalStorageDirectory().getPath() + "/Pictures/9GAG"));
+
             chooseFolder.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
@@ -86,10 +99,13 @@ public class SettingsActivity extends AppCompatActivity {
             clearGags.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    /**
-                     * Clear data code here
-                     */
-
+                    File dir = new File(gags_dir);
+                    if (dir.isDirectory()) {
+                        String[] children = dir.list();
+                        for (String aChildren : children) {
+                            new File(dir, aChildren).delete();
+                        }
+                    }
                     return true;
                 }
             });

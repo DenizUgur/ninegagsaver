@@ -1,65 +1,123 @@
 <android.support.v7.widget.CardView
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    card_view:cardCornerRadius="4dp"
-    android:layout_margin="5dp">
+    android:layout_margin="5dp"
+    card_view:cardCornerRadius="4dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/photo_id"
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:text="photo"
-            android:background="@android:color/holo_red_dark"
-            android:gravity="center_vertical"
-            android:textColor="@android:color/white"
-            android:textSize="14dp"/>
+        <ImageView
+            android:id="@+id/photo"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/image"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop" />
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/image"
+            android:background="@drawable/gradient_shape">
+
+            <TextView
+                android:id="@+id/title"
+                style="@android:style/TextAppearance.DeviceDefault.Medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="@dimen/margin"
+                android:layout_marginRight="@dimen/margin"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="2"
+                android:minLines="1"
+                android:text="title"
+                android:textColor="@android:color/white" />
+
+        </RelativeLayout>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="title"
-            android:id="@+id/title"
-            android:layout_below="@+id/photo_id"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="likes"
             android:id="@+id/likes"
-            android:layout_below="@+id/title"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="comments"
+            android:layout_above="@+id/textView"
+            android:layout_toEndOf="@+id/likePhoto"
+            android:text="likes"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
             android:id="@+id/comments"
-            android:layout_above="@+id/likes"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
-
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="saved date"
+            android:layout_below="@+id/photo"
+            android:layout_toEndOf="@+id/imageView2"
+            android:text="comments"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
             android:id="@+id/saved_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/textView"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="@dimen/margin"
+            android:text="saved date"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <Button
+            android:id="@+id/shareButton"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/textView"
+            android:layout_toStartOf="@+id/remove"
+            android:text="Share"
+            android:textColor="@android:color/holo_blue_light" />
+
+        <View
+            android:id="@+id/textView"
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
             android:layout_below="@+id/comments"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:background="@color/cardview_separator_color" />
+
+        <ImageView
+            android:id="@+id/likePhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/textView"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/likes"
+            android:src="@drawable/like" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/textView"
+            android:layout_below="@+id/photo"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/likes"
+            android:src="@drawable/comment" />
+
+        <Button
+            android:id="@+id/remove"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/saved_date"
+            android:text="Remove"
+            android:textColor="@android:color/darker_gray" />
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>

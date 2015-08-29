@@ -1,5 +1,6 @@
 package com.denizugur.deniz.ninegagsaver;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -20,7 +21,14 @@ public class fetchGAG {
     private String Title = null;
     private String photoURL = null;
     private String url;
+    private String ID;
+    private String Likes;
+    private String Comments;
     private int Height;
+
+    public String getURL() {
+        return url;
+    }
 
     public void setURL(String string) {
         this.url = string;
@@ -36,6 +44,18 @@ public class fetchGAG {
 
     public int getHeightImage() {
         return Height;
+    }
+
+    public String getLikes() {
+        return Likes;
+    }
+
+    public String getComments() {
+        return Comments;
+    }
+
+    public String getID() {
+        return ID;
     }
 
     public void fetch() {
@@ -60,6 +80,8 @@ public class fetchGAG {
                 Document doc = Jsoup.connect(url).timeout(0).get();
                 Elements elementImage = doc.select("meta[property=og:image]");
                 Elements elementTitle = doc.select("meta[property=og:title]");
+                Elements elementComments = doc.select("span[class=badge-item-comment-count]");
+                Elements elementLikes = doc.select("span[class=badge-item-love-count]");
 
                 Elements elementGif = doc.select("div[data-mp4]");
                 if (!elementGif.isEmpty()) {
@@ -69,9 +91,16 @@ public class fetchGAG {
 
                 photoURL = elementImage.attr("content");
                 Title = elementTitle.attr("content");
+                URL urlID = new URL(url);
+                String path = urlID.getPath();
+                ID = path.substring(path.lastIndexOf('/') + 1);
+                Comments = elementComments.html();
+                Likes = elementLikes.html();
 
-                URL url = new URL(photoURL);
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                Log.d("GAG", ID + " " + Likes + " " + Comments);
+
+                URL urlPhoto = new URL(photoURL);
+                HttpURLConnection connection = (HttpURLConnection) urlPhoto.openConnection();
                 connection.setDoInput(true);
                 connection.connect();
                 InputStream input = connection.getInputStream();

@@ -14,17 +14,19 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
-import android.view.Menu;
-import android.view.MenuItem;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
+
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
     public final static String GAG_TITLE = "com.denizugur.deniz.ninegagsaver.GAG_TITLE";
+    public final static String GAG_URL = "com.denizugur.deniz.ninegagsaver.GAG_URL";
     private final static int EXIT_APP = 0;
+    private Context context;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = this;
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
@@ -87,95 +90,84 @@ public class MainActivity extends AppCompatActivity {
 
                 final fetchGAG f = new fetchGAG();
                 f.setURL(gagURL);
-                try {
-                    f.fetch();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
 
-                Display display = getWindowManager().getDefaultDisplay();
-                Point size = new Point();
-                display.getSize(size);
-                int screenHeight = size.y;
+                Thread t = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        f.fetch();
 
-                if (f.getHeightImage() > screenHeight) {
-                    Log.w(getLocalClassName(), "Long" + " Screen@" + screenHeight + " Image@" + f.getHeightImage());
-                } else if (f.getHeightImage() == 0) {
-                    Log.w(getLocalClassName(), "No GIF allowed here");
-                    new MaterialDialog.Builder(this)
-                            .title("Sorry")
-                            .content("No GIF Allowed")
-                            .positiveText("Go Back")
-                            .theme(Theme.DARK)
-                            .cancelable(false)
-                            .callback(new MaterialDialog.ButtonCallback() {
+                        Display display = getWindowManager().getDefaultDisplay();
+                        Point size = new Point();
+                        display.getSize(size);
+                        int screenHeight = size.y;
+
+                        if (f.getHeightImage() > screenHeight) {
+                            Log.w(getLocalClassName(), "Long" + " Screen@" + screenHeight + " Image@" + f.getHeightImage());
+                        } else if (f.getHeightImage() == 0) {
+                            Log.w(getLocalClassName(), "No GIF allowed here");
+                            runOnUiThread(new Runnable() {
                                 @Override
-                                public void onPositive(MaterialDialog dialog) {
-                                    md.dismiss();
-                                    System.exit(0);
+                                public void run() {
+                                    new MaterialDialog.Builder(context)
+                                            .title("Sorry")
+                                            .content("No GIF Allowed")
+                                            .positiveText("Go Back")
+                                            .theme(Theme.DARK)
+                                            .cancelable(false)
+                                            .callback(new MaterialDialog.ButtonCallback() {
+                                                @Override
+                                                public void onPositive(MaterialDialog dialog) {
+                                                    md.dismiss();
+                                                    System.exit(0);
+                                                }
+                                            })
+                                            .show();
                                 }
-                            })
-                            .show();
-                } else {
-                    Log.w(getLocalClassName(), "Short" + " Screen@" + screenHeight + " Image@" + f.getHeightImage());
-                }
-
-                DownloadManager mgr = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-
-                if (f.getPhotoURL() != null) {
-                    Uri downloadUri = Uri.parse(f.getPhotoURL());
-                    DownloadManager.Request request = new DownloadManager.Request(
-                            downloadUri);
-
-                    request.setAllowedNetworkTypes(
-                            DownloadManager.Request.NETWORK_WIFI
-                                    | DownloadManager.Request.NETWORK_MOBILE)
-                            .setAllowedOverRoaming(false).setTitle("9GAG Photo")
-                            .setDescription("Something useful. No, really.")
-                            .setNotificationVisibility(0)
-                            .setDestinationInExternalFilesDir(this, Environment.DIRECTORY_DOWNLOADS, "GAG.png");
-
-                    mgr.enqueue(request);
-
-                    BroadcastReceiver onComplete = new BroadcastReceiver() {
-                        public void onReceive(Context context, Intent intent) {
-                            Log.d("Main", "Finished");
-                            Intent intentImage = new Intent(getApplicationContext(), DisplayReceivedImage.class);
-                            intentImage.putExtra(GAG_TITLE, f.getTitle());
-                            md.dismiss();
-                            unregisterReceiver(this);
-                            startActivityForResult(intentImage, EXIT_APP);
+                            });
+                        } else {
+                            Log.w(getLocalClassName(), "Short" + " Screen@" + screenHeight + " Image@" + f.getHeightImage());
                         }
-                    };
 
-                    registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
-                }
-            } else {
-                new MaterialDialog.Builder(this)
-                        .content("Share is from undefined source. This app is only for 9GAG.")
-                        .positiveText("Ok")
-                        .theme(Theme.DARK)
-                        .show();
+                        File directory_download = new File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "downloads");
+                        if (!directory_download.exists()) {
+                            directory_download.mkdirs();
+                        }
+
+                        DownloadManager mgr = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+
+                        if (f.getPhotoURL() != null) {
+                            Uri downloadUri = Uri.parse(f.getPhotoURL());
+                            DownloadManager.Request request = new DownloadManager.Request(
+                                    downloadUri);
+
+                            request.setAllowedNetworkTypes(
+                                    DownloadManager.Request.NETWORK_WIFI
+                                            | DownloadManager.Request.NETWORK_MOBILE)
+                                    .setAllowedOverRoaming(false).setTitle("9GAG Photo")
+                                    .setDescription("Something useful. No, really.")
+                                    .setNotificationVisibility(0)
+                                    .setDestinationInExternalFilesDir(context, Environment.DIRECTORY_DOWNLOADS, "/downloads/GAG.png");
+
+                            mgr.enqueue(request);
+
+                            BroadcastReceiver onComplete = new BroadcastReceiver() {
+                                public void onReceive(Context context, Intent intent) {
+                                    Log.d("Main", "Finished");
+                                    Intent intentImage = new Intent(context, DisplayReceivedImage.class);
+                                    intentImage.putExtra(GAG_TITLE, f.getTitle());
+                                    intentImage.putExtra(GAG_URL, f.getURL());
+                                    md.dismiss();
+                                    unregisterReceiver(this);
+                                    startActivityForResult(intentImage, EXIT_APP);
+                                }
+                            };
+
+                            registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+                        }
+                    }
+                });
+                t.start();
             }
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        //int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-
-        return super.onOptionsItemSelected(item);
     }
 }
