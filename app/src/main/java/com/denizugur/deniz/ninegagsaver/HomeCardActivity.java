@@ -1,13 +1,18 @@
 package com.denizugur.deniz.ninegagsaver;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -16,6 +21,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.clans.fab.FloatingActionButton;
 
 import org.json.JSONException;
@@ -30,6 +36,26 @@ public class HomeCardActivity extends AppCompatActivity {
 
     public static final String GAGS = "com.denizugur.deniz.ninegagsaver.gags";
     public List<gagInfo> list;
+
+    @NonNull
+    public static String getVersionName(@NonNull Context context) {
+        PackageManager pm = context.getPackageManager();
+        String packageName = context.getPackageName();
+        String versionName;
+        try {
+            PackageInfo info = pm.getPackageInfo(packageName, 0);
+            versionName = info.versionName;
+
+            // Make the info part of version name a bit smaller.
+            if (versionName.indexOf('-') >= 0) {
+                versionName = versionName.replaceFirst("\\-", "<small>-") + "</small>";
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            versionName = "N/A";
+        }
+
+        return versionName;
+    }
 
     /**
      * Cards, Comments
@@ -187,9 +213,13 @@ public class HomeCardActivity extends AppCompatActivity {
             finish();
             return true;
         } else if (id == R.id.action_about) {
-            /** About Material dialog
-             *  will be added when project finishes.
-             */
+            String app_name = getResources().getString(R.string.app_name);
+            new MaterialDialog.Builder(this)
+                    .iconRes(R.drawable.ic_action_about_white)
+                    .title(app_name + " " + getVersionName(this))
+                    .content(Html.fromHtml(getString(R.string.about_body)))
+                    .negativeText(R.string.close)
+                    .show();
         return true;
         }
 

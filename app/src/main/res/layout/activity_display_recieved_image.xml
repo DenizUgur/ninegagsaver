@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    tools:context="com.denizugur.deniz.advanced9gagphotosaver.DisplayRecievedImage">
+    tools:context=".DisplayReceivedImage">
 
     <com.denizugur.deniz.ninegagsaver.TouchImageView
         android:id="@+id/imageViewPhoto"
@@ -16,29 +16,42 @@
         android:id="@+id/fam"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        android:layout_gravity="right|bottom"
-        fab:menu_backgroundColor="@android:color/transparent" >
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="end|bottom"
+        fab:menu_backgroundColor="@android:color/transparent"
+        fab:menu_colorNormal="@color/primary_color"
+        fab:menu_colorPressed="@color/primary_color"
+        fab:menu_colorRipple="@color/primary_color_600" >
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/changeTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fab:fab_label="Edit Title"
+            fab:fab_colorNormal="@color/primary_color"
+            fab:fab_colorPressed="@color/primary_color"
+            fab:fab_colorRipple="@color/primary_color_600"
+            fab:fab_label="@string/fab_edit"
             fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fab:fab_label="Save"
+            fab:fab_colorNormal="@color/primary_color"
+            fab:fab_colorPressed="@color/primary_color"
+            fab:fab_colorRipple="@color/primary_color_600"
+            fab:fab_label="@string/action_save"
             fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/share"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fab:fab_label="Share"
+            fab:fab_colorNormal="@color/primary_color"
+            fab:fab_colorPressed="@color/primary_color"
+            fab:fab_colorRipple="@color/primary_color_600"
+            fab:fab_label="@string/action_share"
             fab:fab_size="mini" />
 
 

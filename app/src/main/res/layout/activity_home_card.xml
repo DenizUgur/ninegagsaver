@@ -18,7 +18,9 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:src="@drawable/fab_add"
-        fab:fab_label="Save"
+        fab:fab_colorNormal="@color/primary_color"
+        fab:fab_colorPressed="@color/primary_color"
+        fab:fab_colorRipple="@color/primary_color_600"
         fab:fab_size="normal" />
 
 </RelativeLayout>

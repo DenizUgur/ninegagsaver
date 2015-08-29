@@ -143,9 +143,9 @@ public class MainActivity extends AppCompatActivity {
                             request.setAllowedNetworkTypes(
                                     DownloadManager.Request.NETWORK_WIFI
                                             | DownloadManager.Request.NETWORK_MOBILE)
-                                    .setAllowedOverRoaming(false).setTitle("9GAG Photo")
-                                    .setDescription("Something useful. No, really.")
-                                    .setNotificationVisibility(0)
+                                    .setAllowedOverRoaming(false).setTitle(getString(R.string.download_title))
+                                    .setDescription(getString(R.string.download_description))
+                                    .setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN)
                                     .setDestinationInExternalFilesDir(context, Environment.DIRECTORY_DOWNLOADS, "/downloads/GAG.png");
 
                             mgr.enqueue(request);

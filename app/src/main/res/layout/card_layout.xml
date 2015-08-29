@@ -18,6 +18,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentStart="true"
             android:adjustViewBounds="true"
+            android:contentDescription="@string/photo"
             android:scaleType="centerCrop" />
 
         <RelativeLayout
@@ -40,51 +41,50 @@
                 android:gravity="center_vertical"
                 android:maxLines="2"
                 android:minLines="1"
-                android:text="title"
                 android:textColor="@android:color/white" />
 
         </RelativeLayout>
 
         <TextView
             android:id="@+id/likes"
+            style="@android:style/TextAppearance.DeviceDefault.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/textView"
+            android:layout_above="@+id/border"
             android:layout_toEndOf="@+id/likePhoto"
-            android:text="likes"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/comments"
+            style="@android:style/TextAppearance.DeviceDefault.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/photo"
             android:layout_toEndOf="@+id/imageView2"
-            android:text="comments"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/saved_date"
+            style="@android:style/TextAppearance.DeviceDefault.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/textView"
+            android:layout_above="@+id/border"
             android:layout_alignParentEnd="true"
             android:layout_marginRight="@dimen/margin"
-            android:text="saved date"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:textColor="@color/black" />
 
         <Button
             android:id="@+id/shareButton"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/textView"
+            android:layout_alignTop="@+id/border"
             android:layout_toStartOf="@+id/remove"
-            android:text="Share"
-            android:textColor="@android:color/holo_blue_light" />
+            android:text="@string/action_share"
+            android:textColor="@color/holo_blue_light" />
 
         <View
-            android:id="@+id/textView"
+            android:id="@+id/border"
             android:layout_width="fill_parent"
             android:layout_height="1px"
             android:layout_below="@+id/comments"
@@ -94,19 +94,21 @@
             android:id="@+id/likePhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/textView"
+            android:layout_above="@+id/border"
             android:layout_alignParentStart="true"
             android:layout_alignTop="@+id/likes"
+            android:contentDescription="@string/like_pic"
             android:src="@drawable/like" />
 
         <ImageView
             android:id="@+id/imageView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/textView"
+            android:layout_above="@+id/border"
             android:layout_below="@+id/photo"
             android:layout_marginStart="10dp"
             android:layout_toEndOf="@+id/likes"
+            android:contentDescription="@string/comment_pic"
             android:src="@drawable/comment" />
 
         <Button
@@ -116,8 +118,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_below="@+id/saved_date"
-            android:text="Remove"
-            android:textColor="@android:color/darker_gray" />
+            android:text="@string/action_remove"
+            android:textColor="@color/darker_gray" />
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>

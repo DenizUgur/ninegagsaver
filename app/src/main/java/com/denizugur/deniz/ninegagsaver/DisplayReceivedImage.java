@@ -84,6 +84,8 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
         final TouchImageView mImageView = (TouchImageView) findViewById(R.id.imageViewPhoto);
         mImageView.setScrollPosition(0, 0);
 
+        final String gagTitleUnEdited = gagTitle;
+
         changeTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,7 +95,16 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
                         .cancelable(false)
                         .inputType(InputType.TYPE_CLASS_TEXT)
                         .alwaysCallInputCallback()
-                        .input("", gagTitle, new MaterialDialog.InputCallback() {
+                        .negativeText("Cancel")
+                        .callback(new MaterialDialog.ButtonCallback() {
+                            @Override
+                            public void onNegative(MaterialDialog dialog) {
+                                super.onNegative(dialog);
+                                gagTitle = gagTitleUnEdited;
+                                process(photo, mImageView);
+                            }
+                        })
+                        .input("Title", gagTitle, new MaterialDialog.InputCallback() {
                             @Override
                             public void onInput(MaterialDialog dialog, CharSequence input) {
                                 if (input.length() == 0) {
@@ -123,7 +134,6 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
             photo = BitmapFactory.decodeFile(String.valueOf(photoLocal));
             mImageView.setImageBitmap(photo);
             process(photo, mImageView);
-            Log.d("BIT SIZE (NOT CUSTOM)", String.valueOf("getHeight: " + photo.getHeight()));
         }
     }
 
@@ -147,7 +157,6 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
                 o.inScaled = false;
                 photo = BitmapFactory.decodeFile(file, o);
 
-                Log.d("BIT SIZE", String.valueOf("getHeight: " + photo.getHeight() + " outHeight: " + o.outHeight));
             } finally {
                 if (cursor != null) {
                     cursor.close();
@@ -209,8 +218,6 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
             display.getSize(sizeScreen);
             int screenHeight = sizeScreen.y;
 
-            Log.d("TEXT LENGHT", String.valueOf(gagTitle.length()));
-
             if (gagTitle.length() <= 15) {
                 if (bitmap.getHeight() < (screenHeight / 2)) {
                     drawText(newCanvas, bitmap, 10, true);
@@ -246,14 +253,12 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
             paintText.getTextBounds(gagTitle, 0, gagTitle.length(), smallDummyRect);
 
             smallDummyHeight = smallDummyRect.height();
-            Log.d("TEXT SIZE", "Text Height: " + String.valueOf(smallDummyHeight) + " Bitmap Height: " + bitmap.getHeight());
         }
 
         int pL = bitmap.getWidth() / 100;
         int pT = bitmap.getHeight() / 100;
 
         if (isShort) {
-            Log.d("ALERT", "short " + gagTitle.length());
 
             TextPaint paintText = new TextPaint(Paint.ANTI_ALIAS_FLAG);
             paintText.setColor(Color.WHITE);
@@ -275,7 +280,6 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
 
             canvas.drawText(gagTitle, pL, rectText.height() + pT / 2, paintText);
         } else {
-            Log.d("ALERT", "long " + gagTitle.length());
 
             TextPaint paintText = new TextPaint(Paint.ANTI_ALIAS_FLAG);
             paintText.setColor(Color.WHITE);
@@ -419,7 +423,6 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
                     directory_gags.mkdirs();
                 }
                 final File dir_app = new File(directory_gags + File.separator + photo_id);
-                Log.d("Saved Dir", String.valueOf(dir_app));
 
                 FileOutputStream out = null;
                 try {
@@ -502,7 +505,6 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
             gi.setFile_Path(String.valueOf(file_path));
 
             String jsonStr = jsonParser.parse(gson.toJson(gi)).toString();
-            Log.d("jsonStr", jsonStr);
             JSONObject JSONObject = new JSONObject(jsonStr);
 
             wosp.writeObject(JSONObject, photo_id);
