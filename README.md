@@ -1,7 +1,44 @@
 # 9GAG SAVER
 [![Build Status](https://travis-ci.org/DenizUgur/ninegagsaver.svg?branch=master)](https://travis-ci.org/DenizUgur/ninegagsaver)
 
+<img alt="Main screen: saved gags" align="right" height="300"
+   src="https://github.com/DenizUgur/ninegagsaver/raw/master/screenshot/screenshot_1.png" />
+<img alt="Main screen: showing modified gag" align="right" height="300"
+   src="https://github.com/DenizUgur/ninegagsaver/raw/master/screenshot/screenshot_2.png" />
+
 <a href="http://get.acdisplay.org">
   <img alt="Get AcDisplay on Google Play" vspace="20"
        src="http://developer.android.com/images/brand/en_generic_rgb_wo_60.png" />
 </a>
+
+*9GAG Saver, you can finally save gags with title.*
+
+It will provide you to save 9GAG photos with their titles in your gallery. You could share or save it by simply pressing corresponding button which appers right bottom corner of photo you choose. It also brings comment and like counts. You can also personalize the view of the main screen from settings.
+
+Report a bug or request a feature
+----------------
+Before creating a new issue please make sure that same or similar issue is not already created by checking [open issues][2] and [closed issues][3] *(please note that there might be multiple pages)*. If your issue is already there, don't create a new one, but leave a comment under already existing one.
+
+Checklist for creating issues:
+
+- Keep titles short but descriptive.
+- For feature requests leave a clear description about the feature with examples where appropriate.
+- For bug reports leave as much information as possible about your device, android version, etc.
+- For bug reports also write steps to reproduce the issue.
+
+[Create new issue][1]
+
+Versioning
+----------------
+For transparency in a release cycle and in striving to maintain backward compatibility, a project should be maintained under the Semantic Versioning guidelines. Sometimes we screw up, but we should adhere to these rules whenever possible.
+
+Releases will be numbered with the following format: `<major>.<minor>.<patch>` and constructed with the following guidelines:
+- Breaking backward compatibility bumps the major while resetting minor and patch
+- New additions without breaking backward compatibility bumps the minor while resetting the patch
+- Bug fixes and misc changes bumps only the patch
+
+For more information on SemVer, please visit http://semver.org/.
+
+[1]: https://github.com/DenizUgur/ninegagsaver/issues/new
+[2]: https://github.com/DenizUgur/ninegagsaver/issues?state=open
+[3]: https://github.com/DenizUgur/ninegagsaver/issues?state=closed
