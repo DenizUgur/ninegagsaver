@@ -16,7 +16,6 @@ import android.graphics.Shader;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Bundle;
-
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -28,22 +27,20 @@ import android.view.Display;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.github.clans.fab.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
-
 import org.json.JSONObject;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import static com.denizugur.ninegagsaver.MainActivity.*;
 
@@ -482,14 +479,14 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
         photo_id = f.getID();
 
         Date today = Calendar.getInstance().getTime();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
         String saved_date = formatter.format(today);
 
-        File file_path = new File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) +
-                File.separator +
-                "gags" +
-                File.separator +
-                photo_id);
+                File file_path = new File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) +
+                        File.separator +
+                        "gags" +
+                        File.separator +
+                        photo_id);
 
         try {
             Gson gson = new Gson();

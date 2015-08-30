@@ -126,6 +126,12 @@ public class HomeCardActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
     private void customPhoto() {
         Intent i = new Intent(this, DisplayReceivedImage.class);
         i.putExtra("isCustom", true);

@@ -101,7 +101,6 @@ public class gagAdapter extends RecyclerView.Adapter<gagAdapter.gagViewHolder> {
                 SharedPreferences.Editor editor = context.getSharedPreferences(GAGS, Context.MODE_PRIVATE).edit();
                 gagInfo gi = gagList.get(adapterPosition);
 
-                Log.d("Dismiss LOG", gi.photoId + File.separator + adapterPosition);
                 editor.remove(gi.photoId).apply();
                 File dir = new File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "gags");
                 if (dir.isDirectory()) {
