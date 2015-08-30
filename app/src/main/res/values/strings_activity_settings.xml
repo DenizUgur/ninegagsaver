@@ -21,7 +21,6 @@
     <string name="title_clearGags">Clear stored gags for this application</string>
 
     <!-- Future -->
-    <string name="summary_future">* Title size on Image will be improved.\n* Scrollable ImageView will be added.\n* Comments button will be added on cards.\n* Empty card fix.
-    </string>
+    <string name="summary_future">* Title size on Image will be improved.\n* Scrollable ImageView will be added.\n* Comments button will be added on cards.</string>
     <string name="title_future">Future</string>
 </resources>
