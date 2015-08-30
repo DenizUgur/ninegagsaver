@@ -7,6 +7,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -41,16 +43,22 @@ public class HomeCardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         context = this;
         if (prefsCheck(this)) {
+
             RelativeLayout relativeLayout = new RelativeLayout(this);
             RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(
                     RelativeLayout.LayoutParams.WRAP_CONTENT,
                     RelativeLayout.LayoutParams.WRAP_CONTENT);
 
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT);
+            lp.addRule(RelativeLayout.CENTER_IN_PARENT);
             TextView tv = new TextView(this);
             tv.setText("There is no saved gag, go save some to see them here");
             tv.setTextSize(30);
             tv.setGravity(Gravity.CENTER);
             tv.setTextColor(Color.GRAY);
+            tv.setLayoutParams(lp);
 
             FloatingActionButton fab = new FloatingActionButton(this);
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(rlp);
@@ -64,11 +72,6 @@ public class HomeCardActivity extends AppCompatActivity {
             fab.setColorRippleResId(R.color.primary_color_600);
             fab.setLayoutParams(params);
 
-            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-                    RelativeLayout.LayoutParams.WRAP_CONTENT,
-                    RelativeLayout.LayoutParams.WRAP_CONTENT);
-            lp.addRule(RelativeLayout.CENTER_IN_PARENT);
-            tv.setLayoutParams(lp);
             relativeLayout.addView(tv);
             relativeLayout.addView(fab);
 
@@ -252,6 +255,9 @@ public class HomeCardActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        TextView tv = new TextView(this);
+        tv.setTextSize(15);
+
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent i = new Intent(this, SettingsActivity.class);
@@ -259,16 +265,22 @@ public class HomeCardActivity extends AppCompatActivity {
             finish();
             return true;
         } else if (id == R.id.action_about) {
-            String app_name = getResources().getString(R.string.app_name);
+            tv.setText(Html.fromHtml(getString(R.string.about_body)));
             new MaterialDialog.Builder(this)
                     .iconRes(R.drawable.ic_action_about_white)
-                    .title(Html.fromHtml("<b>" + app_name + "</b>&nbsp;<font color='#888888'>v" + getVersionName(this) + "</font>"))
-                    .content(Html.fromHtml(getString(R.string.about_body)))
+                    .title(Html.fromHtml("<b>" + getResources().getString(R.string.app_name) + "</b>&nbsp;<font color='#888888'>v" + getVersionName(this) + "</font>"))
+                    .customView(tv, true)
                     .negativeText(R.string.close)
                     .show();
             return true;
         } else if (id == R.id.action_help) {
-
+            tv.setText(Html.fromHtml(getString(R.string.help_body)));
+            new MaterialDialog.Builder(this)
+                    .iconRes(R.drawable.ic_action_help_white)
+                    .title(getResources().getString(R.string.action_help))
+                    .customView(tv, true)
+                    .negativeText(R.string.close)
+                    .show();
         }
 
         return super.onOptionsItemSelected(item);

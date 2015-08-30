@@ -34,4 +34,8 @@
         <a href=\'https://github.com/google/gson\'>GSON by Google</a>
     ]]></string>
 
+    <string name="help_body"><![CDATA[
+        <b>FAQ</b>
+    ]]></string>
+
 </resources>
