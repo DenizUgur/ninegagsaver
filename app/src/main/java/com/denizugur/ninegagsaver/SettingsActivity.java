@@ -11,7 +11,10 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.view.MenuItem;
+import android.widget.Toast;
+
 import java.io.File;
 
 import com.nononsenseapps.filepicker.FilePickerActivity;
@@ -31,13 +34,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private final static int FILE_CODE = 0;
     private static String gags_dir = null;
-
-    @Override
-    public void onBackPressed() {
-        Intent i = new Intent(this, HomeCardActivity.class);
-        startActivity(i);
-        finish();
-    }
+    private static String str;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,12 +53,29 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        try {
+            new File(str);
+            Intent i = new Intent(this, HomeCardActivity.class);
+            startActivity(i);
+            finish();
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), "Please choose a folder to continue...", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent i = new Intent(this, HomeCardActivity.class);
-                startActivity(i);
-                finish();
+                try {
+                    new File(str);
+                    Intent i = new Intent(this, HomeCardActivity.class);
+                    startActivity(i);
+                    finish();
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(), "Please choose a folder to continue...", Toast.LENGTH_SHORT).show();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -77,6 +91,7 @@ public class SettingsActivity extends AppCompatActivity {
 
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
             Preference chooseFolder = findPreference("chooseFolder");
+            str = prefs.getString("path", null);
             chooseFolder.setSummary(prefs.getString("path", Environment.getExternalStorageDirectory().getPath() + "/Pictures/9GAG"));
 
             chooseFolder.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -121,6 +136,8 @@ public class SettingsActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putString("path", folder.toString());
                 editor.apply();
+
+                str = folder.toString();
 
                 Preference editTextPref = findPreference("chooseFolder");
                 editTextPref.setSummary(folder.toString());

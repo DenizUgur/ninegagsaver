@@ -14,6 +14,8 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
+import android.widget.Toast;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import java.io.File;
@@ -55,13 +57,30 @@ public class MainActivity extends AppCompatActivity {
         String action = intent.getAction();
         String type = intent.getType();
 
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String str = prefs.getString("path", null);
+
         if (Intent.ACTION_SEND.equals(action) && type != null) {
-            if ("text/plain".equals(type)) {
-                handleSendText(intent);
+            try {
+                new File(str);
+                if ("text/plain".equals(type)) {
+                    handleSendText(intent);
+                }
+            } catch (Exception e) {
+                Intent i = new Intent(this, SettingsActivity.class);
+                Toast.makeText(getApplicationContext(), "Please choose a folder to continue...", Toast.LENGTH_LONG).show();
+                startActivity(i);
             }
         } else {
-            Intent i = new Intent(this, HomeCardActivity.class);
-            startActivity(i);
+            try {
+                new File(str);
+                Intent i = new Intent(this, HomeCardActivity.class);
+                startActivity(i);
+            } catch (Exception e) {
+                Intent i = new Intent(this, SettingsActivity.class);
+                Toast.makeText(getApplicationContext(), "Please choose a folder to continue...", Toast.LENGTH_LONG).show();
+                startActivity(i);
+            }
             finish();
         }
     }
