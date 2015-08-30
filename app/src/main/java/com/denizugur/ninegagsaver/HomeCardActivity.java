@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -34,30 +35,6 @@ public class HomeCardActivity extends AppCompatActivity {
     public static final String GAGS = "com.denizugur.ninegagsaver.gags";
     public List<gagInfo> list;
     private Context context;
-
-    @NonNull
-    public static String getVersionName(@NonNull Context context) {
-        PackageManager pm = context.getPackageManager();
-        String packageName = context.getPackageName();
-        String versionName;
-        try {
-            PackageInfo info = pm.getPackageInfo(packageName, 0);
-            versionName = info.versionName;
-
-            // Make the info part of version name a bit smaller.
-            if (versionName.indexOf('-') >= 0) {
-                versionName = versionName.replaceFirst("\\-", "<small>-") + "</small>";
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            versionName = "N/A";
-        }
-
-        return versionName;
-    }
-
-    /**
-     * Cards, Comments
-     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -285,7 +262,7 @@ public class HomeCardActivity extends AppCompatActivity {
             String app_name = getResources().getString(R.string.app_name);
             new MaterialDialog.Builder(this)
                     .iconRes(R.drawable.ic_action_about_white)
-                    .title(app_name + " " + getVersionName(this))
+                    .title(Html.fromHtml("<b>"+app_name+"</b>&nbsp;<font color='#888888'>v"+getVersionName(this)+"</font>"))
                     .content(Html.fromHtml(getString(R.string.about_body)))
                     .negativeText(R.string.close)
                     .show();
@@ -294,4 +271,25 @@ public class HomeCardActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @NonNull
+    public static String getVersionName(@NonNull Context context) {
+        PackageManager pm = context.getPackageManager();
+        String packageName = context.getPackageName();
+        String versionName;
+        try {
+            PackageInfo info = pm.getPackageInfo(packageName, 0);
+            versionName = info.versionName;
+
+            // Make the info part of version name a bit smaller.
+            if (versionName.indexOf('-') >= 0) {
+                versionName = versionName.replaceFirst("\\-", "<small>-") + "</small>";
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            versionName = "N/A";
+        }
+
+        return versionName;
+    }
+
 }

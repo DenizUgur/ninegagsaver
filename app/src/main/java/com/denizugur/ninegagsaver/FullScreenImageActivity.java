@@ -16,8 +16,8 @@ public class FullScreenImageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_full_screen_image);
 
         Intent intent = getIntent();
-        String file_path = intent.getStringExtra("BitmapImage");
 
+        String file_path = intent.getStringExtra("BitmapImage");
         Bitmap bitmap = BitmapFactory.decodeFile(file_path);
 
         TouchImageView imageView = (TouchImageView)findViewById(R.id.imgFullScreen);
