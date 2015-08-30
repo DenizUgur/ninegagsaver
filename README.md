@@ -39,7 +39,7 @@ Releases will be numbered with the following format: `<major>.<minor>.<patch>` a
 
 For more information on SemVer, please visit http://semver.org/.
 
-Licence
+License
 ----------------
 ```
 Copyright 2015 Deniz Uğur
