@@ -1,6 +1,11 @@
 <resources>
     <string name="title_activity_settings">Settings</string>
 
+    <!-- Headers -->
+    <string name="photo_header">Photo</string>
+    <string name="main_header">Main</string>
+    <string name="other_header">Other</string>
+
     <!-- backTo9gag -->
     <string name="summary_backTo9gag">Check this if you want to go back 9gag by clicking Back in Photo page.</string>
     <string name="title_backTo9gag">Back to 9GAG</string>
@@ -23,4 +28,9 @@
     <!-- Future -->
     <string name="summary_future">* Title size on Image will be improved.\n* Scrollable ImageView will be added.\n* Comments button will be added on cards.</string>
     <string name="title_future">Future</string>
+
+    <!-- Card View List -->
+    <string name="title_list">Choose card view</string>
+    <string name="summary_list">Choose a view to change view of card on main screen</string>
+
 </resources>

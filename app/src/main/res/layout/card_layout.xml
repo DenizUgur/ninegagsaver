@@ -106,7 +106,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/border"
             android:layout_below="@+id/photo"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="@dimen/margin"
             android:layout_toEndOf="@+id/likes"
             android:contentDescription="@string/comment_pic"
             android:src="@drawable/comment" />

@@ -9,11 +9,8 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Bundle;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,9 +93,19 @@ public class gagAdapter extends RecyclerView.Adapter<gagAdapter.gagViewHolder> {
 
     @Override
     public gagViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(viewGroup.getContext());
+        String card = prefs.getString("card_view", "0");
+        Integer layoutID;
+
+        if (card.equals("0")) {
+            layoutID = R.layout.card_layout;
+        } else {
+            layoutID = R.layout.card_layout_nowhitebar;
+        }
+
         View itemView = LayoutInflater.
                 from(viewGroup.getContext()).
-                inflate(R.layout.card_layout, viewGroup, false);
+                inflate(layoutID, viewGroup, false);
 
         return new gagViewHolder(itemView);
     }

@@ -1,5 +1,29 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <PreferenceCategory android:title="@string/main_header">
+        <ListPreference
+            android:title="@string/title_list"
+            android:summary="@string/summary_list"
+            android:key="card_view"
+            android:entries="@array/card_view_list"
+            android:entryValues="@array/card_view_value"
+            android:defaultValue="0" />
+
+        <Preference
+            android:key="chooseFolder"
+            android:title="@string/title_chooseFolder">
+            <intent
+                android:action="android.intent.action.GET_CONTENT"
+                android:targetClass="com.nononsenseapps.filepicker.FilePickerActivity"
+                android:targetPackage="com.denizugur.ninegagsaver" />
+        </Preference>
+
+        <Preference
+            android:key="clearGags"
+            android:summary="@string/summary_clearGags"
+            android:title="@string/title_clearGags" /></PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/photo_header">
     <CheckBoxPreference
         android:defaultValue="true"
         android:key="backTo9gag"
@@ -16,24 +40,11 @@
         android:defaultValue="false"
         android:key="useTitleAsMessage"
         android:summary="@string/summary_useTitleAsMessage"
-        android:title="@string/title_useTitleAsMessage" />
+        android:title="@string/title_useTitleAsMessage" /></PreferenceCategory>
 
-    <Preference
-        android:key="chooseFolder"
-        android:title="@string/title_chooseFolder">
-        <intent
-            android:action="android.intent.action.GET_CONTENT"
-            android:targetClass="com.nononsenseapps.filepicker.FilePickerActivity"
-            android:targetPackage="com.denizugur.ninegagsaver" />
-    </Preference>
-
-    <Preference
-        android:key="clearGags"
-        android:summary="@string/summary_clearGags"
-        android:title="@string/title_clearGags" />
-
+    <PreferenceCategory android:title="@string/other_header">
     <Preference
         android:summary="@string/summary_future"
-        android:title="@string/title_future" />
+        android:title="@string/title_future" /></PreferenceCategory>
 
 </PreferenceScreen>
