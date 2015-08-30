@@ -12,10 +12,9 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import java.io.File;
 
 import com.nononsenseapps.filepicker.FilePickerActivity;
-
-import java.io.File;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On

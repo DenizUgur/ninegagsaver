@@ -16,10 +16,10 @@ import android.util.Log;
 import android.view.Display;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
-
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+
 
 public class MainActivity extends AppCompatActivity {
 

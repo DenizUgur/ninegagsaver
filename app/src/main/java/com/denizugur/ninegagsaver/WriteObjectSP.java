@@ -1,13 +1,10 @@
 package com.denizugur.ninegagsaver;
 
 import java.util.List;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
-
 import com.google.gson.Gson;
-
 import org.json.JSONObject;
 /**
  * Created by deniz on 28/08/15.

@@ -1,9 +1,5 @@
 package com.denizugur.ninegagsaver;
 
-/**
- * Created by deniz on 28/08/15.
- */
-
 public class gagInfo {
     protected String photoId;
     protected String title;

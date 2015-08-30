@@ -3,11 +3,9 @@ package com.denizugur.ninegagsaver;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
