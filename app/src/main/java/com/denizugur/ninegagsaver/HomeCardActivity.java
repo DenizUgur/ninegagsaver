@@ -262,11 +262,13 @@ public class HomeCardActivity extends AppCompatActivity {
             String app_name = getResources().getString(R.string.app_name);
             new MaterialDialog.Builder(this)
                     .iconRes(R.drawable.ic_action_about_white)
-                    .title(Html.fromHtml("<b>"+app_name+"</b>&nbsp;<font color='#888888'>v"+getVersionName(this)+"</font>"))
+                    .title(Html.fromHtml("<b>" + app_name + "</b>&nbsp;<font color='#888888'>v" + getVersionName(this) + "</font>"))
                     .content(Html.fromHtml(getString(R.string.about_body)))
                     .negativeText(R.string.close)
                     .show();
-        return true;
+            return true;
+        } else if (id == R.id.action_help) {
+
         }
 
         return super.onOptionsItemSelected(item);
