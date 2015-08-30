@@ -33,6 +33,7 @@ public class HomeCardActivity extends AppCompatActivity {
 
     public static final String GAGS = "com.denizugur.ninegagsaver.gags";
     public List<gagInfo> list;
+    private Context context;
 
     @NonNull
     public static String getVersionName(@NonNull Context context) {
@@ -61,7 +62,8 @@ public class HomeCardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (prefsCheck()) {
+        context = this;
+        if (prefsCheck(this)) {
             RelativeLayout relativeLayout = new RelativeLayout(this);
             RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(
                     RelativeLayout.LayoutParams.WRAP_CONTENT,
@@ -121,15 +123,73 @@ public class HomeCardActivity extends AppCompatActivity {
 
             getList();
 
-            gagAdapter ca = new gagAdapter(list);
+            final gagAdapter ca = new gagAdapter(list);
             recList.setAdapter(ca);
-        }
-    }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
+            SwipeableRecyclerViewTouchListener swipeTouchListener =
+                    new SwipeableRecyclerViewTouchListener(recList,
+                            new SwipeableRecyclerViewTouchListener.SwipeListener() {
+                                @Override
+                                public boolean canSwipe(int position) {
+                                    return true;
+                                }
+
+                                @Override
+                                public void onDismissedBySwipeLeft(RecyclerView recyclerView, int[] reverseSortedPositions) {
+                                    for (int position : reverseSortedPositions) {
+                                        gagInfo gi = list.get(position);
+                                        list.remove(position);
+                                        ca.notifyItemRemoved(position);
+
+                                        SharedPreferences.Editor editor = context.getSharedPreferences(GAGS, Context.MODE_PRIVATE).edit();
+                                        editor.remove(gi.photoId).apply();
+
+                                        File dir = new File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "gags");
+                                        if (dir.isDirectory()) {
+                                            File file = new File(dir + File.separator + gi.photoId);
+                                            file.delete();
+                                        }
+
+                                        if (position == 0 && list.size() - 1 < 1) {
+                                            finish();
+                                            Intent i = new Intent(HomeCardActivity.this, HomeCardActivity.class);
+                                            startActivity(i);
+                                        }
+
+                                    }
+                                    ca.notifyDataSetChanged();
+                                }
+
+                                @Override
+                                public void onDismissedBySwipeRight(RecyclerView recyclerView, int[] reverseSortedPositions) {
+                                    for (int position : reverseSortedPositions) {
+                                        gagInfo gi = list.get(position);
+                                        list.remove(position);
+                                        ca.notifyItemRemoved(position);
+
+                                        SharedPreferences.Editor editor = context.getSharedPreferences(GAGS, Context.MODE_PRIVATE).edit();
+                                        editor.remove(gi.photoId).apply();
+
+                                        File dir = new File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "gags");
+                                        if (dir.isDirectory()) {
+                                            File file = new File(dir + File.separator + gi.photoId);
+                                            file.delete();
+                                        }
+
+                                        if (position == 0 && list.size() - 1 < 1) {
+                                            finish();
+                                            Intent i = new Intent(HomeCardActivity.this, HomeCardActivity.class);
+                                            startActivity(i);
+                                        }
+
+                                    }
+                                    ca.notifyDataSetChanged();
+                                }
+                            });
+
+            recList.addOnItemTouchListener(swipeTouchListener);
+
+        }
     }
 
     private void customPhoto() {
@@ -138,15 +198,15 @@ public class HomeCardActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    private Boolean prefsCheck() {
-        File directory_gags = new File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "gags");
+    public Boolean prefsCheck(Context context) {
+        File directory_gags = new File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "gags");
         if (!directory_gags.exists()) {
             directory_gags.mkdir();
         }
-        File null_object = new File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "gags" + File.separator + "null");
+        File null_object = new File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "gags" + File.separator + "null");
         File[] contents = directory_gags.listFiles();
         if (contents.length == 0) {
-            SharedPreferences prefs = getSharedPreferences(GAGS, 0);
+            SharedPreferences prefs = context.getSharedPreferences(GAGS, 0);
             prefs.edit().clear().apply();
             return true;
         } else if (null_object.exists()) {

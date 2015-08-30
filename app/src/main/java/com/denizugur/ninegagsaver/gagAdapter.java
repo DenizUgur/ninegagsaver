@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
@@ -91,28 +92,6 @@ public class gagAdapter extends RecyclerView.Adapter<gagAdapter.gagViewHolder> {
                 context.startActivity(Intent.createChooser(intent, "Share Gag to..."));
             }
         });
-
-        ViewHolder.vRemoveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                Context context = v.getContext();
-                Integer adapterPosition = ViewHolder.getAdapterPosition();
-                String GAGS = "com.denizugur.deniz.ninegagsaver.gags";
-                SharedPreferences.Editor editor = context.getSharedPreferences(GAGS, Context.MODE_PRIVATE).edit();
-                gagInfo gi = gagList.get(adapterPosition);
-
-                editor.remove(gi.photoId).apply();
-                File dir = new File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "gags");
-                if (dir.isDirectory()) {
-                    File file = new File(dir + File.separator + gi.photoId);
-                    file.delete();
-                }
-                gagList.remove(adapterPosition);
-                notifyItemRemoved(adapterPosition);
-                Intent i = new Intent(context, HomeCardActivity.class);
-                context.startActivity(i);
-            }
-        });
     }
 
     @Override
@@ -132,7 +111,6 @@ public class gagAdapter extends RecyclerView.Adapter<gagAdapter.gagViewHolder> {
         protected TextView vComments;
         protected ImageView vImageView;
         protected Button vShareButton;
-        protected Button vRemoveButton;
 
         public gagViewHolder(View v) {
             super(v);
@@ -142,7 +120,6 @@ public class gagAdapter extends RecyclerView.Adapter<gagAdapter.gagViewHolder> {
             vComments = (TextView) v.findViewById(R.id.comments);
             vImageView = (ImageView) v.findViewById(R.id.photo);
             vShareButton = (Button) v.findViewById(R.id.shareButton);
-            vRemoveButton = (Button) v.findViewById(R.id.remove);
         }
     }
 }
