@@ -340,6 +340,8 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
+                pushObjectToSP();
+
                 String modifiedTitle = gagTitle.replaceAll(" ", "-");
                 File file = new File(dir, modifiedTitle + ".png");
 
@@ -396,9 +398,6 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
 
         t.start();
         Toast.makeText(getApplicationContext(), "Gag saved successfully", Toast.LENGTH_LONG).show();
-        if (isCustom){} else {
-            pushObjectToSP();
-        }
     }
 
     public void sharePhoto() {
@@ -411,9 +410,8 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                if (isCustom) {} else {
-                    pushObjectToSP();
-                }
+                pushObjectToSP();
+
                 File directory_gags = new File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "gags");
                 if (!directory_gags.exists()) {
                     directory_gags.mkdirs();
