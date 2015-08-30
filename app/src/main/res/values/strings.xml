@@ -18,15 +18,19 @@
     <string name="like_pic">likes</string>
     <string name="comment_pic">comments</string>
 
-    <string name="download_description">You can\'t access the gag from here because app automatically deleted this file.</string>
+    <string name="download_description">You can\'t access the gag from here as app automatically deletes this file.</string>
     <string name="download_title">9GAG Downloaded Photo</string>
 
     <string name="about_body"><![CDATA[
-        9GAG Saver, a application  designed by <b>Deniz Ugur</b>.<br/>
-        You can access source of this application from <a href=\'https://github.com/DenizUgur/ninegagsaver\'>GitHub</a><br/>
-        <b>About will be riched later with credits and more</b>
+        9GAG Saver is a free and <a href=\'https://github.com/DenizUgur/ninegagsaver\'>open source</a> application designed by <b>Deniz Ugur</b>.
+        Copyright 2015. All Rights Reserved<br/><br/>
+        <b>Credits</b><br/>
+        <a href=\'http://developer.android.com/tools/support-library/index.html\'>Android Support Library</a>,
+        <a href=\'https://commons.apache.org\'>Apache Commons</a>,
+        <a href=\'https://github.com/afollestad/material-dialogs\'>Material Dialogs by afollestad</a>,
+        <a href=\'https://github.com/spacecowboy/NoNonsense-FilePicker\'>NoNonsense-FilePicker by spacecowboy</a>,
+        <a href=\'https://github.com/Clans/FloatingActionButton\'>Floating Action Button by Clans</a>,
+        <a href=\'https://github.com/google/gson\'>GSON by Google</a>
     ]]></string>
-
-    <!-- &nbsp; is space, <br/> is break-->
 
 </resources>
