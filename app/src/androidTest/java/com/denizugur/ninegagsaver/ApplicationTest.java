@@ -1,4 +1,4 @@
-package com.denizugur.deniz.ninegagsaver;
+package com.denizugur.ninegagsaver;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

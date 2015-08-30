@@ -3,37 +3,37 @@
     <CheckBoxPreference
         android:defaultValue="true"
         android:key="backTo9gag"
-        android:summary="Check this if you want to go back 9gag by clicking Back in Photo page."
-        android:title="Back to 9GAG" />
+        android:summary="@string/summary_backTo9gag"
+        android:title="@string/title_backTo9gag" />
 
     <CheckBoxPreference
         android:defaultValue="true"
         android:key="gradientKey"
-        android:summary="Weather use gradient on gag or not."
-        android:title="Use Gradient" />
+        android:summary="@string/summary_gradientKey"
+        android:title="@string/title_gradientKey" />
 
     <CheckBoxPreference
         android:defaultValue="false"
         android:key="useTitleAsMessage"
-        android:summary="Use title as photo message."
-        android:title="Use title when sharing" />
+        android:summary="@string/summary_useTitleAsMessage"
+        android:title="@string/title_useTitleAsMessage" />
 
     <Preference
         android:key="chooseFolder"
-        android:title="Choose Folder">
+        android:title="@string/title_chooseFolder">
         <intent
             android:action="android.intent.action.GET_CONTENT"
             android:targetClass="com.nononsenseapps.filepicker.FilePickerActivity"
-            android:targetPackage="com.denizugur.deniz.ninegagsaver" />
+            android:targetPackage="com.denizugur.ninegagsaver" />
     </Preference>
 
     <Preference
         android:key="clearGags"
-        android:summary="This will only delete gags shown on Main Menu, your stored gags will remain on this device."
-        android:title="Clear stored gags for this application" />
+        android:summary="@string/summary_clearGags"
+        android:title="@string/title_clearGags" />
 
     <Preference
-        android:summary="* Title size on Image will be improved\n* Comments button will be added on cards"
-        android:title="Future" />
+        android:summary="@string/summary_future"
+        android:title="@string/title_future" />
 
 </PreferenceScreen>

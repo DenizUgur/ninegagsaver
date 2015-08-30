@@ -27,6 +27,7 @@ import android.text.TextPaint;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -45,12 +46,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import static com.denizugur.deniz.ninegagsaver.MainActivity.*;
+import static com.denizugur.ninegagsaver.MainActivity.*;
 
 public class DisplayReceivedImage extends AppCompatActivity implements View.OnClickListener {
 
-    String gagTitle;
-    Bitmap photo = null;
+    String gagTitle = "";
+    Bitmap photo;
     Bitmap newBitmap = null;
     String gagURL = null;
     String photo_id = null;
@@ -81,11 +82,9 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
         FloatingActionButton save = (FloatingActionButton) findViewById(R.id.save);
         FloatingActionButton share = (FloatingActionButton) findViewById(R.id.share);
         FloatingActionButton changeTitle = (FloatingActionButton) findViewById(R.id.changeTitle);
-        final TouchImageView mImageView = (TouchImageView) findViewById(R.id.imageViewPhoto);
-        mImageView.setScrollPosition(0, 0);
+        final ImageView mImageView =  (ImageView) findViewById(R.id.imageViewPhoto);
 
         final String gagTitleUnEdited = gagTitle;
-
         changeTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -153,9 +152,10 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
                 cursor.moveToFirst();
 
                 String file = cursor.getString(column_index);
-                BitmapFactory.Options o = new BitmapFactory.Options();
-                o.inScaled = false;
-                photo = BitmapFactory.decodeFile(file, o);
+                photo = BitmapFactory.decodeFile(file);
+
+                ImageView mImageView =  (ImageView) findViewById(R.id.imageViewPhoto);
+                mImageView.setImageBitmap(photo);
 
             } finally {
                 if (cursor != null) {
@@ -163,7 +163,7 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
                 }
             }
 
-            final TouchImageView mImageView = (TouchImageView) findViewById(R.id.imageViewPhoto);
+            final ImageView mImageView =  (ImageView) findViewById(R.id.imageViewPhoto);
             new MaterialDialog.Builder(this)
                     .title("Set title for your image")
                     .content("This text will be show on top the image")
@@ -200,7 +200,7 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
         }
     }
 
-    private void process(Bitmap bitmap, TouchImageView mImageView) {
+    private void process(Bitmap bitmap, ImageView mImageView) {
 
         try {
             Bitmap.Config config = bitmap.getConfig();

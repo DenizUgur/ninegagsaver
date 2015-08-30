@@ -6,11 +6,13 @@
     android:animateLayoutChanges="true"
     tools:context=".DisplayReceivedImage">
 
-    <com.denizugur.deniz.ninegagsaver.TouchImageView
+    <ImageView
         android:id="@+id/imageViewPhoto"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:scaleType="centerCrop"/>
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:contentDescription="@string/photo" />
 
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/fam"

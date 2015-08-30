@@ -1,3 +1,30 @@
 <resources>
     <string name="title_activity_settings">Settings</string>
+
+    <!-- backTo9gag -->
+    <string name="summary_backTo9gag">Check this if you want to go back 9gag by clicking Back in Photo page.</string>
+    <string name="title_backTo9gag">Back to 9GAG</string>
+
+    <!-- gradientKey -->
+    <string name="summary_gradientKey">Weather use gradient on gag or not.</string>
+    <string name="title_gradientKey">Use Gradient</string>
+
+    <!-- useTitleAsMessage -->
+    <string name="summary_useTitleAsMessage">Use title as photo message.</string>
+    <string name="title_useTitleAsMessage">Use title when sharing</string>
+
+    <!-- chooseFolder -->
+    <string name="title_chooseFolder">Choose Folder</string>
+
+    <!-- clearGags -->
+    <string name="summary_clearGags">This will only delete gags shown on Main Menu, your stored gags will remain on this device.</string>
+    <string name="title_clearGags">Clear stored gags for this application</string>
+
+    <!-- Future -->
+    <string name="summary_future">
+        * Title size on Image will be improved.\n
+        * Scrollable ImageView will be added.\n
+        * Comments button will be added on cards.
+    </string>
+    <string name="title_future">Future</string>
 </resources>

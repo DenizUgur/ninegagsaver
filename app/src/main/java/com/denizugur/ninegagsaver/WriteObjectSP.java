@@ -24,7 +24,7 @@ import org.json.JSONObject;
  */
 public class WriteObjectSP {
 
-    public static final String GAGS = "com.denizugur.deniz.ninegagsaver.gags";
+    public static final String GAGS = "com.denizugur.ninegagsaver.gags";
     private Context parent;
     private List<String> list;
 

@@ -34,7 +34,7 @@ import java.util.Map;
 
 public class HomeCardActivity extends AppCompatActivity {
 
-    public static final String GAGS = "com.denizugur.deniz.ninegagsaver.gags";
+    public static final String GAGS = "com.denizugur.ninegagsaver.gags";
     public List<gagInfo> list;
 
     @NonNull
@@ -83,6 +83,9 @@ public class HomeCardActivity extends AppCompatActivity {
             params.addRule(RelativeLayout.ALIGN_PARENT_END);
             params.addRule(Gravity.RIGHT);
             fab.setImageResource(R.drawable.fab_add);
+            fab.setColorNormalResId(R.color.primary_color);
+            fab.setColorPressedResId(R.color.primary_color);
+            fab.setColorRippleResId(R.color.primary_color_600);
             fab.setLayoutParams(params);
 
             RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
@@ -134,6 +137,9 @@ public class HomeCardActivity extends AppCompatActivity {
 
     private Boolean prefsCheck() {
         File directory_gags = new File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "gags");
+        if (!directory_gags.exists()) {
+            directory_gags.mkdir();
+        }
         File null_object = new File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "gags" + File.separator + "null");
         File[] contents = directory_gags.listFiles();
         if (contents.length == 0) {
