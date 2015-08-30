@@ -13,7 +13,7 @@
 
 *9GAG Saver, you can finally save gags with title.*
 
-It will provide you to save 9GAG photos with their titles in your gallery. You could share or save it by simply pressing corresponding button which appers right bottom corner of photo you choose. It also brings comment and like counts. You can also personalize the view of the main screen from settings.
+It will provide you to save 9GAG photos with their titles in your gallery. You could share or save it by simply pressing the corresponding button which appears at the right bottom corner of the photo you choose. It also brings comments and like counts. You can also personalize the view of the main screen from the settings.
 
 Report a bug or request a feature
 ----------------
@@ -38,6 +38,22 @@ Releases will be numbered with the following format: `<major>.<minor>.<patch>` a
 - Bug fixes and misc changes bumps only the patch
 
 For more information on SemVer, please visit http://semver.org/.
+
+Licence
+----------------
+Copyright 2015 Deniz Uğur
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 
 [1]: https://github.com/DenizUgur/ninegagsaver/issues/new
 [2]: https://github.com/DenizUgur/ninegagsaver/issues?state=open
