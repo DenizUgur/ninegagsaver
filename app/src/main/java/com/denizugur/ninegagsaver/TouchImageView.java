@@ -26,8 +26,8 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
-import android.widget.OverScroller;
 import android.widget.Scroller;
+import android.widget.OverScroller;
 
 public class TouchImageView extends ImageView {
 
