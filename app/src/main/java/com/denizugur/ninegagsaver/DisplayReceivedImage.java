@@ -33,6 +33,8 @@ import com.afollestad.materialdialogs.Theme;
 import com.github.clans.fab.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
+import com.nononsenseapps.filepicker.FilePickerActivity;
+
 import org.json.JSONObject;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -53,6 +55,7 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
     String photo_id = null;
     Boolean isCustom;
     private int PICK_IMAGE_REQUEST = 1;
+    private int FILE_CODE = 0;
     private Context context;
 
     @Override
@@ -142,7 +145,7 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
 
             Cursor cursor = null;
             try {
-                String[] proj = { MediaStore.Images.Media.DATA };
+                String[] proj = {MediaStore.Images.Media.DATA};
                 cursor = this.getContentResolver().query(uri, proj, null, null, null);
                 int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                 cursor.moveToFirst();
@@ -150,7 +153,7 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
                 String file = cursor.getString(column_index);
                 photo = BitmapFactory.decodeFile(file);
 
-                ImageView mImageView =  (ImageView) findViewById(R.id.imageViewPhoto);
+                ImageView mImageView = (ImageView) findViewById(R.id.imageViewPhoto);
                 mImageView.setImageBitmap(photo);
 
             } finally {
@@ -159,7 +162,7 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
                 }
             }
 
-            final ImageView mImageView =  (ImageView) findViewById(R.id.imageViewPhoto);
+            final ImageView mImageView = (ImageView) findViewById(R.id.imageViewPhoto);
             new MaterialDialog.Builder(this)
                     .title("Set title for your image")
                     .content("This text will be show on top the image")
@@ -167,21 +170,21 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
                     .theme(Theme.DARK)
                     .cancelable(false)
                     .alwaysCallInputCallback()
-                            .input("9gag is awesome...", "", new MaterialDialog.InputCallback() {
-                                @Override
-                                public void onInput(MaterialDialog dialog, CharSequence input) {
-                                    if (input.length() == 0) {
-                                        dialog.getActionButton(DialogAction.POSITIVE).setEnabled(false);
-                                        gagTitle = "";
-                                        mImageView.setImageBitmap(photo);
-                                    } else {
-                                        dialog.getActionButton(DialogAction.POSITIVE).setEnabled(true);
-                                        gagTitle = input.toString();
-                                        mImageView.setImageBitmap(photo);
-                                        process(photo, mImageView);
-                                    }
-                                }
-                            })
+                    .input("9gag is awesome...", "", new MaterialDialog.InputCallback() {
+                        @Override
+                        public void onInput(MaterialDialog dialog, CharSequence input) {
+                            if (input.length() == 0) {
+                                dialog.getActionButton(DialogAction.POSITIVE).setEnabled(false);
+                                gagTitle = "";
+                                mImageView.setImageBitmap(photo);
+                            } else {
+                                dialog.getActionButton(DialogAction.POSITIVE).setEnabled(true);
+                                gagTitle = input.toString();
+                                mImageView.setImageBitmap(photo);
+                                process(photo, mImageView);
+                            }
+                        }
+                    })
                     .negativeText("Back")
                     .callback(new MaterialDialog.ButtonCallback() {
                         @Override
@@ -191,6 +194,40 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
                         }
                     })
                     .show();
+        } else if (requestCode == FILE_CODE && resultCode == RESULT_OK) {
+            final String modifiedTitleCustom = gagTitle.replaceAll(" ", "-");
+
+            final Uri uri = data.getData();
+
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    File file = new File(uri.getPath(), modifiedTitleCustom + ".png");
+
+                    FileOutputStream outo = null;
+                    try {
+                        outo = new FileOutputStream(file);
+                        newBitmap.compress(Bitmap.CompressFormat.PNG, 100, outo);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        try {
+                            if (outo != null) {
+                                outo.close();
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                    intent.setData(Uri.fromFile(file));
+                    sendBroadcast(intent);
+
+                }
+            });
+            t.start();
+            Toast.makeText(getApplicationContext(), "Photo saved to" + uri.getPath(), Toast.LENGTH_LONG).show();
         } else {
             finish();
         }
@@ -337,7 +374,7 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
             dir.mkdirs();
         }
 
-        Thread t = new Thread(new Runnable() {
+        Thread normal_save = new Thread(new Runnable() {
             @Override
             public void run() {
                 pushObjectToSP();
@@ -396,8 +433,20 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
             }
         });
 
-        t.start();
-        Toast.makeText(getApplicationContext(), "Gag saved successfully", Toast.LENGTH_LONG).show();
+        if (isCustom) {
+            Intent i = new Intent(context, FilePickerActivity.class);
+
+            i.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, false);
+            i.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, true);
+            i.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_DIR);
+            i.putExtra(FilePickerActivity.EXTRA_START_PATH, Environment.getExternalStorageDirectory().getPath());
+
+            save.setIndeterminate(false);
+            startActivityForResult(i, FILE_CODE);
+        } else {
+            normal_save.start();
+            Toast.makeText(getApplicationContext(), "Gag saved successfully", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void sharePhoto() {
