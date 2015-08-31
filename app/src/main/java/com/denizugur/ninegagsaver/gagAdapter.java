@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import java.io.File;
 import java.util.List;
@@ -116,7 +117,7 @@ public class gagAdapter extends RecyclerView.Adapter<gagAdapter.gagViewHolder> {
         protected TextView vSavedDate;
         protected TextView vLikes;
         protected TextView vComments;
-        protected GestureImageView vImageView;
+        protected ImageView vImageView;
         protected Button vShareButton;
 
         public gagViewHolder(View v) {
@@ -125,7 +126,7 @@ public class gagAdapter extends RecyclerView.Adapter<gagAdapter.gagViewHolder> {
             vSavedDate = (TextView)  v.findViewById(R.id.saved_date);
             vLikes = (TextView) v.findViewById(R.id.likes);
             vComments = (TextView) v.findViewById(R.id.comments);
-            vImageView = (GestureImageView) v.findViewById(R.id.photo);
+            vImageView = (ImageView) v.findViewById(R.id.photo);
             vShareButton = (Button) v.findViewById(R.id.shareButton);
         }
     }
