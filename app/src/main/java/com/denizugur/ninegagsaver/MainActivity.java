@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Point;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Bundle;
@@ -19,6 +21,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import java.io.File;
+import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -44,6 +47,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+        return ni != null;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,8 +70,22 @@ public class MainActivity extends AppCompatActivity {
         if (Intent.ACTION_SEND.equals(action) && type != null) {
             try {
                 new File(str);
-                if ("text/plain".equals(type)) {
+                if ("text/plain".equals(type) && isNetworkConnected()) {
                     handleSendText(intent);
+                } else {
+                        new MaterialDialog.Builder(this)
+                                .title("Sorry")
+                                .content("No Internet Connection")
+                                .positiveText("Go Back")
+                                .theme(Theme.DARK)
+                                .cancelable(false)
+                                .callback(new MaterialDialog.ButtonCallback() {
+                                    @Override
+                                    public void onPositive(MaterialDialog dialog) {
+                                        System.exit(0);
+                                    }
+                                })
+                                .show();
                 }
             } catch (Exception e) {
                 Intent i = new Intent(this, SettingsActivity.class);
