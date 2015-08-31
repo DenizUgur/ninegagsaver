@@ -174,11 +174,6 @@ public class HomeCardActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
     private void customPhoto() {
         Intent i = new Intent(this, DisplayReceivedImage.class);
         i.putExtra("isCustom", true);
