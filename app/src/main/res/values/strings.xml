@@ -11,6 +11,9 @@
     <string name="close">Close</string>
     <string name="gag_image">Gag Image</string>
     <string name="intent_label">Save with Title</string>
+    <string name="na">Not Available</string>
+    <string name="choose_folder_toast">Please choose a folder to continue&#8230;</string>
+    <string name="clear_confirm">Gags have been cleaned</string>
 
     <string name="title_activity_home_card">HomeCardActivity</string>
     <string name="title_activity_full_screen_image">FullScreenImageActivity</string>
