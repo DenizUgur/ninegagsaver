@@ -6,9 +6,9 @@
 <img alt="Main screen: showing modified gag" align="right" height="300"
    src="https://github.com/DenizUgur/ninegagsaver/raw/master/screenshot/screenshot_2.png" />
 
-<a href="http://get.acdisplay.org">
-  <img alt="Get AcDisplay on Google Play" vspace="20"
-       src="http://developer.android.com/images/brand/en_generic_rgb_wo_60.png" />
+<a href="https://play.google.com/store/apps/details?id=com.denizugur.ninegag">
+  <img alt="Get it on Google Play"
+       src="https://developer.android.com/images/brand/en_generic_rgb_wo_45.png" />
 </a>
 
 *9GAG Saver, you can finally save gags with title.*
