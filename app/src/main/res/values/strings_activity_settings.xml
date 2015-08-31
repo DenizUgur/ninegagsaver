@@ -4,7 +4,6 @@
     <!-- Headers -->
     <string name="photo_header">Photo</string>
     <string name="main_header">Main</string>
-    <string name="other_header">Other</string>
 
     <!-- backTo9gag -->
     <string name="summary_backTo9gag">Check this if you want to go back 9gag by clicking Back in Photo page.</string>
@@ -24,10 +23,6 @@
     <!-- clearGags -->
     <string name="summary_clearGags">This will only delete gags shown on Main Menu, your stored gags will remain on this device.</string>
     <string name="title_clearGags">Clear stored gags for this application</string>
-
-    <!-- Future -->
-    <string name="summary_future">* Scrollable ImageView will be added.\n* Whether add customPhoto to cards or not</string>
-    <string name="title_future">Future</string>
 
     <!-- Card View List -->
     <string name="title_list">Choose card view</string>

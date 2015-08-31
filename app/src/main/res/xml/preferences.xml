@@ -42,9 +42,4 @@
         android:summary="@string/summary_useTitleAsMessage"
         android:title="@string/title_useTitleAsMessage" /></PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/other_header">
-    <Preference
-        android:summary="@string/summary_future"
-        android:title="@string/title_future" /></PreferenceCategory>
-
 </PreferenceScreen>
