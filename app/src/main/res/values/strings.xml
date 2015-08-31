@@ -38,7 +38,13 @@
     ]]></string>
 
     <string name="help_body"><![CDATA[
-        <b>FAQ</b>
+        <b>FAQ</b><br/>
+        <b>How can I start saving photos?</b><br/>
+        <p>Press <b>share</b> on a post to launch application.</p><br/><br/>
+        <b>Can I add title to a photo from my gallery?</b><br/>
+        <p>Yes, press the big gray button at the right bottom corner of screen and follow the instructions on screen</p><br/><br/>
+        <b>How can I remove a gag from main screen?</b><br/>
+        <p>Swipe the card to the right or left to remove from screen.</p>
     ]]></string>
 
 </resources>
