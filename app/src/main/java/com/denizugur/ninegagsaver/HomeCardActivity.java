@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -258,7 +259,8 @@ public class HomeCardActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         TextView tv = new TextView(this);
-        tv.setTextSize(15);
+        tv.setTextAppearance(this, R.style.dialog_tv_style);
+        tv.setMovementMethod(LinkMovementMethod.getInstance());
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {

@@ -10,10 +10,15 @@
 
         <item name="android:textColor">@android:color/white</item>
 
-        </style>
+    </style>
 
     <style name="NoActionBar" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
+    </style>
+
+    <style name="dialog_tv_style" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">#D1D1D1</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="FilePickerTheme" parent="NNF_BaseTheme">
