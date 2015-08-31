@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import java.io.File;
 import java.util.List;
@@ -49,18 +48,19 @@ public class gagAdapter extends RecyclerView.Adapter<gagAdapter.gagViewHolder> {
         ViewHolder.vImageView.setImageBitmap(bitmap(gi.file_path));
 
 
-        ViewHolder.vImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                Integer adapterPosition = ViewHolder.getAdapterPosition();
-                Context context = v.getContext();
-                gagInfo gi = gagList.get(adapterPosition);
 
-                Intent intent = new Intent(context, FullScreenImageActivity.class);
-                intent.putExtra("BitmapImage", gi.file_path);
-                context.startActivity(intent);
-            }
-        });
+        ViewHolder.vImageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View v) {
+                        Integer adapterPosition = ViewHolder.getAdapterPosition();
+                        Context context = v.getContext();
+                        gagInfo gi = gagList.get(adapterPosition);
+
+                        Intent intent = new Intent(context, FullScreenImageActivity.class);
+                        intent.putExtra("BitmapImage", gi.file_path);
+                        context.startActivity(intent);
+                    }
+                });
 
         ViewHolder.vShareButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,7 +116,7 @@ public class gagAdapter extends RecyclerView.Adapter<gagAdapter.gagViewHolder> {
         protected TextView vSavedDate;
         protected TextView vLikes;
         protected TextView vComments;
-        protected ImageView vImageView;
+        protected GestureImageView vImageView;
         protected Button vShareButton;
 
         public gagViewHolder(View v) {
@@ -125,7 +125,7 @@ public class gagAdapter extends RecyclerView.Adapter<gagAdapter.gagViewHolder> {
             vSavedDate = (TextView)  v.findViewById(R.id.saved_date);
             vLikes = (TextView) v.findViewById(R.id.likes);
             vComments = (TextView) v.findViewById(R.id.comments);
-            vImageView = (ImageView) v.findViewById(R.id.photo);
+            vImageView = (GestureImageView) v.findViewById(R.id.photo);
             vShareButton = (Button) v.findViewById(R.id.shareButton);
         }
     }
