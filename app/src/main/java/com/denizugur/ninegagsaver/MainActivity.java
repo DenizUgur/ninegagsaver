@@ -22,7 +22,6 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-
 public class MainActivity extends AppCompatActivity {
 
     public final static String GAG_TITLE = "com.denizugur.ninegagsaver.GAG_TITLE";
