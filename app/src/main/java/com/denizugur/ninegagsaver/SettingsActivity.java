@@ -10,6 +10,7 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.MenuItem;
@@ -60,7 +61,7 @@ public class SettingsActivity extends AppCompatActivity {
             startActivity(i);
             finish();
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "Please choose a folder to continue...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.choose_folder_toast), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -74,7 +75,7 @@ public class SettingsActivity extends AppCompatActivity {
                     startActivity(i);
                     finish();
                 } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(), "Please choose a folder to continue...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.choose_folder_toast), Toast.LENGTH_SHORT).show();
                 }
                 return true;
             default:
@@ -92,7 +93,12 @@ public class SettingsActivity extends AppCompatActivity {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
             Preference chooseFolder = findPreference("chooseFolder");
             str = prefs.getString("path", null);
-            chooseFolder.setSummary(prefs.getString("path", Environment.getExternalStorageDirectory().getPath() + "/Pictures/9GAG"));
+            try {
+                new File(str);
+                chooseFolder.setSummary(prefs.getString("path", null));
+            } catch (Exception e) {
+                chooseFolder.setSummary(getActivity().getString(R.string.na));
+            }
 
             chooseFolder.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
@@ -120,6 +126,7 @@ public class SettingsActivity extends AppCompatActivity {
                             new File(dir, aChildren).delete();
                         }
                     }
+                    Toast.makeText(getActivity(), getString(R.string.clear_confirm), Toast.LENGTH_SHORT);
                     return true;
                 }
             });
