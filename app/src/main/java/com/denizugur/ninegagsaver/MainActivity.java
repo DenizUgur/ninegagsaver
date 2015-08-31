@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             } catch (Exception e) {
                 Intent i = new Intent(this, SettingsActivity.class);
-                Toast.makeText(getApplicationContext(), "Please choose a folder to continue...", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.choose_folder_toast), Toast.LENGTH_LONG).show();
                 startActivity(i);
             }
         } else {
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             } catch (Exception e) {
                 Intent i = new Intent(this, SettingsActivity.class);
-                Toast.makeText(getApplicationContext(), "Please choose a folder to continue...", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.choose_folder_toast), Toast.LENGTH_LONG).show();
                 startActivity(i);
             }
             finish();
@@ -104,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
                         .title("Loading")
                         .content("Please wait...")
                         .progress(true, 0)
+                        .cancelable(false)
                         .theme(Theme.DARK)
                         .show();
 
