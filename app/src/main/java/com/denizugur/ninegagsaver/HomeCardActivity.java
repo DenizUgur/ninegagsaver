@@ -5,9 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +18,6 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -60,7 +57,7 @@ public class HomeCardActivity extends AppCompatActivity {
             tv.setTextColor(Color.GRAY);
             tv.setLayoutParams(lp);
 
-            FloatingActionButton fab = new FloatingActionButton(this);
+            final FloatingActionButton fab = new FloatingActionButton(this);
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(rlp);
             params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
             params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
@@ -80,18 +77,22 @@ public class HomeCardActivity extends AppCompatActivity {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    fab.setEnabled(false);
                     customPhoto();
+                    fab.setEnabled(true);
                 }
             });
 
         } else {
             setContentView(R.layout.activity_home_card);
 
-            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+            final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    fab.setEnabled(false);
                     customPhoto();
+                    fab.setEnabled(true);
                 }
             });
 
@@ -102,6 +103,7 @@ public class HomeCardActivity extends AppCompatActivity {
             recList.setLayoutManager(llm);
 
             getList();
+            Log.d("onCreate", String.valueOf(list.size()));
 
             final gagAdapter ca = new gagAdapter(list);
             recList.setAdapter(ca);
@@ -170,6 +172,11 @@ public class HomeCardActivity extends AppCompatActivity {
             recList.addOnItemTouchListener(swipeTouchListener);
 
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     private void customPhoto() {
