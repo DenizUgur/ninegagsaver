@@ -1,6 +1,6 @@
 # 9GAG SAVER
 [![Build Status](https://travis-ci.org/DenizUgur/ninegagsaver.svg?branch=master)](https://travis-ci.org/DenizUgur/ninegagsaver)
-[![Version](https://img.shields.io/badge/version-1.0.0-brightgreen.svg)]
+![Version](https://img.shields.io/badge/version-1.0.0-brightgreen.svg)
 <img alt="Main screen: saved gags" align="right" height="300"
    src="https://github.com/DenizUgur/ninegagsaver/raw/master/screenshot/screenshot_1.png" />
 <img alt="Main screen: showing modified gag" align="right" height="300"
