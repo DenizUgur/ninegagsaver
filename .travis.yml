@@ -15,6 +15,9 @@ android:
     - extra-google-m2repository
     # Emulator
     - sys-img-armeabi-v7a-android-22
+  lintOptions {
+          abortOnError false
+      }
 
 before_script:
   - echo no | android create avd --force -n test -t android-19 --abi armeabi-v7a
