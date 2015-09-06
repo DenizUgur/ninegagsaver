@@ -29,8 +29,7 @@ public class gagAdapter extends RecyclerView.Adapter<gagAdapter.gagViewHolder> {
     }
 
     private Bitmap bitmap(String file_path) {
-        Bitmap bitmap = BitmapFactory.decodeFile(file_path);
-        return bitmap;
+        return BitmapFactory.decodeFile(file_path);
     }
 
     @Override
@@ -48,20 +47,31 @@ public class gagAdapter extends RecyclerView.Adapter<gagAdapter.gagViewHolder> {
         ViewHolder.vComments.setText(gi.comments);
         ViewHolder.vImageView.setImageBitmap(bitmap(gi.file_path));
 
+        ViewHolder.vImageView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(final View v) {
+                Integer adapterPosition = ViewHolder.getAdapterPosition();
+                Context context = v.getContext();
+                gagInfo gi = gagList.get(adapterPosition);
 
+                //Launch 9GAG Post
+
+                return false;
+            }
+        });
 
         ViewHolder.vImageView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(final View v) {
-                        Integer adapterPosition = ViewHolder.getAdapterPosition();
-                        Context context = v.getContext();
-                        gagInfo gi = gagList.get(adapterPosition);
+            @Override
+            public void onClick(final View v) {
+                Integer adapterPosition = ViewHolder.getAdapterPosition();
+                Context context = v.getContext();
+                gagInfo gi = gagList.get(adapterPosition);
 
-                        Intent intent = new Intent(context, FullScreenImageActivity.class);
-                        intent.putExtra("BitmapImage", gi.file_path);
-                        context.startActivity(intent);
-                    }
-                });
+                Intent intent = new Intent(context, FullScreenImageActivity.class);
+                intent.putExtra("BitmapImage", gi.file_path);
+                context.startActivity(intent);
+            }
+        });
 
         ViewHolder.vShareButton.setOnClickListener(new View.OnClickListener() {
             @Override
