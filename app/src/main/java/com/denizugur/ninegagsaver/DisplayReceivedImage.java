@@ -49,6 +49,7 @@ import static com.denizugur.ninegagsaver.MainActivity.*;
 public class DisplayReceivedImage extends AppCompatActivity implements View.OnClickListener {
 
     String gagTitle = "";
+    String newGagTitle = "";
     Bitmap photo;
     Bitmap newBitmap = null;
     String gagURL = null;
@@ -83,7 +84,6 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
         FloatingActionButton changeTitle = (FloatingActionButton) findViewById(R.id.changeTitle);
         final ImageView mImageView =  (ImageView) findViewById(R.id.imageViewPhoto);
 
-        final String gagTitleUnEdited = gagTitle;
         changeTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,9 +96,9 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
                         .negativeText("Cancel")
                         .callback(new MaterialDialog.ButtonCallback() {
                             @Override
-                            public void onNegative(MaterialDialog dialog) {
-                                super.onNegative(dialog);
-                                gagTitle = gagTitleUnEdited;
+                            public void onPositive(MaterialDialog dialog) {
+                                super.onPositive(dialog);
+                                gagTitle = newGagTitle;
                                 process(photo, mImageView);
                             }
                         })
@@ -107,12 +107,11 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
                             public void onInput(MaterialDialog dialog, CharSequence input) {
                                 if (input.length() == 0) {
                                     dialog.getActionButton(DialogAction.POSITIVE).setEnabled(false);
-                                    gagTitle = "";
+                                    newGagTitle = "";
                                     mImageView.setImageBitmap(photo);
                                 } else {
                                     dialog.getActionButton(DialogAction.POSITIVE).setEnabled(true);
-                                    gagTitle = input.toString();
-                                    process(photo, mImageView);
+                                    newGagTitle = input.toString();
                                 }
                             }
                         }).show();
@@ -196,7 +195,6 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
                     .show();
         } else if (requestCode == FILE_CODE && resultCode == RESULT_OK) {
             final String modifiedTitleCustom = gagTitle.replaceAll(" ", "-");
-
             final Uri uri = data.getData();
 
             Thread t = new Thread(new Runnable() {
@@ -428,6 +426,7 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
                     @Override
                     public void run() {
                         save.setIndeterminate(false);
+                        Toast.makeText(getApplicationContext(), "Gag saved successfully", Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -445,7 +444,6 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
             startActivityForResult(i, FILE_CODE);
         } else {
             normal_save.start();
-            Toast.makeText(getApplicationContext(), "Gag saved successfully", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -559,14 +557,12 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onBackPressed() {
-
         File dir = new File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "downloads");
         if (dir.isDirectory())
         {
             String[] children = dir.list();
-            for (int i = 0; i < children.length; i++)
-            {
-                new File(dir, children[i]).delete();
+            for (String aChildren : children) {
+                new File(dir, aChildren).delete();
             }
         }
 
@@ -581,9 +577,8 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
         if (dir.isDirectory())
         {
             String[] children = dir.list();
-            for (int i = 0; i < children.length; i++)
-            {
-                new File(dir, children[i]).delete();
+            for (String aChildren : children) {
+                new File(dir, aChildren).delete();
             }
         }
         super.onDestroy();
