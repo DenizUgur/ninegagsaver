@@ -1,5 +1,5 @@
 <!--
-Copyright 2015 Deniz Uğur
+Copyright 2015 Deniz Ugur
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -13,27 +13,66 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-
 <html>
-<head></head>
-<body>
-<style type="text/css" media="screen">
-body {
-      background-color: #202020;
-      background-image: radial-gradient(circle at 50% 50%, #202020 60%, #101010);
-    
-      display: -webkit-flex;
-      -webkit-justify-content: center;
-      -webkit-align-items: center;
-    
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-a {
-color: #FFFFFF
-}
-</style>
-<a>9GAG Saver</a>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-8">
+    <meta property="og:title" content="9GAG Saver">
+    <meta property="og:description" content="9GAG Saver is an application to save pictures from 9GAG.">
+    <meta property="author" content="Deniz Ugur">
+    <link rel="icon" href="res/favicon.png">
+    <title>9GAG Saver</title>
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <link rel="stylesheet" type="text/css" href="css/base.css">
+    <link rel="stylesheet" type="text/css" href="css/button.css">
+    <script language="javascript" type="text/javascript" src="js/jquery-2.1.4.js"></script>
+    <script language="javascript" type="text/javascript" src="js/jquery.cycle.lite.js"></script>
+    <script src="js/main.js"></script>
+</head>
+
+<body onload="init();">
+    <div class="center unselectable">
+        <div class="title">
+            <a>
+                <span data-hover="9GAG Saver">9GAG Saver</span>
+            </a>
+        </div>
+        <svg class="hidden">
+            <defs>
+                <clipPath id="clipBox" clipPathUnits="objectBoundingBox">
+                    <polygon points="0,0 0,1 0.35,1 0.35,0.6 0.65,0.6 0.65,1 1,1 1,0"></polygon>
+                </clipPath>
+            </defs>
+        </svg>
+        <p><i>With <b>9GAG Saver</b> you can finally save gags with title.</i>
+            <br/>It will provide you to save 9GAG photos with their titles in your gallery. You could share or save the photo you choose. It also brings comments and like counts.</p>
+        <div class="bg">
+            <button id="github" class="button button--itzel button--size-l button--border-thin button--text-thin">
+                <i class="button__icon icon">
+                <img src="res/github.png">
+            </i>
+                <span>GitHub</span>
+            </button>
+        </div>
+        <div class="bg">
+            <button id="playstore" class="button button--itzel button--size-l button--border-thin button--text-thin">
+                <i class="button__icon icon">
+                <img src="res/playstore.png">
+            </i>
+                <span>Play Store</span>
+            </button>
+        </div>
+        <div id="device-frame">
+            <div id="device-screen">
+                <div id="layer-wallpaper" class="fullscreenlayer">
+                    <div id="device-screenshots">
+                        <img src="res/screenshot_1.png">
+                        <img src="res/screenshot_2.png">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>
