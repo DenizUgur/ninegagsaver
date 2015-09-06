@@ -106,7 +106,6 @@ public class fetchGAG {
                 Height = myBitmap.getHeight();
 
             } catch (Exception e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
 
