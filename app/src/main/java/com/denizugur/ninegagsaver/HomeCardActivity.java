@@ -35,6 +35,7 @@ public class HomeCardActivity extends AppCompatActivity {
     public static final String GAGS = "com.denizugur.ninegagsaver.gags";
     public List<gagInfo> list;
     private Context context;
+    private gagAdapter ca;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,10 +60,11 @@ public class HomeCardActivity extends AppCompatActivity {
             tv.setLayoutParams(lp);
 
             final FloatingActionButton fab = new FloatingActionButton(this);
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(rlp);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT);
             params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
             params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            params.addRule(RelativeLayout.ALIGN_PARENT_END);
             params.addRule(Gravity.RIGHT);
             fab.setImageResource(R.drawable.fab_add);
             fab.setColorNormalResId(R.color.primary_color);
@@ -106,7 +108,7 @@ public class HomeCardActivity extends AppCompatActivity {
             getList();
             Log.d("onCreate", String.valueOf(list.size()));
 
-            final gagAdapter ca = new gagAdapter(list);
+            ca = new gagAdapter(list);
             recList.setAdapter(ca);
 
             SwipeableRecyclerViewTouchListener swipeTouchListener =
@@ -138,7 +140,6 @@ public class HomeCardActivity extends AppCompatActivity {
                                             Intent i = new Intent(HomeCardActivity.this, HomeCardActivity.class);
                                             startActivity(i);
                                         }
-
                                     }
                                     ca.notifyDataSetChanged();
                                 }
@@ -164,7 +165,6 @@ public class HomeCardActivity extends AppCompatActivity {
                                             Intent i = new Intent(HomeCardActivity.this, HomeCardActivity.class);
                                             startActivity(i);
                                         }
-
                                     }
                                     ca.notifyDataSetChanged();
                                 }
