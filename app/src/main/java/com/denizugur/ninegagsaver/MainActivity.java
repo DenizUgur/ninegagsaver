@@ -17,11 +17,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
 import android.widget.Toast;
-
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import java.io.File;
-import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -91,17 +89,17 @@ public class MainActivity extends AppCompatActivity {
                 Intent i = new Intent(this, SettingsActivity.class);
                 Toast.makeText(getApplicationContext(), getString(R.string.choose_folder_toast), Toast.LENGTH_LONG).show();
                 startActivity(i);
+                finish();
             }
-        } else {
-            try {
-                new File(str);
-                Intent i = new Intent(this, HomeCardActivity.class);
-                startActivity(i);
-            } catch (Exception e) {
-                Intent i = new Intent(this, SettingsActivity.class);
-                Toast.makeText(getApplicationContext(), getString(R.string.choose_folder_toast), Toast.LENGTH_LONG).show();
-                startActivity(i);
-            }
+        } else try {
+            new File(str);
+            Intent i = new Intent(this, HomeCardActivity.class);
+            startActivity(i);
+            finish();
+        } catch (Exception e) {
+            Intent i = new Intent(this, SettingsActivity.class);
+            Toast.makeText(getApplicationContext(), getString(R.string.choose_folder_toast), Toast.LENGTH_LONG).show();
+            startActivity(i);
             finish();
         }
     }
