@@ -126,7 +126,7 @@ public class SettingsActivity extends AppCompatActivity {
                             new File(dir, aChildren).delete();
                         }
                     }
-                    Toast.makeText(getActivity(), getString(R.string.clear_confirm), Toast.LENGTH_SHORT);
+                    Toast.makeText(getActivity(), getString(R.string.clear_confirm), Toast.LENGTH_SHORT).show();
                     return true;
                 }
             });

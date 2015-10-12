@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
                 final fetchGAG f = new fetchGAG();
                 f.setURL(gagURL);
 
-                Thread t = new Thread(new Runnable() {
+                new Thread(new Runnable() {
                     @Override
                     public void run() {
                         f.fetch();
@@ -204,8 +204,7 @@ public class MainActivity extends AppCompatActivity {
                             registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
                         }
                     }
-                });
-                t.start();
+                }).start();
             }
         }
     }

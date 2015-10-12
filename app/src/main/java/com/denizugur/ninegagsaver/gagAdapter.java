@@ -37,7 +37,6 @@ public class gagAdapter extends RecyclerView.Adapter<gagAdapter.gagViewHolder> {
         return gagList.size();
     }
 
-
     @Override
     public void onBindViewHolder(final gagViewHolder ViewHolder, int i) {
         gagInfo gi = gagList.get(i);
