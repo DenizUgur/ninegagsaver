@@ -10,12 +10,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.Shader;
 import android.net.Uri;
-import android.os.Environment;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -23,19 +22,22 @@ import android.text.InputType;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
-import android.view.Display;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
+
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 import com.nononsenseapps.filepicker.FilePickerActivity;
 
+import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -44,7 +46,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import static com.denizugur.ninegagsaver.MainActivity.*;
+import static com.denizugur.ninegagsaver.MainActivity.GAG_TITLE;
+import static com.denizugur.ninegagsaver.MainActivity.GAG_URL;
 
 public class DisplayReceivedImage extends AppCompatActivity implements View.OnClickListener {
 
@@ -58,6 +61,7 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
     private int PICK_IMAGE_REQUEST = 1;
     private int FILE_CODE = 0;
     private Context context;
+    private int customPercent = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,16 +83,46 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
 
         setContentView(R.layout.activity_display_recieved_image);
 
+        final FloatingActionMenu fam = (FloatingActionMenu) findViewById(R.id.fam);
         FloatingActionButton save = (FloatingActionButton) findViewById(R.id.save);
         FloatingActionButton share = (FloatingActionButton) findViewById(R.id.share);
         FloatingActionButton changeTitle = (FloatingActionButton) findViewById(R.id.changeTitle);
-        final ImageView mImageView =  (ImageView) findViewById(R.id.imageViewPhoto);
+        FloatingActionButton changeSize = (FloatingActionButton) findViewById(R.id.changeSize);
+        final TouchImageView mImageView =  (TouchImageView) findViewById(R.id.imageViewPhoto);
+
+        DiscreteSeekBar seekbar = (DiscreteSeekBar) findViewById(R.id.seekBar);
+        final RelativeLayout sbc = (RelativeLayout) findViewById(R.id.seekBarContainer);
+        sbc.setVisibility(View.INVISIBLE);
+
+        changeSize.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sbc.setVisibility(View.VISIBLE);
+            }
+        });
+
+        seekbar.setOnProgressChangeListener(new DiscreteSeekBar.OnProgressChangeListener() {
+            @Override
+            public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
+                customPercent = value;
+                process(photo, mImageView, true);
+            }
+
+            @Override
+            public void onStartTrackingTouch(DiscreteSeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(DiscreteSeekBar seekBar) {
+                sbc.setVisibility(View.INVISIBLE);
+                fam.close(true);
+            }
+        });
 
         changeTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new MaterialDialog.Builder(context)
-                        .title("Change Title")
+                        .title("Change Title Text")
                         .theme(Theme.DARK)
                         .cancelable(false)
                         .inputType(InputType.TYPE_CLASS_TEXT)
@@ -99,7 +133,7 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
                             public void onPositive(MaterialDialog dialog) {
                                 super.onPositive(dialog);
                                 gagTitle = newGagTitle;
-                                process(photo, mImageView);
+                                process(photo, mImageView, false);
                             }
                         })
                         .input("Title", gagTitle, new MaterialDialog.InputCallback() {
@@ -130,7 +164,7 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
             File photoLocal = new File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "downloads" + File.separator + "GAG.png");
             photo = BitmapFactory.decodeFile(String.valueOf(photoLocal));
             mImageView.setImageBitmap(photo);
-            process(photo, mImageView);
+            process(photo, mImageView, false);
         }
     }
 
@@ -152,7 +186,7 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
                 String file = cursor.getString(column_index);
                 photo = BitmapFactory.decodeFile(file);
 
-                ImageView mImageView = (ImageView) findViewById(R.id.imageViewPhoto);
+                TouchImageView mImageView = (TouchImageView) findViewById(R.id.imageViewPhoto);
                 mImageView.setImageBitmap(photo);
 
             } finally {
@@ -161,7 +195,7 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
                 }
             }
 
-            final ImageView mImageView = (ImageView) findViewById(R.id.imageViewPhoto);
+            final TouchImageView mImageView = (TouchImageView) findViewById(R.id.imageViewPhoto);
             new MaterialDialog.Builder(this)
                     .title("Set title for your image")
                     .content("This text will be show on top the image")
@@ -180,7 +214,7 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
                                 dialog.getActionButton(DialogAction.POSITIVE).setEnabled(true);
                                 gagTitle = input.toString();
                                 mImageView.setImageBitmap(photo);
-                                process(photo, mImageView);
+                                process(photo, mImageView, false);
                             }
                         }
                     })
@@ -231,7 +265,7 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
         }
     }
 
-    private void process(Bitmap bitmap, ImageView mImageView) {
+    private void process(Bitmap bitmap, TouchImageView mImageView, Boolean customSizePercent) {
 
         try {
             Bitmap.Config config = bitmap.getConfig();
@@ -244,17 +278,10 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
 
             newCanvas.drawBitmap(bitmap, 0, 0, null);
 
-            Display display = getWindowManager().getDefaultDisplay();
-            Point sizeScreen = new Point();
-            display.getSize(sizeScreen);
-            int screenHeight = sizeScreen.y;
-
-            if (gagTitle.length() <= 15) {
-                if (bitmap.getHeight() < (screenHeight / 2)) {
-                    drawText(newCanvas, bitmap, 10, true);
-                } else {
-                    drawText(newCanvas, bitmap, 5, true);
-                }
+            if (customSizePercent) {
+                drawText(newCanvas, bitmap, customPercent, false);
+            } else if (gagTitle.length() <= 15) {
+                drawText(newCanvas, bitmap, 5, true);
             } else {
                 drawText(newCanvas, bitmap, 5, false);
             }
