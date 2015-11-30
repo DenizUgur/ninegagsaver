@@ -17,6 +17,8 @@
             android:layout_height="@dimen/image_nobar"
             android:layout_alignParentEnd="true"
             android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
             android:adjustViewBounds="true"
             android:contentDescription="@string/photo"
             android:scaleType="centerCrop" />
@@ -40,7 +42,8 @@
                 android:minLines="1"
                 android:textColor="@android:color/white"
                 android:layout_above="@+id/likes"
-                android:layout_alignParentStart="true" />
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true" />
 
             <TextView
                 android:id="@+id/likes"
@@ -49,7 +52,8 @@
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
                 android:layout_alignParentBottom="true"
-                android:layout_toEndOf="@+id/likePhoto" />
+                android:layout_toEndOf="@+id/likePhoto"
+                android:layout_toRightOf="@id/likePhoto" />
 
             <TextView
                 android:id="@+id/comments"
@@ -58,7 +62,8 @@
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
                 android:layout_alignParentBottom="true"
-                android:layout_toEndOf="@+id/imageView2" />
+                android:layout_toEndOf="@+id/imageView2"
+                android:layout_toRightOf="@id/imageView2" />
 
             <TextView
                 android:id="@+id/saved_date"
@@ -68,7 +73,8 @@
                 android:layout_marginRight="@dimen/margin"
                 android:textColor="@android:color/white"
                 android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true" />
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true" />
 
             <ImageView
                 android:id="@+id/imageView2"
@@ -78,7 +84,9 @@
                 android:src="@drawable/comment_white"
                 android:layout_alignParentBottom="true"
                 android:layout_toEndOf="@+id/likes"
-                android:layout_marginStart="@dimen/margin" />
+                android:layout_toRightOf="@id/likes"
+                android:layout_marginStart="@dimen/margin"
+                android:layout_marginLeft="@dimen/margin" />
 
             <ImageView
                 android:id="@+id/likePhoto"
@@ -88,6 +96,7 @@
                 android:src="@drawable/like_white"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
                 android:layout_alignTop="@+id/likes" />
 
             <Button
@@ -98,7 +107,8 @@
                 android:text="@string/action_share"
                 android:textColor="@color/holo_blue_light"
                 android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true" />
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true" />
 
         </RelativeLayout>
     </RelativeLayout>

@@ -16,7 +16,9 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/image"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:adjustViewBounds="true"
             android:contentDescription="@string/photo"
             android:scaleType="centerCrop" />
@@ -52,6 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/border"
             android:layout_toEndOf="@+id/likePhoto"
+            android:layout_toRightOf="@+id/likePhoto"
             android:textColor="@color/black" />
 
         <TextView
@@ -61,6 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/photo"
             android:layout_toEndOf="@+id/imageView2"
+            android:layout_toRightOf="@+id/imageView2"
             android:textColor="@color/black" />
 
         <TextView
@@ -70,6 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/border"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/margin"
             android:textColor="@color/black" />
 
@@ -79,6 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_below="@+id/saved_date"
             android:text="@string/action_share"
             android:textColor="@color/holo_blue_light" />
@@ -96,6 +102,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/border"
             android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:layout_alignTop="@+id/likes"
             android:contentDescription="@string/like_pic"
             android:src="@drawable/like" />
@@ -107,7 +114,9 @@
             android:layout_above="@+id/border"
             android:layout_below="@+id/photo"
             android:layout_marginStart="@dimen/margin"
+            android:layout_marginLeft="@dimen/margin"
             android:layout_toEndOf="@+id/likes"
+            android:layout_toRightOf="@id/likes"
             android:contentDescription="@string/comment_pic"
             android:src="@drawable/comment" />
 

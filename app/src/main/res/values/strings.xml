@@ -18,7 +18,8 @@
     <string name="title_activity_home_card">HomeCardActivity</string>
     <string name="title_activity_full_screen_image">FullScreenImageActivity</string>
 
-    <string name="fab_edit">Edit Title</string>
+    <string name="fab_edit">Edit Title Text</string>
+    <string name="fab_size">Edit Title Size</string>
     <string name="like_pic">likes</string>
     <string name="comment_pic">comments</string>
 
