@@ -53,7 +53,8 @@ public class gagAdapter extends RecyclerView.Adapter<gagAdapter.gagViewHolder> {
                 Context context = v.getContext();
                 gagInfo gi = gagList.get(adapterPosition);
 
-                //Launch 9GAG Post
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://9gag.com/gag/" + gi.photoId));
+                context.startActivity(intent);
 
                 return false;
             }
