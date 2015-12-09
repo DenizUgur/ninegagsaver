@@ -7,30 +7,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.Preference;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import java.io.File;
-
 import com.nononsenseapps.filepicker.FilePickerActivity;
 
-/**
- * A {@link PreferenceActivity} that presents a set of application settings. On
- * handset devices, settings are presented as a single list. On tablets,
- * settings are split by category, with category headers shown to the left of
- * the list of settings.
- * <p/>
- * See <a href="http://developer.android.com/design/patterns/settings.html">
- * Android Design: Settings</a> for design guidelines and the <a
- * href="http://developer.android.com/guide/topics/ui/settings.html">Settings
- * API Guide</a> for more information on developing a Settings UI.
- */
+import java.io.File;
+
 public class SettingsActivity extends AppCompatActivity {
 
     private final static int FILE_CODE = 0;
@@ -42,6 +28,7 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         try {
+            assert actionBar != null;
             actionBar.setDisplayHomeAsUpEnabled(true);
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -94,6 +81,7 @@ public class SettingsActivity extends AppCompatActivity {
             Preference chooseFolder = findPreference("chooseFolder");
             str = prefs.getString("path", null);
             try {
+                assert str != null;
                 new File(str);
                 chooseFolder.setSummary(prefs.getString("path", null));
             } catch (Exception e) {
