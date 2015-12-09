@@ -1,13 +1,13 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory android:title="@string/main_header">
-        <ListPreference
+        <com.afollestad.materialdialogs.prefs.MaterialListPreference
             android:title="@string/title_list"
             android:summary="@string/summary_list"
             android:key="card_view"
             android:entries="@array/card_view_list"
             android:entryValues="@array/card_view_value"
-            android:defaultValue="0" />
+            android:defaultValue="1" />
 
         <Preference
             android:key="chooseFolder"
