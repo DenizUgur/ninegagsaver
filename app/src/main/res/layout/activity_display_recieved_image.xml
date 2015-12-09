@@ -46,6 +46,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_gravity="end|bottom"
+        android:layout_marginBottom="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"
         fab:menu_backgroundColor="@android:color/transparent"
         fab:menu_colorNormal="@color/primary_color"
         fab:menu_colorPressed="@color/primary_color"
