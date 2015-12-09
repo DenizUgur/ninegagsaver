@@ -1,12 +1,12 @@
 package com.denizugur.ninegagsaver;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
-import android.content.Intent;
 
 public class FullScreenImageActivity extends AppCompatActivity {
 
@@ -20,7 +20,7 @@ public class FullScreenImageActivity extends AppCompatActivity {
         String file_path = intent.getStringExtra("BitmapImage");
         Bitmap bitmap = BitmapFactory.decodeFile(file_path);
 
-        TouchImageView imageView = (TouchImageView)findViewById(R.id.imgFullScreen);
+        TouchImageView imageView = (TouchImageView) findViewById(R.id.imgFullScreen);
         imageView.setScrollPosition(0, 0);
 
         imageView.setLayoutParams(new RelativeLayout.LayoutParams(
