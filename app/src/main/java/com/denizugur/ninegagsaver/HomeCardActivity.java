@@ -3,31 +3,39 @@ package com.denizugur.ninegagsaver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.github.clans.fab.FloatingActionButton;
+import com.afollestad.materialdialogs.internal.ThemeSingleton;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class HomeCardActivity extends AppCompatActivity {
@@ -41,41 +49,19 @@ public class HomeCardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
+
+        VersionCheck vs = new VersionCheck(this);
+        if (vs.firstRun()) {
+            int accentColor = ThemeSingleton.get().widgetColor;
+            if (accentColor == 0)
+                accentColor = ContextCompat.getColor(this, R.color.accent_color);
+            ChangelogDialog.create(false, accentColor)
+                    .show(getSupportFragmentManager(), "changelog");
+        }
+
         if (prefsCheck(this)) {
-
-            RelativeLayout relativeLayout = new RelativeLayout(this);
-            RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(
-                    RelativeLayout.LayoutParams.WRAP_CONTENT,
-                    RelativeLayout.LayoutParams.WRAP_CONTENT);
-
-            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-                    RelativeLayout.LayoutParams.WRAP_CONTENT,
-                    RelativeLayout.LayoutParams.WRAP_CONTENT);
-            lp.addRule(RelativeLayout.CENTER_IN_PARENT);
-            TextView tv = new TextView(this);
-            tv.setText("There is no saved gag, go save some to see them here");
-            tv.setTextSize(30);
-            tv.setGravity(Gravity.CENTER);
-            tv.setTextColor(Color.GRAY);
-            tv.setLayoutParams(lp);
-
-            final FloatingActionButton fab = new FloatingActionButton(this);
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                    RelativeLayout.LayoutParams.WRAP_CONTENT,
-                    RelativeLayout.LayoutParams.WRAP_CONTENT);
-            params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            params.addRule(Gravity.RIGHT);
-            fab.setImageResource(R.drawable.fab_add);
-            fab.setColorNormalResId(R.color.primary_color);
-            fab.setColorPressedResId(R.color.primary_color);
-            fab.setColorRippleResId(R.color.primary_color_600);
-            fab.setLayoutParams(params);
-
-            relativeLayout.addView(tv);
-            relativeLayout.addView(fab);
-
-            setContentView(relativeLayout, rlp);
+            setContentView(R.layout.activity_home_card_empty);
+            final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -99,7 +85,7 @@ public class HomeCardActivity extends AppCompatActivity {
                 }
             });
 
-            RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
+            final RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
             recList.setHasFixedSize(true);
             LinearLayoutManager llm = new LinearLayoutManager(this);
             llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -121,52 +107,86 @@ public class HomeCardActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onDismissedBySwipeLeft(RecyclerView recyclerView, int[] reverseSortedPositions) {
-                                    for (int position : reverseSortedPositions) {
-                                        gagInfo gi = list.get(position);
-                                        list.remove(position);
+                                    for (final int position : reverseSortedPositions) {
+                                        final gagInfo gi = list.get(position);
                                         ca.notifyItemRemoved(position);
+                                        list.remove(position);
+                                        ca.notifyDataSetChanged();
 
-                                        SharedPreferences.Editor editor = context.getSharedPreferences(GAGS, Context.MODE_PRIVATE).edit();
-                                        editor.remove(gi.photoId).apply();
+                                        CoordinatorLayout crdLayout = (CoordinatorLayout) findViewById(R.id.fabContainer);
 
-                                        File dir = new File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "gags");
-                                        if (dir.isDirectory()) {
-                                            File file = new File(dir + File.separator + gi.photoId);
-                                            file.delete();
-                                        }
+                                        Snackbar.make(crdLayout, "Gag successfully removed.", Snackbar.LENGTH_LONG)
+                                                .setAction("Undo", new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        getList();
+                                                        recList.setAdapter(new gagAdapter(list));
+                                                        ca.notifyDataSetChanged();
+                                                    }
+                                                })
+                                                .setCallback(new Snackbar.Callback() {
+                                                    @Override
+                                                    public void onDismissed(Snackbar snackbar, int event) {
+                                                        super.onDismissed(snackbar, event);
+                                                        SharedPreferences.Editor editor = context.getSharedPreferences(GAGS, Context.MODE_PRIVATE).edit();
+                                                        editor.remove(gi.photoId).apply();
 
-                                        if (position == 0 && list.size() - 1 < 1) {
-                                            finish();
-                                            Intent i = new Intent(HomeCardActivity.this, HomeCardActivity.class);
-                                            startActivity(i);
-                                        }
+                                                        File dir = new File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "gags");
+                                                        if (dir.isDirectory()) {
+                                                            File file = new File(dir + File.separator + gi.photoId);
+                                                            file.delete();
+                                                        }
+
+                                                        if (position == 0 && list.size() < 1) {
+                                                            finish();
+                                                            Intent i = new Intent(HomeCardActivity.this, HomeCardActivity.class);
+                                                            startActivity(i);
+                                                        }
+                                                    }
+                                                }).show();
                                     }
-                                    ca.notifyDataSetChanged();
                                 }
 
                                 @Override
                                 public void onDismissedBySwipeRight(RecyclerView recyclerView, int[] reverseSortedPositions) {
-                                    for (int position : reverseSortedPositions) {
-                                        gagInfo gi = list.get(position);
-                                        list.remove(position);
+                                    for (final int position : reverseSortedPositions) {
+                                        final gagInfo gi = list.get(position);
                                         ca.notifyItemRemoved(position);
+                                        list.remove(position);
+                                        ca.notifyDataSetChanged();
 
-                                        SharedPreferences.Editor editor = context.getSharedPreferences(GAGS, Context.MODE_PRIVATE).edit();
-                                        editor.remove(gi.photoId).apply();
+                                        CoordinatorLayout crdLayout = (CoordinatorLayout) findViewById(R.id.fabContainer);
 
-                                        File dir = new File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "gags");
-                                        if (dir.isDirectory()) {
-                                            File file = new File(dir + File.separator + gi.photoId);
-                                            file.delete();
-                                        }
+                                        Snackbar.make(crdLayout, "Gag successfully removed.", Snackbar.LENGTH_LONG)
+                                                .setAction("Undo", new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        getList();
+                                                        recList.setAdapter(new gagAdapter(list));
+                                                        ca.notifyDataSetChanged();
+                                                    }
+                                                })
+                                                .setCallback(new Snackbar.Callback() {
+                                                    @Override
+                                                    public void onDismissed(Snackbar snackbar, int event) {
+                                                        super.onDismissed(snackbar, event);
+                                                        SharedPreferences.Editor editor = context.getSharedPreferences(GAGS, Context.MODE_PRIVATE).edit();
+                                                        editor.remove(gi.photoId).apply();
 
-                                        if (position == 0 && list.size() - 1 < 1) {
-                                            finish();
-                                            Intent i = new Intent(HomeCardActivity.this, HomeCardActivity.class);
-                                            startActivity(i);
-                                        }
+                                                        File dir = new File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "gags");
+                                                        if (dir.isDirectory()) {
+                                                            File file = new File(dir + File.separator + gi.photoId);
+                                                            file.delete();
+                                                        }
+
+                                                        if (position == 0 && list.size() < 1) {
+                                                            finish();
+                                                            Intent i = new Intent(HomeCardActivity.this, HomeCardActivity.class);
+                                                            startActivity(i);
+                                                        }
+                                                    }
+                                                }).show();
                                     }
-                                    ca.notifyDataSetChanged();
                                 }
                             });
 
@@ -220,28 +240,43 @@ public class HomeCardActivity extends AppCompatActivity {
                 JSONObject entryObject = new JSONObject(entryValue);
                 obj = entryObject.getJSONObject("nameValuePairs");
                 gagInfo gi = new gagInfo();
-                    Log.d("JSON", "Processing... " + keyObject);
+                Log.d("JSON", "Processing... " + keyObject);
 
-                    try {
-                        gi.title = obj.getString("title");
-                        gi.likes = obj.getString("likes");
-                        gi.comments = obj.getString("comments");
-                        gi.saved_date = obj.getString("saved_date");
-                        gi.file_path = obj.getString("file_path");
-                        gi.photoId = obj.getString("photoId");
+                try {
+                    gi.title = obj.getString("title");
+                    gi.likes = obj.getString("likes");
+                    gi.comments = obj.getString("comments");
+                    gi.saved_date = obj.getString("saved_date");
+                    gi.file_path = obj.getString("file_path");
+                    gi.photoId = obj.getString("photoId");
 
-                        list.add(gi);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.remove(keyObject);
-                        editor.apply();
-                    }
+                    list.add(gi);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.remove(keyObject);
+                    editor.apply();
+                }
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
+        Collections.sort(list, new Comparator<gagInfo>() {
+            @Override
+            public int compare(gagInfo lhs, gagInfo rhs) {
+                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+                Date lhs_d = new Date();
+                Date rhs_d = new Date();
+                try {
+                    lhs_d = formatter.parse(lhs.saved_date);
+                    rhs_d = formatter.parse(rhs.saved_date);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                return rhs_d.compareTo(lhs_d);
+            }
+        });
     }
 
     @Override
@@ -252,17 +287,20 @@ public class HomeCardActivity extends AppCompatActivity {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         TextView tv = new TextView(this);
-        tv.setTextAppearance(this, R.style.dialog_tv_style);
+
+        if (Build.VERSION.SDK_INT < 23) {
+            tv.setTextAppearance(this, R.style.dialog_tv_style);
+        } else {
+            tv.setTextAppearance(R.style.dialog_tv_style);
+        }
         tv.setMovementMethod(LinkMovementMethod.getInstance());
 
-        //noinspection SimplifiableIfStatement
+        VersionCheck vs = new VersionCheck(this);
         if (id == R.id.action_settings) {
             Intent i = new Intent(this, SettingsActivity.class);
             startActivity(i);
@@ -272,7 +310,7 @@ public class HomeCardActivity extends AppCompatActivity {
             tv.setText(Html.fromHtml(getString(R.string.about_body)));
             new MaterialDialog.Builder(this)
                     .iconRes(R.drawable.ic_action_about_white)
-                    .title(Html.fromHtml("<b>" + getResources().getString(R.string.app_name) + "</b>&nbsp;<font color='#888888'>v" + getVersionName(this) + "</font>"))
+                    .title(Html.fromHtml("<b>" + getResources().getString(R.string.app_name) + "</b>&nbsp;<font color='#888888'>v" + vs.getVersionName() + "</font>"))
                     .customView(tv, true)
                     .negativeText(R.string.close)
                     .show();
@@ -289,25 +327,4 @@ public class HomeCardActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    @NonNull
-    public static String getVersionName(@NonNull Context context) {
-        PackageManager pm = context.getPackageManager();
-        String packageName = context.getPackageName();
-        String versionName;
-        try {
-            PackageInfo info = pm.getPackageInfo(packageName, 0);
-            versionName = info.versionName;
-
-            // Make the info part of version name a bit smaller.
-            if (versionName.indexOf('-') >= 0) {
-                versionName = versionName.replaceFirst("\\-", "<small>-") + "</small>";
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            versionName = "N/A";
-        }
-
-        return versionName;
-    }
-
 }
