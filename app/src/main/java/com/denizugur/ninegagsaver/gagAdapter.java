@@ -1,8 +1,5 @@
 package com.denizugur.ninegagsaver;
 
-/**
- * Created by deniz on 28/08/15.
- */
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import java.io.File;
 import java.util.List;
 
@@ -132,8 +130,8 @@ public class gagAdapter extends RecyclerView.Adapter<gagAdapter.gagViewHolder> {
 
         public gagViewHolder(View v) {
             super(v);
-            vTitle = (TextView)  v.findViewById(R.id.title);
-            vSavedDate = (TextView)  v.findViewById(R.id.saved_date);
+            vTitle = (TextView) v.findViewById(R.id.title);
+            vSavedDate = (TextView) v.findViewById(R.id.saved_date);
             vLikes = (TextView) v.findViewById(R.id.likes);
             vComments = (TextView) v.findViewById(R.id.comments);
             vImageView = (ImageView) v.findViewById(R.id.photo);
