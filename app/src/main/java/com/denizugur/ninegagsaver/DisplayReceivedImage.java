@@ -88,7 +88,7 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
         FloatingActionButton share = (FloatingActionButton) findViewById(R.id.share);
         FloatingActionButton changeTitle = (FloatingActionButton) findViewById(R.id.changeTitle);
         FloatingActionButton changeSize = (FloatingActionButton) findViewById(R.id.changeSize);
-        final TouchImageView mImageView =  (TouchImageView) findViewById(R.id.imageViewPhoto);
+        final TouchImageView mImageView = (TouchImageView) findViewById(R.id.imageViewPhoto);
 
         DiscreteSeekBar seekbar = (DiscreteSeekBar) findViewById(R.id.seekBar);
         final RelativeLayout sbc = (RelativeLayout) findViewById(R.id.seekBarContainer);
@@ -336,7 +336,7 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
                 canvas.drawRect(0, 0, newBitmap.getWidth(), GRADIENT_HEIGHT, paint);
             }
 
-            canvas.drawText(gagTitle, pL, rectText.height() + pT / 2, paintText);
+            canvas.drawText(gagTitle, pL, rectText.height() + (3 * pT) / 2, paintText);
         } else {
 
             TextPaint paintText = new TextPaint(Paint.ANTI_ALIAS_FLAG);
@@ -373,7 +373,7 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
 
     public void onClick(View v) {
 
-        switch(v.getId()) {
+        switch (v.getId()) {
 
             case R.id.save:
                 savePhoto();
@@ -554,11 +554,11 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
         String saved_date = formatter.format(today);
 
-                File file_path = new File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) +
-                        File.separator +
-                        "gags" +
-                        File.separator +
-                        photo_id);
+        File file_path = new File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) +
+                File.separator +
+                "gags" +
+                File.separator +
+                photo_id);
 
         try {
             Gson gson = new Gson();
@@ -585,8 +585,7 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
     @Override
     public void onBackPressed() {
         File dir = new File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "downloads");
-        if (dir.isDirectory())
-        {
+        if (dir.isDirectory()) {
             String[] children = dir.list();
             for (String aChildren : children) {
                 new File(dir, aChildren).delete();
@@ -601,8 +600,7 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
     @Override
     public void onDestroy() {
         File dir = new File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "downloads");
-        if (dir.isDirectory())
-        {
+        if (dir.isDirectory()) {
             String[] children = dir.list();
             for (String aChildren : children) {
                 new File(dir, aChildren).delete();
