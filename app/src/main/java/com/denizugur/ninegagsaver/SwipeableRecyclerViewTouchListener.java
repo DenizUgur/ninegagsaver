@@ -1,8 +1,5 @@
 package com.denizugur.ninegagsaver;
 
-/**
- * Created by deniz on 30/08/15.
- */
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
@@ -21,32 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
-/**
- * A {@link View.OnTouchListener} that makes the list items in a {@link android.support.v7.widget.RecyclerView}
- * dismissable by swiping.
- * <p/>
- * <p>Example usage:</p>
- * <p/>
- * <pre>
- * SwipeDismissRecyclerViewTouchListener touchListener =
- *         new SwipeDismissRecyclerViewTouchListener(
- *                 listView,
- *                 new SwipeDismissRecyclerViewTouchListener.OnDismissCallback() {
- *                     public void onDismiss(ListView listView, int[] reverseSortedPositions) {
- *                         for (int position : reverseSortedPositions) {
- *                             adapter.remove(adapter.getItem(position));
- *                         }
- *                         adapter.notifyDataSetChanged();
- *                     }
- *                 });
- * listView.setOnTouchListener(touchListener);
- * listView.setOnScrollListener(touchListener.makeScrollListener());
- * </pre>
- * <p/>
- * <p>This class Requires API level 12 or later due to use of {@link
- * android.view.ViewPropertyAnimator}.</p>
- */
+@SuppressWarnings("deprecation")
 public class SwipeableRecyclerViewTouchListener implements RecyclerView.OnItemTouchListener {
     // Cached ViewConfiguration and system-wide constant values
     private int mSlop;
