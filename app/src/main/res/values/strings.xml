@@ -9,6 +9,7 @@
     <string name="action_remove">Remove</string>
     <string name="action_help">Help</string>
     <string name="close">Close</string>
+    <string name="changelog">Changelog</string>
     <string name="gag_image">Gag Image</string>
     <string name="intent_label">Save with Title</string>
     <string name="na">Not Available</string>
@@ -22,6 +23,7 @@
     <string name="fab_size">Edit Title Size</string>
     <string name="like_pic">likes</string>
     <string name="comment_pic">comments</string>
+    <string name="no_gags">There is no saved gag, go save some to see them here</string>
 
     <string name="download_description">You can\'t access the gag from here as app automatically deletes this file.</string>
     <string name="download_title">9GAG Downloaded Photo</string>
@@ -35,6 +37,8 @@
         <a href=\'https://github.com/afollestad/material-dialogs\'>Material Dialogs by afollestad</a>,
         <a href=\'https://github.com/spacecowboy/NoNonsense-FilePicker\'>NoNonsense-FilePicker by spacecowboy</a>,
         <a href=\'https://github.com/Clans/FloatingActionButton\'>Floating Action Button by Clans</a>,
+        <a href=\'https://github.com/AnderWeb/discreteSeekBar\'>Discrete Seekbar by AnderWeb</a>,
+        <a href=\'#\'>Design Library by Google</a>,
         <a href=\'https://github.com/google/gson\'>GSON by Google</a>
     ]]></string>
 
