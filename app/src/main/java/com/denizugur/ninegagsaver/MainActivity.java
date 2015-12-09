@@ -1,5 +1,6 @@
 package com.denizugur.ninegagsaver;
 
+import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,20 +11,23 @@ import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.Environment;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Display;
 import android.widget.Toast;
+
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
+
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     public final static String GAG_TITLE = "com.denizugur.ninegagsaver.GAG_TITLE";
     public final static String GAG_URL = "com.denizugur.ninegagsaver.GAG_URL";
@@ -45,16 +49,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private boolean isNetworkConnected() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo ni = cm.getActiveNetworkInfo();
-        return ni != null;
+    public boolean checkOnlineState() {
+        ConnectivityManager CManager =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo NInfo = CManager.getActiveNetworkInfo();
+        return NInfo != null && NInfo.isConnectedOrConnecting();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
+        setContentView(R.layout.activity_main_splash);
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
@@ -67,23 +73,24 @@ public class MainActivity extends AppCompatActivity {
 
         if (Intent.ACTION_SEND.equals(action) && type != null) {
             try {
+                assert str != null;
                 new File(str);
-                if ("text/plain".equals(type) && isNetworkConnected()) {
+                if ("text/plain".equals(type) && checkOnlineState()) {
                     handleSendText(intent);
                 } else {
-                        new MaterialDialog.Builder(this)
-                                .title("Sorry")
-                                .content("No Internet Connection")
-                                .positiveText("Go Back")
-                                .theme(Theme.DARK)
-                                .cancelable(false)
-                                .callback(new MaterialDialog.ButtonCallback() {
-                                    @Override
-                                    public void onPositive(MaterialDialog dialog) {
-                                        System.exit(0);
-                                    }
-                                })
-                                .show();
+                    new MaterialDialog.Builder(this)
+                            .title("Sorry")
+                            .content("No Internet Connection")
+                            .positiveText("Go Back")
+                            .theme(Theme.DARK)
+                            .cancelable(false)
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                                    System.exit(0);
+                                }
+                            })
+                            .show();
                 }
             } catch (Exception e) {
                 Intent i = new Intent(this, SettingsActivity.class);
@@ -92,8 +99,10 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         } else try {
+            assert str != null;
             new File(str);
             Intent i = new Intent(this, HomeCardActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(i);
             finish();
         } catch (Exception e) {
@@ -118,14 +127,6 @@ public class MainActivity extends AppCompatActivity {
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 }
-
-                final MaterialDialog md = new MaterialDialog.Builder(this)
-                        .title("Loading")
-                        .content("Please wait...")
-                        .progress(true, 0)
-                        .cancelable(false)
-                        .theme(Theme.DARK)
-                        .show();
 
                 final fetchGAG f = new fetchGAG();
                 f.setURL(gagURL);
@@ -153,10 +154,9 @@ public class MainActivity extends AppCompatActivity {
                                             .positiveText("Go Back")
                                             .theme(Theme.DARK)
                                             .cancelable(false)
-                                            .callback(new MaterialDialog.ButtonCallback() {
+                                            .onPositive(new MaterialDialog.SingleButtonCallback() {
                                                 @Override
-                                                public void onPositive(MaterialDialog dialog) {
-                                                    md.dismiss();
+                                                public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
                                                     System.exit(0);
                                                 }
                                             })
@@ -195,7 +195,6 @@ public class MainActivity extends AppCompatActivity {
                                     Intent intentImage = new Intent(context, DisplayReceivedImage.class);
                                     intentImage.putExtra(GAG_TITLE, f.getTitle());
                                     intentImage.putExtra(GAG_URL, f.getURL());
-                                    md.dismiss();
                                     unregisterReceiver(this);
                                     startActivityForResult(intentImage, EXIT_APP);
                                 }
