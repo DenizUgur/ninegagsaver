@@ -1,4 +1,5 @@
 <resources>
+
     <string name="app_name">9GAG Saver</string>
     <string name="title_activity_display_received_image">Photo</string>
     <string name="photo">photo</string>
@@ -15,6 +16,15 @@
     <string name="na">Not Available</string>
     <string name="choose_folder_toast">Please choose a folder to continue&#8230;</string>
     <string name="clear_confirm">Gags have been cleaned</string>
+
+    <string name="go_back">Go Back</string>
+    <string name="sorry">Sorry</string>
+    <string name="no_internet">No Internet Connection</string>
+    <string name="no_gif">No GIF Allowed</string>
+
+
+    <string name="download_failed_title">Download Failed</string>
+    <string name="download_failed">Image couldn\'t downloaded. This could be due to slow network connection or non at all.</string>
 
     <string name="title_activity_home_card">HomeCardActivity</string>
     <string name="title_activity_full_screen_image">FullScreenImageActivity</string>
@@ -38,6 +48,8 @@
         <a href=\'https://github.com/spacecowboy/NoNonsense-FilePicker\'>NoNonsense-FilePicker by spacecowboy</a>,
         <a href=\'https://github.com/Clans/FloatingActionButton\'>Floating Action Button by Clans</a>,
         <a href=\'https://github.com/AnderWeb/discreteSeekBar\'>Discrete Seekbar by AnderWeb</a>,
+        <a href=\'http://frescolib.org/\'>Fresco by Facebook</a>,
+        <a href=\'https://github.com/smanikandan14/ThinDownloadManager\'>Thin Download Manager by smanikandan14</a>,
         <a href=\'#\'>Design Library by Google</a>,
         <a href=\'https://github.com/google/gson\'>GSON by Google</a>
     ]]></string>
