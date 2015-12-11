@@ -1,11 +1,8 @@
 package com.denizugur.ninegagsaver;
 
 import android.app.Activity;
-import android.app.DownloadManager;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.net.ConnectivityManager;
@@ -22,6 +19,10 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
+import com.thin.downloadmanager.DefaultRetryPolicy;
+import com.thin.downloadmanager.DownloadRequest;
+import com.thin.downloadmanager.DownloadStatusListener;
+import com.thin.downloadmanager.ThinDownloadManager;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -79,9 +80,9 @@ public class MainActivity extends Activity {
                     handleSendText(intent);
                 } else {
                     new MaterialDialog.Builder(this)
-                            .title("Sorry")
-                            .content("No Internet Connection")
-                            .positiveText("Go Back")
+                            .title(R.string.sorry)
+                            .content(R.string.no_internet)
+                            .positiveText(R.string.go_back)
                             .theme(Theme.DARK)
                             .cancelable(false)
                             .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -144,14 +145,13 @@ public class MainActivity extends Activity {
                         if (f.getHeightImage() > screenHeight) {
                             Log.w(getLocalClassName(), "Long" + " Screen@" + screenHeight + " Image@" + f.getHeightImage());
                         } else if (f.getHeightImage() == 0) {
-                            Log.w(getLocalClassName(), "No GIF allowed here");
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     new MaterialDialog.Builder(context)
-                                            .title("Sorry")
-                                            .content("No GIF Allowed")
-                                            .positiveText("Go Back")
+                                            .title(R.string.sorry)
+                                            .content(R.string.no_gif)
+                                            .positiveText(R.string.go_back)
                                             .theme(Theme.DARK)
                                             .cancelable(false)
                                             .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -172,36 +172,41 @@ public class MainActivity extends Activity {
                             directory_download.mkdirs();
                         }
 
-                        DownloadManager mgr = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+                        Uri downloadUri = Uri.parse(f.getPhotoURL());
+                        Uri destinationUri = Uri.parse(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + "/downloads/GAG.png");
+                        DownloadRequest downloadRequest = new DownloadRequest(downloadUri)
+                                .setRetryPolicy(new DefaultRetryPolicy())
+                                .setDestinationURI(destinationUri).setPriority(DownloadRequest.Priority.HIGH)
+                                .setDownloadListener(new DownloadStatusListener() {
+                                    @Override
+                                    public void onDownloadComplete(int id) {
+                                        Log.d(String.valueOf(id), "Finished");
+                                        Intent intentImage = new Intent(context, DisplayReceivedImage.class);
+                                        intentImage.putExtra(GAG_TITLE, f.getTitle());
+                                        intentImage.putExtra(GAG_URL, f.getURL());
+                                        startActivityForResult(intentImage, EXIT_APP);
+                                    }
 
-                        if (f.getPhotoURL() != null) {
-                            Uri downloadUri = Uri.parse(f.getPhotoURL());
-                            DownloadManager.Request request = new DownloadManager.Request(
-                                    downloadUri);
+                                    @Override
+                                    public void onDownloadFailed(int id, int errorCode, String errorMessage) {
+                                        new MaterialDialog.Builder(context)
+                                                .title(R.string.download_failed_title)
+                                                .content(R.string.download_failed)
+                                                .positiveText(R.string.go_back)
+                                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                                    @Override
+                                                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                                                        System.exit(0);
+                                                    }
+                                                }).show();
+                                    }
 
-                            request.setAllowedNetworkTypes(
-                                    DownloadManager.Request.NETWORK_WIFI
-                                            | DownloadManager.Request.NETWORK_MOBILE)
-                                    .setAllowedOverRoaming(false).setTitle(getString(R.string.download_title))
-                                    .setDescription(getString(R.string.download_description))
-                                    .setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN)
-                                    .setDestinationInExternalFilesDir(context, Environment.DIRECTORY_DOWNLOADS, "/downloads/GAG.png");
+                                    @Override
+                                    public void onProgress(int id, long totalBytes, long downlaodedBytes, int progress) {}
+                                });
 
-                            mgr.enqueue(request);
-
-                            BroadcastReceiver onComplete = new BroadcastReceiver() {
-                                public void onReceive(Context context, Intent intent) {
-                                    Log.d("Main", "Finished");
-                                    Intent intentImage = new Intent(context, DisplayReceivedImage.class);
-                                    intentImage.putExtra(GAG_TITLE, f.getTitle());
-                                    intentImage.putExtra(GAG_URL, f.getURL());
-                                    unregisterReceiver(this);
-                                    startActivityForResult(intentImage, EXIT_APP);
-                                }
-                            };
-
-                            registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
-                        }
+                        ThinDownloadManager downloadManager = new ThinDownloadManager();
+                        downloadManager.add(downloadRequest);
                     }
                 }).start();
             }
