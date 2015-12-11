@@ -31,4 +31,15 @@ public class gagInfo {
     public void setFile_Path(String str) {
         this.file_path = str;
     }
+
+    public gagInfo setEmpty() {
+        this.title = "";
+        this.likes = "";
+        this.comments = "";
+        this.saved_date = "";
+        this.file_path = "";
+        this.photoId = "";
+
+        return this;
+    }
 }
