@@ -23,19 +23,14 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.internal.ThemeSingleton;
+import com.facebook.drawee.backends.pipeline.Fresco;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 public class HomeCardActivity extends AppCompatActivity {
@@ -50,6 +45,8 @@ public class HomeCardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         context = this;
 
+        Fresco.initialize(this);
+
         VersionCheck vs = new VersionCheck(this);
         if (vs.firstRun()) {
             int accentColor = ThemeSingleton.get().widgetColor;
@@ -61,138 +58,132 @@ public class HomeCardActivity extends AppCompatActivity {
 
         if (prefsCheck(this)) {
             setContentView(R.layout.activity_home_card_empty);
-            final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    fab.setEnabled(false);
-                    customPhoto();
-                    fab.setEnabled(true);
-                }
-            });
-
         } else {
             setContentView(R.layout.activity_home_card);
-
-            final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    fab.setEnabled(false);
-                    customPhoto();
-                    fab.setEnabled(true);
-                }
-            });
-
-            final RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
-            recList.setHasFixedSize(true);
-            LinearLayoutManager llm = new LinearLayoutManager(this);
-            llm.setOrientation(LinearLayoutManager.VERTICAL);
-            recList.setLayoutManager(llm);
-
-            getList();
-            Log.d("onCreate", String.valueOf(list.size()));
-
-            ca = new gagAdapter(list);
-            recList.setAdapter(ca);
-
-            SwipeableRecyclerViewTouchListener swipeTouchListener =
-                    new SwipeableRecyclerViewTouchListener(recList,
-                            new SwipeableRecyclerViewTouchListener.SwipeListener() {
-                                @Override
-                                public boolean canSwipe(int position) {
-                                    return true;
-                                }
-
-                                @Override
-                                public void onDismissedBySwipeLeft(RecyclerView recyclerView, int[] reverseSortedPositions) {
-                                    for (final int position : reverseSortedPositions) {
-                                        final gagInfo gi = list.get(position);
-                                        ca.notifyItemRemoved(position);
-                                        list.remove(position);
-                                        ca.notifyDataSetChanged();
-
-                                        CoordinatorLayout crdLayout = (CoordinatorLayout) findViewById(R.id.fabContainer);
-
-                                        Snackbar.make(crdLayout, "Gag successfully removed.", Snackbar.LENGTH_LONG)
-                                                .setAction("Undo", new View.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(View v) {
-                                                        getList();
-                                                        recList.setAdapter(new gagAdapter(list));
-                                                        ca.notifyDataSetChanged();
-                                                    }
-                                                })
-                                                .setCallback(new Snackbar.Callback() {
-                                                    @Override
-                                                    public void onDismissed(Snackbar snackbar, int event) {
-                                                        super.onDismissed(snackbar, event);
-                                                        SharedPreferences.Editor editor = context.getSharedPreferences(GAGS, Context.MODE_PRIVATE).edit();
-                                                        editor.remove(gi.photoId).apply();
-
-                                                        File dir = new File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "gags");
-                                                        if (dir.isDirectory()) {
-                                                            File file = new File(dir + File.separator + gi.photoId);
-                                                            file.delete();
-                                                        }
-
-                                                        if (position == 0 && list.size() < 1) {
-                                                            finish();
-                                                            Intent i = new Intent(HomeCardActivity.this, HomeCardActivity.class);
-                                                            startActivity(i);
-                                                        }
-                                                    }
-                                                }).show();
-                                    }
-                                }
-
-                                @Override
-                                public void onDismissedBySwipeRight(RecyclerView recyclerView, int[] reverseSortedPositions) {
-                                    for (final int position : reverseSortedPositions) {
-                                        final gagInfo gi = list.get(position);
-                                        ca.notifyItemRemoved(position);
-                                        list.remove(position);
-                                        ca.notifyDataSetChanged();
-
-                                        CoordinatorLayout crdLayout = (CoordinatorLayout) findViewById(R.id.fabContainer);
-
-                                        Snackbar.make(crdLayout, "Gag successfully removed.", Snackbar.LENGTH_LONG)
-                                                .setAction("Undo", new View.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(View v) {
-                                                        getList();
-                                                        recList.setAdapter(new gagAdapter(list));
-                                                        ca.notifyDataSetChanged();
-                                                    }
-                                                })
-                                                .setCallback(new Snackbar.Callback() {
-                                                    @Override
-                                                    public void onDismissed(Snackbar snackbar, int event) {
-                                                        super.onDismissed(snackbar, event);
-                                                        SharedPreferences.Editor editor = context.getSharedPreferences(GAGS, Context.MODE_PRIVATE).edit();
-                                                        editor.remove(gi.photoId).apply();
-
-                                                        File dir = new File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "gags");
-                                                        if (dir.isDirectory()) {
-                                                            File file = new File(dir + File.separator + gi.photoId);
-                                                            file.delete();
-                                                        }
-
-                                                        if (position == 0 && list.size() < 1) {
-                                                            finish();
-                                                            Intent i = new Intent(HomeCardActivity.this, HomeCardActivity.class);
-                                                            startActivity(i);
-                                                        }
-                                                    }
-                                                }).show();
-                                    }
-                                }
-                            });
-
-            recList.addOnItemTouchListener(swipeTouchListener);
-
         }
+
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fab.setEnabled(false);
+                customPhoto();
+                fab.setEnabled(true);
+            }
+        });
+
+        final RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
+        recList.setHasFixedSize(true);
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        recList.setLayoutManager(llm);
+
+        list = new ArrayList<>();
+        gagInfo gi = new gagInfo();
+        list.add(gi.setEmpty());
+        recList.setAdapter(new gagAdapter(list, context));
+
+        SwipeableRecyclerViewTouchListener swipeTouchListener =
+                new SwipeableRecyclerViewTouchListener(recList,
+                        new SwipeableRecyclerViewTouchListener.SwipeListener() {
+                            @Override
+                            public boolean canSwipe(int position) {
+                                return true;
+                            }
+
+                            @Override
+                            public void onDismissedBySwipeLeft(RecyclerView recyclerView, int[] reverseSortedPositions) {
+                                for (final int position : reverseSortedPositions) {
+                                    final gagInfo gi = list.get(position);
+                                    ca.notifyItemRemoved(position);
+                                    list.remove(position);
+                                    ca.notifyDataSetChanged();
+
+                                    CoordinatorLayout crdLayout = (CoordinatorLayout) findViewById(R.id.fabContainer);
+
+                                    Snackbar.make(crdLayout, "Gag successfully removed.", Snackbar.LENGTH_LONG)
+                                            .setAction("Undo", new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    populateRecyclerView(recList);
+                                                    ca = new gagAdapter(list, context);
+                                                    recList.setAdapter(ca);
+                                                    ca.notifyDataSetChanged();
+                                                }
+                                            })
+                                            .setCallback(new Snackbar.Callback() {
+                                                @Override
+                                                public void onDismissed(Snackbar snackbar, int event) {
+                                                    super.onDismissed(snackbar, event);
+                                                    if (event != DISMISS_EVENT_ACTION) {
+                                                        SharedPreferences.Editor editor = context.getSharedPreferences(GAGS, Context.MODE_PRIVATE).edit();
+                                                        editor.remove(gi.photoId).apply();
+
+                                                        File dir = new File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "gags");
+                                                        if (dir.isDirectory()) {
+                                                            File file = new File(dir + File.separator + gi.photoId);
+                                                            file.delete();
+                                                        }
+
+                                                        if (position == 0 && list.size() < 1) {
+                                                            finish();
+                                                            Intent i = new Intent(HomeCardActivity.this, HomeCardActivity.class);
+                                                            startActivity(i);
+                                                        }
+                                                    }
+                                                }
+                                            }).show();
+                                }
+                            }
+
+                            @Override
+                            public void onDismissedBySwipeRight(RecyclerView recyclerView, int[] reverseSortedPositions) {
+                                for (final int position : reverseSortedPositions) {
+                                    final gagInfo gi = list.get(position);
+                                    ca.notifyItemRemoved(position);
+                                    list.remove(position);
+                                    ca.notifyDataSetChanged();
+
+                                    CoordinatorLayout crdLayout = (CoordinatorLayout) findViewById(R.id.fabContainer);
+
+                                    Snackbar.make(crdLayout, "Gag successfully removed.", Snackbar.LENGTH_LONG)
+                                            .setAction("Undo", new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    populateRecyclerView(recList);
+                                                    ca = new gagAdapter(list, context);
+                                                    recList.setAdapter(ca);
+                                                    ca.notifyDataSetChanged();
+                                                }
+                                            })
+                                            .setCallback(new Snackbar.Callback() {
+                                                @Override
+                                                public void onDismissed(Snackbar snackbar, int event) {
+                                                    super.onDismissed(snackbar, event);
+                                                    if (event != DISMISS_EVENT_ACTION) {
+                                                        SharedPreferences.Editor editor = context.getSharedPreferences(GAGS, Context.MODE_PRIVATE).edit();
+                                                        editor.remove(gi.photoId).apply();
+
+                                                        File dir = new File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "gags");
+                                                        if (dir.isDirectory()) {
+                                                            File file = new File(dir + File.separator + gi.photoId);
+                                                            file.delete();
+                                                        }
+
+                                                        if (position == 0 && list.size() < 1) {
+                                                            finish();
+                                                            Intent i = new Intent(HomeCardActivity.this, HomeCardActivity.class);
+                                                            startActivity(i);
+                                                        }
+                                                    }
+                                                }
+                                            }).show();
+                                }
+                            }
+                        });
+
+        recList.addOnItemTouchListener(swipeTouchListener);
+        populateRecyclerView(recList);
     }
 
     private void customPhoto() {
@@ -224,59 +215,68 @@ public class HomeCardActivity extends AppCompatActivity {
         }
     }
 
-    private void getList() {
+    private void populateRecyclerView(final RecyclerView rView) {
 
-        SharedPreferences prefs = getSharedPreferences(GAGS, MODE_PRIVATE);
-
-        Map<String, ?> allEntries = prefs.getAll();
-        list = new ArrayList<>();
-        JSONObject obj;
-        String keyObject;
-        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-            String entryValue = entry.getValue().toString();
-            keyObject = entry.getKey();
-
-            try {
-                JSONObject entryObject = new JSONObject(entryValue);
-                obj = entryObject.getJSONObject("nameValuePairs");
-                gagInfo gi = new gagInfo();
-                Log.d("JSON", "Processing... " + keyObject);
-
-                try {
-                    gi.title = obj.getString("title");
-                    gi.likes = obj.getString("likes");
-                    gi.comments = obj.getString("comments");
-                    gi.saved_date = obj.getString("saved_date");
-                    gi.file_path = obj.getString("file_path");
-                    gi.photoId = obj.getString("photoId");
-
-                    list.add(gi);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.remove(keyObject);
-                    editor.apply();
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        Collections.sort(list, new Comparator<gagInfo>() {
+        new Thread(new Runnable() {
             @Override
-            public int compare(gagInfo lhs, gagInfo rhs) {
-                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
-                Date lhs_d = new Date();
-                Date rhs_d = new Date();
-                try {
-                    lhs_d = formatter.parse(lhs.saved_date);
-                    rhs_d = formatter.parse(rhs.saved_date);
-                } catch (ParseException e) {
-                    e.printStackTrace();
+            public void run() {
+                SharedPreferences prefs = getSharedPreferences(GAGS, MODE_PRIVATE);
+
+                Map<String, ?> allEntries = prefs.getAll();
+                list = new ArrayList<>();
+                JSONObject obj;
+                String keyObject;
+                Boolean first = true;
+                for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+                    String entryValue = entry.getValue().toString();
+                    keyObject = entry.getKey();
+
+                    try {
+                        JSONObject entryObject = new JSONObject(entryValue);
+                        obj = entryObject.getJSONObject("nameValuePairs");
+                        gagInfo gi = new gagInfo();
+                        Log.d("JSON", "Processing... " + keyObject);
+
+                        try {
+                            gi.title = obj.getString("title");
+                            gi.likes = obj.getString("likes");
+                            gi.comments = obj.getString("comments");
+                            gi.saved_date = obj.getString("saved_date");
+                            gi.file_path = obj.getString("file_path");
+                            gi.photoId = obj.getString("photoId");
+
+                            list.add(gi);
+
+                            if (first) {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        ca = new gagAdapter(list, context);
+                                        rView.setAdapter(ca);
+                                    }
+                                });
+                                first = false;
+                            } else {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        ca.notifyItemInserted(list.size() - 1);
+                                    }
+                                });
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            SharedPreferences.Editor editor = prefs.edit();
+                            editor.remove(keyObject);
+                            editor.apply();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
-                return rhs_d.compareTo(lhs_d);
             }
-        });
+        }).start();
     }
 
     @Override
