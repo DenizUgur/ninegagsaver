@@ -33,6 +33,8 @@ dependencies {
     compile 'org.adw.library:discrete-seekbar:1.0.0'
     compile 'com.nononsenseapps:filepicker:2.5.0'
     compile 'com.github.clans:fab:1.6.2'
+    compile 'com.mani:ThinDownloadManager:1.2.0'
+    compile 'com.facebook.fresco:fresco:0.8.1'
 
     compile('com.github.afollestad.material-dialogs:commons:0.8.5.2@aar') {
         transitive = true
