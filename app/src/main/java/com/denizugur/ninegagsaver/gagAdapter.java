@@ -3,17 +3,19 @@ package com.denizugur.ninegagsaver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.io.File;
 import java.util.List;
@@ -21,18 +23,30 @@ import java.util.List;
 public class gagAdapter extends RecyclerView.Adapter<gagAdapter.gagViewHolder> {
 
     private List<gagInfo> gagList;
+    private Context context;
+    private int lastPosition = -1;
 
-    public gagAdapter(List<gagInfo> gagList) {
+    public gagAdapter(List<gagInfo> gagList, Context context) {
         this.gagList = gagList;
-    }
-
-    private Bitmap bitmap(String file_path) {
-        return BitmapFactory.decodeFile(file_path);
+        this.context = context;
     }
 
     @Override
     public int getItemCount() {
         return gagList.size();
+    }
+
+    /**
+     * Here is the key method to apply the animation
+     */
+    private void setAnimation(View viewToAnimate, int position) {
+        // If the bound view wasn't previously displayed on screen, it's animated
+        if (position > lastPosition)
+        {
+            Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
+            viewToAnimate.startAnimation(animation);
+            lastPosition = position;
+        }
     }
 
     @Override
@@ -42,9 +56,11 @@ public class gagAdapter extends RecyclerView.Adapter<gagAdapter.gagViewHolder> {
         ViewHolder.vSavedDate.setText(gi.saved_date);
         ViewHolder.vLikes.setText(gi.likes);
         ViewHolder.vComments.setText(gi.comments);
-        ViewHolder.vImageView.setImageBitmap(bitmap(gi.file_path));
+        ViewHolder.vDraweeView.setImageURI(Uri.fromFile(new File(gi.file_path)));
 
-        ViewHolder.vImageView.setOnLongClickListener(new View.OnLongClickListener() {
+        setAnimation(ViewHolder.vCardView, i);
+
+        ViewHolder.vDraweeView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(final View v) {
                 Integer adapterPosition = ViewHolder.getAdapterPosition();
@@ -58,7 +74,7 @@ public class gagAdapter extends RecyclerView.Adapter<gagAdapter.gagViewHolder> {
             }
         });
 
-        ViewHolder.vImageView.setOnClickListener(new View.OnClickListener() {
+        ViewHolder.vDraweeView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
                 Integer adapterPosition = ViewHolder.getAdapterPosition();
@@ -125,8 +141,9 @@ public class gagAdapter extends RecyclerView.Adapter<gagAdapter.gagViewHolder> {
         protected TextView vSavedDate;
         protected TextView vLikes;
         protected TextView vComments;
-        protected ImageView vImageView;
         protected Button vShareButton;
+        protected SimpleDraweeView vDraweeView;
+        protected CardView vCardView;
 
         public gagViewHolder(View v) {
             super(v);
@@ -134,8 +151,9 @@ public class gagAdapter extends RecyclerView.Adapter<gagAdapter.gagViewHolder> {
             vSavedDate = (TextView) v.findViewById(R.id.saved_date);
             vLikes = (TextView) v.findViewById(R.id.likes);
             vComments = (TextView) v.findViewById(R.id.comments);
-            vImageView = (ImageView) v.findViewById(R.id.photo);
+            vDraweeView = (SimpleDraweeView) v.findViewById(R.id.photo);
             vShareButton = (Button) v.findViewById(R.id.shareButton);
+            vCardView = (CardView) v.findViewById(R.id.card_view);
         }
     }
 }
