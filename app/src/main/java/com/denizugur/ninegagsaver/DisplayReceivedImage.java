@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
@@ -17,6 +16,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.text.Layout;
@@ -46,6 +46,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import static com.denizugur.ninegagsaver.MainActivity.FILE_EXT;
 import static com.denizugur.ninegagsaver.MainActivity.GAG_TITLE;
 import static com.denizugur.ninegagsaver.MainActivity.GAG_URL;
 
@@ -58,10 +59,13 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
     String gagURL = null;
     String photo_id = null;
     Boolean isCustom;
+    String file_ext;
+    Uri photoURI;
     private int PICK_IMAGE_REQUEST = 1;
     private int FILE_CODE = 0;
     private Context context;
     private int customPercent = 5;
+    private BitmapProcessor bp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,8 +84,10 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
         gagTitle = intent.getStringExtra(GAG_TITLE);
         gagURL = intent.getStringExtra(GAG_URL);
         isCustom = getIntent().getBooleanExtra("isCustom", false);
+        file_ext = getIntent().getStringExtra(FILE_EXT);
 
         setContentView(R.layout.activity_display_recieved_image);
+        bp = new BitmapProcessor(this, DisplayReceivedImage.this);
 
         final FloatingActionMenu fam = (FloatingActionMenu) findViewById(R.id.fam);
         FloatingActionButton save = (FloatingActionButton) findViewById(R.id.save);
@@ -105,16 +111,20 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
             @Override
             public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
                 customPercent = value;
-                process(photo, mImageView, true);
             }
 
             @Override
-            public void onStartTrackingTouch(DiscreteSeekBar seekBar) {}
+            public void onStartTrackingTouch(DiscreteSeekBar seekBar) {
+                Toast.makeText(context,
+                        "Changes will take effect after releasing seek bar.",
+                        Toast.LENGTH_SHORT).show();
+            }
 
             @Override
             public void onStopTrackingTouch(DiscreteSeekBar seekBar) {
                 sbc.setVisibility(View.INVISIBLE);
                 fam.close(true);
+                bp.cache(file_ext, mImageView, true, true);
             }
         });
 
@@ -128,25 +138,22 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
                         .inputType(InputType.TYPE_CLASS_TEXT)
                         .alwaysCallInputCallback()
                         .negativeText("Cancel")
-                        .callback(new MaterialDialog.ButtonCallback() {
-                            @Override
-                            public void onPositive(MaterialDialog dialog) {
-                                super.onPositive(dialog);
-                                gagTitle = newGagTitle;
-                                process(photo, mImageView, false);
-                            }
-                        })
                         .input("Title", gagTitle, new MaterialDialog.InputCallback() {
                             @Override
-                            public void onInput(MaterialDialog dialog, CharSequence input) {
+                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                                 if (input.length() == 0) {
                                     dialog.getActionButton(DialogAction.POSITIVE).setEnabled(false);
                                     newGagTitle = "";
-                                    mImageView.setImageBitmap(photo);
                                 } else {
                                     dialog.getActionButton(DialogAction.POSITIVE).setEnabled(true);
                                     newGagTitle = input.toString();
                                 }
+                            }
+                        })
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                                bp.cache(file_ext, mImageView, false, !newGagTitle.equals(""));
                             }
                         }).show();
             }
@@ -161,41 +168,33 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
             i.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
             startActivityForResult(i, PICK_IMAGE_REQUEST);
         } else {
-            File photoLocal = new File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "downloads" + File.separator + "GAG.png");
-            photo = BitmapFactory.decodeFile(String.valueOf(photoLocal));
-            mImageView.setImageBitmap(photo);
-            process(photo, mImageView, false);
+            photoURI = Uri.parse(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
+                    + "/downloads/GAG" + file_ext);
+
+            bp.cache(file_ext, mImageView, false, true);
         }
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) throws NullPointerException {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
 
-            Uri uri = data.getData();
-
-            Cursor cursor = null;
-            try {
-                String[] proj = {MediaStore.Images.Media.DATA};
-                cursor = this.getContentResolver().query(uri, proj, null, null, null);
-                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            String result;
+            Cursor cursor = getContentResolver().query(data.getData(), null, null, null, null);
+            if (cursor == null) {
+                result = data.getData().getPath();
+            } else {
                 cursor.moveToFirst();
-
-                String file = cursor.getString(column_index);
-                photo = BitmapFactory.decodeFile(file);
-
-                TouchImageView mImageView = (TouchImageView) findViewById(R.id.imageViewPhoto);
-                mImageView.setImageBitmap(photo);
-
-            } finally {
-                if (cursor != null) {
-                    cursor.close();
-                }
+                int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+                result = cursor.getString(idx);
+                cursor.close();
             }
+            photoURI = Uri.parse(result);
 
             final TouchImageView mImageView = (TouchImageView) findViewById(R.id.imageViewPhoto);
+
             new MaterialDialog.Builder(this)
                     .title("Set title for your image")
                     .content("This text will be show on top the image")
@@ -205,30 +204,33 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
                     .alwaysCallInputCallback()
                     .input("9gag is awesome...", "", new MaterialDialog.InputCallback() {
                         @Override
-                        public void onInput(MaterialDialog dialog, CharSequence input) {
+                        public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                             if (input.length() == 0) {
                                 dialog.getActionButton(DialogAction.POSITIVE).setEnabled(false);
                                 gagTitle = "";
-                                mImageView.setImageBitmap(photo);
                             } else {
                                 dialog.getActionButton(DialogAction.POSITIVE).setEnabled(true);
                                 gagTitle = input.toString();
-                                mImageView.setImageBitmap(photo);
-                                process(photo, mImageView, false);
                             }
                         }
                     })
                     .negativeText("Back")
-                    .callback(new MaterialDialog.ButtonCallback() {
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
-                        public void onNegative(MaterialDialog dialog) {
-                            super.onNegative(dialog);
+                        public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                            bp.cache(photoURI, mImageView, false, !gagTitle.equals(""));
+                        }
+                    })
+                    .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
                             finish();
                         }
                     })
                     .show();
         } else if (requestCode == FILE_CODE && resultCode == RESULT_OK) {
             final String modifiedTitleCustom = gagTitle.replaceAll(" ", "-");
+            assert data != null;
             final Uri uri = data.getData();
 
             Thread t = new Thread(new Runnable() {
@@ -239,7 +241,7 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
                     FileOutputStream outo = null;
                     try {
                         outo = new FileOutputStream(file);
-                        newBitmap.compress(Bitmap.CompressFormat.PNG, 100, outo);
+                        bp.getBitmap(true).compress(Bitmap.CompressFormat.PNG, 100, outo);
                     } catch (Exception e) {
                         e.printStackTrace();
                     } finally {
@@ -265,32 +267,20 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
         }
     }
 
-    private void process(Bitmap bitmap, TouchImageView mImageView, Boolean customSizePercent) {
+    public void process(Boolean customSizePercent) {
 
-        try {
-            Bitmap.Config config = bitmap.getConfig();
-            if (config == null) {
-                config = Bitmap.Config.ARGB_8888;
-            }
+        Canvas newCanvas = bp.createCanvas();
+        newBitmap = bp.getBitmap(false);
 
-            newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), config);
-            Canvas newCanvas = new Canvas(newBitmap);
-
-            newCanvas.drawBitmap(bitmap, 0, 0, null);
-
-            if (customSizePercent) {
-                drawText(newCanvas, bitmap, customPercent, false);
-            } else if (gagTitle.length() <= 15) {
-                drawText(newCanvas, bitmap, 5, true);
-            } else {
-                drawText(newCanvas, bitmap, 5, false);
-            }
-
-            mImageView.setImageBitmap(newBitmap);
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (customSizePercent) {
+            drawText(newCanvas, newBitmap, customPercent, false);
+        } else if (gagTitle.length() <= 15) {
+            drawText(newCanvas, newBitmap, 5, true);
+        } else {
+            drawText(newCanvas, newBitmap, 5, false);
         }
+        TouchImageView mImageView = (TouchImageView) findViewById(R.id.imageViewPhoto);
+        mImageView.setImageBitmap(bp.getBitmap(true));
     }
 
     private void drawText(Canvas canvas, Bitmap bitmap, int percent, Boolean isShort) {
@@ -394,6 +384,7 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String file_path = prefs.getString("path", null);
 
+        assert file_path != null;
         final File dir = new File(file_path);
         if (!dir.exists()) {
             dir.mkdirs();
@@ -410,7 +401,7 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
                 FileOutputStream outo = null;
                 try {
                     outo = new FileOutputStream(file);
-                    newBitmap.compress(Bitmap.CompressFormat.PNG, 100, outo);
+                    bp.getBitmap(true).compress(Bitmap.CompressFormat.PNG, 100, outo);
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -432,7 +423,7 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
 
                 try {
                     outi = new FileOutputStream(dir_app);
-                    newBitmap.compress(Bitmap.CompressFormat.PNG, 100, outi);
+                    bp.getBitmap(true).compress(Bitmap.CompressFormat.PNG, 100, outi);
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -495,7 +486,7 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
                 FileOutputStream out = null;
                 try {
                     out = new FileOutputStream(dir_app);
-                    newBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                    bp.getBitmap(true).compress(Bitmap.CompressFormat.PNG, 100, out);
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -599,6 +590,7 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onDestroy() {
+        bp.cleanUp();
         File dir = new File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "downloads");
         if (dir.isDirectory()) {
             String[] children = dir.list();
