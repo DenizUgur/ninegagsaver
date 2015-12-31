@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -13,7 +12,6 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.view.Display;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -32,6 +30,8 @@ public class MainActivity extends Activity {
 
     public final static String GAG_TITLE = "com.denizugur.ninegagsaver.GAG_TITLE";
     public final static String GAG_URL = "com.denizugur.ninegagsaver.GAG_URL";
+    public final static String FILE_EXT = "com.denizugur.ninegagsaver.FILE_EXT";
+    private final static String TAG = "MainActivity";
     private final static int EXIT_APP = 0;
     private Context context;
 
@@ -50,9 +50,9 @@ public class MainActivity extends Activity {
         }
     }
 
-    public boolean checkOnlineState() {
+    private static boolean checkOnlineState(Context context) {
         ConnectivityManager CManager =
-                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo NInfo = CManager.getActiveNetworkInfo();
         return NInfo != null && NInfo.isConnectedOrConnecting();
     }
@@ -76,7 +76,7 @@ public class MainActivity extends Activity {
             try {
                 assert str != null;
                 new File(str);
-                if ("text/plain".equals(type) && checkOnlineState()) {
+                if ("text/plain".equals(type) && checkOnlineState(this)) {
                     handleSendText(intent);
                 } else {
                     new MaterialDialog.Builder(this)
@@ -135,16 +135,11 @@ public class MainActivity extends Activity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        f.fetch();
-
-                        Display display = getWindowManager().getDefaultDisplay();
-                        Point size = new Point();
-                        display.getSize(size);
-                        int screenHeight = size.y;
-
-                        if (f.getHeightImage() > screenHeight) {
-                            Log.w(getLocalClassName(), "Long" + " Screen@" + screenHeight + " Image@" + f.getHeightImage());
-                        } else if (f.getHeightImage() == 0) {
+                        try {
+                            f.fetch();
+                            if (f.isGIF) throw new Exception("GIF is not possible to process.");
+                            alt_download();
+                        } catch (Exception e) {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -163,26 +158,29 @@ public class MainActivity extends Activity {
                                             .show();
                                 }
                             });
-                        } else {
-                            Log.w(getLocalClassName(), "Short" + " Screen@" + screenHeight + " Image@" + f.getHeightImage());
                         }
+                    }
 
+                    private void alt_download() {
                         File directory_download = new File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "downloads");
                         if (!directory_download.exists()) {
                             directory_download.mkdirs();
                         }
 
                         Uri downloadUri = Uri.parse(f.getPhotoURL());
-                        Uri destinationUri = Uri.parse(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + "/downloads/GAG.png");
+                        final String extension = String.valueOf(downloadUri).substring(String.valueOf(downloadUri).lastIndexOf("."));
+                        final File destinationFile = new File(directory_download + "/GAG" + extension);
+
                         DownloadRequest downloadRequest = new DownloadRequest(downloadUri)
                                 .setRetryPolicy(new DefaultRetryPolicy())
-                                .setDestinationURI(destinationUri).setPriority(DownloadRequest.Priority.HIGH)
+                                .setDestinationURI(Uri.fromFile(destinationFile)).setPriority(DownloadRequest.Priority.HIGH)
                                 .setDownloadListener(new DownloadStatusListener() {
                                     @Override
                                     public void onDownloadComplete(int id) {
                                         Log.d(String.valueOf(id), "Finished");
                                         Intent intentImage = new Intent(context, DisplayReceivedImage.class);
                                         intentImage.putExtra(GAG_TITLE, f.getTitle());
+                                        intentImage.putExtra(FILE_EXT, extension);
                                         intentImage.putExtra(GAG_URL, f.getURL());
                                         startActivityForResult(intentImage, EXIT_APP);
                                     }
@@ -202,7 +200,7 @@ public class MainActivity extends Activity {
                                     }
 
                                     @Override
-                                    public void onProgress(int id, long totalBytes, long downlaodedBytes, int progress) {}
+                                    public void onProgress(int id, long totalBytes, long downloadedBytes, int progress) {}
                                 });
 
                         ThinDownloadManager downloadManager = new ThinDownloadManager();
