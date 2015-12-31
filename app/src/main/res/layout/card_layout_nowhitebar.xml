@@ -21,9 +21,9 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
             android:adjustViewBounds="true"
-            fresco:placeholderImage="@drawable/fry"
             android:contentDescription="@string/photo"
-            android:scaleType="centerCrop" />
+            fresco:placeholderImage="@drawable/fry"
+            fresco:actualImageScaleType="focusCrop" />
 
         <RelativeLayout
             android:id="@+id/relativeLayout"
