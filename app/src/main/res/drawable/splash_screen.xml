@@ -4,7 +4,7 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/ninegag"/>
+            android:src="@drawable/splash"/>
     </item>
 
 </layer-list>
