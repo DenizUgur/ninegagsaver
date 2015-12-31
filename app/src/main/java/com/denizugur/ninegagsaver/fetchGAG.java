@@ -1,26 +1,23 @@
 package com.denizugur.ninegagsaver;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class fetchGAG {
 
+    private static String TAG = "fetchGAG";
     private String Title = null;
     private String photoURL = null;
     private String url;
     private String ID;
     private String Likes;
     private String Comments;
-    private int Height;
+    public Boolean isGIF = false;
 
     public String getURL() {
         return url;
@@ -36,10 +33,6 @@ public class fetchGAG {
 
     public String getTitle() {
         return Title;
-    }
-
-    public int getHeightImage() {
-        return Height;
     }
 
     public String getLikes() {
@@ -58,7 +51,7 @@ public class fetchGAG {
         if (url != null) {
             fetchRunnable fr = new fetchRunnable();
             Thread t = new Thread(fr);
-            Log.d(t.getName(), "Fetch started");
+            Log.d(TAG, "Fetch started");
             try {
                 t.start();
                 t.join();
@@ -73,19 +66,25 @@ public class fetchGAG {
         public void run() {
 
             try {
-                Document doc = Jsoup.connect(url).timeout(0).get();
-                Elements elementImage = doc.select("meta[property=og:image]");
+                Document doc = Jsoup.connect(url)
+                        .timeout(0)
+                        .userAgent("Mozilla/5.0")
+                        .maxBodySize(0)
+                        .get();
+
                 Elements elementTitle = doc.select("meta[property=og:title]");
                 Elements elementComments = doc.select("span[class=badge-item-comment-count]");
                 Elements elementLikes = doc.select("span[class=badge-item-love-count]");
 
-                Elements elementGif = doc.select("div[data-mp4]");
-                if (!elementGif.isEmpty()) {
-                    Height = 0;
-                    return;
+                Elements elementGIF = doc.select("div.badge-animated-container-animated");
+                Elements elementImage = doc.select("img.badge-item-img");
+                if (!elementGIF.isEmpty()) {
+                    photoURL = elementGIF.get(0).attr("data-image");
+                    isGIF = true;
+                } else {
+                    photoURL = elementImage.get(0).attr("src");
                 }
 
-                photoURL = elementImage.attr("content");
                 Title = elementTitle.attr("content");
                 URL urlID = new URL(url);
                 String path = urlID.getPath();
@@ -94,16 +93,6 @@ public class fetchGAG {
                 Likes = elementLikes.html();
 
                 Log.d("GAG", ID + " " + Likes + " " + Comments);
-
-                URL urlPhoto = new URL(photoURL);
-                HttpURLConnection connection = (HttpURLConnection) urlPhoto.openConnection();
-                connection.setDoInput(true);
-                connection.connect();
-                InputStream input = connection.getInputStream();
-                Bitmap myBitmap = BitmapFactory.decodeStream(input);
-
-                Height = myBitmap.getHeight();
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
