@@ -1,6 +1,13 @@
 package com.denizugur.ninegagsaver;
 
-public class gagInfo {
+import android.support.annotation.NonNull;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+public class gagInfo implements Comparable<gagInfo> {
     protected String photoId;
     protected String title;
     protected String saved_date;
@@ -42,4 +49,21 @@ public class gagInfo {
 
         return this;
     }
+
+    public Date getDateTime() {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+        Date d = null;
+        try {
+            d = formatter.parse(saved_date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return d;
+    }
+
+    @Override
+    public int compareTo(@NonNull gagInfo gi) {
+        return gi.getDateTime().compareTo(getDateTime());
+    }
+
 }
