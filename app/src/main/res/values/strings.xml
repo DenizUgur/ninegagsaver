@@ -17,11 +17,16 @@
     <string name="choose_folder_toast">Please choose a folder to continue&#8230;</string>
     <string name="clear_confirm">Gags have been cleaned</string>
 
+    <string name="action_feedback">Feedback</string>
+    <string name="feedback_desc">To report a bug or request a feature please continue to project GitHub page.
+        Currently only issues reported at Github will be investigated. In the future updates crashes can be reported
+        from native crash dialog and you will also be able to describe your issue right on this dialog.</string>
+
     <string name="go_back">Go Back</string>
+    <string name="proceed">Proceed</string>
     <string name="sorry">Sorry</string>
     <string name="no_internet">No Internet Connection</string>
     <string name="no_gif">No GIF Allowed</string>
-
 
     <string name="download_failed_title">Download Failed</string>
     <string name="download_failed">Image couldn\'t downloaded. This could be due to slow network connection or non at all.</string>
@@ -34,9 +39,6 @@
     <string name="like_pic">likes</string>
     <string name="comment_pic">comments</string>
     <string name="no_gags">There is no saved gag, go save some to see them here</string>
-
-    <string name="download_description">You can\'t access the gag from here as app automatically deletes this file.</string>
-    <string name="download_title">9GAG Downloaded Photo</string>
 
     <string name="about_body"><![CDATA[
         9GAG Saver is a free and <a href=\'https://github.com/DenizUgur/ninegagsaver\'>open source</a> application designed by <b>Deniz Ugur</b>.
@@ -51,6 +53,7 @@
         <a href=\'http://frescolib.org/\'>Fresco by Facebook</a>,
         <a href=\'https://github.com/smanikandan14/ThinDownloadManager\'>Thin Download Manager by smanikandan14</a>,
         <a href=\'#\'>Design Library by Google</a>,
+        <a href=\'https://github.com/nostra13/Android-Universal-Image-Loader\'>Android Universal Image Loader by nostra13</a>,
         <a href=\'https://github.com/google/gson\'>GSON by Google</a>
     ]]></string>
 
