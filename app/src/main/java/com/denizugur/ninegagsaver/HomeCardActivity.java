@@ -3,7 +3,6 @@ package com.denizugur.ninegagsaver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -11,6 +10,10 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,7 +26,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.internal.ThemeSingleton;
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -180,14 +182,12 @@ public class HomeCardActivity extends AppCompatActivity {
         }
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setVisibility(View.INVISIBLE);
-        /*fab.setOnClickListener(new View.OnClickListener() { //FIXME: BitmapProcessor is unable to display Image
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fab.setEnabled(false);
                 customPhoto();
-                fab.setEnabled(true);
             }
-        });*/
+        });
     }
 
     @Deprecated
@@ -330,23 +330,27 @@ public class HomeCardActivity extends AppCompatActivity {
                     .negativeText(R.string.close)
                     .show();
         } else if (id == R.id.action_feedback) {
-            tv.setText(R.string.feedback_desc);
-            new MaterialDialog.Builder(this)
-                    .iconRes(R.drawable.ic_action_feedback_white)
-                    .title(R.string.action_feedback)
-                    .customView(tv, true)
-                    .positiveText(R.string.proceed)
-                    .negativeText(android.R.string.cancel)
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/DenizUgur/ninegagsaver/issues"));
-                            startActivity(i);
-                        }
-                    })
-                    .show();
+            showDialog(this, FeedbackDialog.class, "dialog_feedback");
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private static void showDialog(@NonNull AppCompatActivity activity,
+                                   @NonNull Class clazz,
+                                   @NonNull String tag) {
+        DialogFragment df;
+        try {
+            df = (DialogFragment) clazz.newInstance();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        FragmentManager fm = activity.getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        Fragment prev = fm.findFragmentByTag(tag);
+        if (prev != null) ft.remove(prev);
+        ft.addToBackStack(null);
+        df.show(ft, tag);
     }
 }

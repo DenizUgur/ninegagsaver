@@ -45,6 +45,24 @@ public class VersionCheck {
         return versionName;
     }
 
+    public static String getVersionName(Context context) {
+        PackageManager pm = context.getPackageManager();
+        String packageName = context.getPackageName();
+        String versionName;
+        try {
+            PackageInfo info = pm.getPackageInfo(packageName, 0);
+            versionName = info.versionName;
+
+            // Make the info part of version name a bit smaller.
+            if (versionName.indexOf('-') >= 0) {
+                versionName = versionName.replaceFirst("\\-", "<small>-") + "</small>";
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            versionName = "N/A";
+        }
+        return versionName;
+    }
+
     protected void updateVersionInPreferences(String version) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sp.edit();
