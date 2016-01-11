@@ -32,8 +32,6 @@ import java.util.Locale;
  */
 public class FeedbackDialog extends DialogFragment {
 
-    private View mFaqContainer;
-
     private Spinner mSpinner;
     private EditText mEditText;
 
@@ -88,7 +86,7 @@ public class FeedbackDialog extends DialogFragment {
 
     private void send(@NonNull CharSequence title, @NonNull CharSequence body) {
         Activity context = getActivity();
-        String[] recipients = {getString(R.string.support_mail)};
+        String[] recipients = {Base.SUPPORT_EMAIL};
         Intent intent = new Intent()
                 .putExtra(Intent.EXTRA_EMAIL, recipients)
                 .putExtra(Intent.EXTRA_SUBJECT, title)
