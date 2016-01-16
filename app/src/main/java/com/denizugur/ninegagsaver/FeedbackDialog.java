@@ -24,6 +24,7 @@ import com.denizugur.core.Base;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.Locale;
 
 /**
@@ -35,6 +36,11 @@ public class FeedbackDialog extends DialogFragment {
 
     private Spinner mSpinner;
     private EditText mEditText;
+
+    private Uri JSON_LOCATION() {
+        File file_loc = new File(getActivity().getExternalCacheDir() + File.separator + "dump.json");
+        return Uri.fromFile(file_loc);
+    }
 
     @NonNull
     @Override
@@ -85,13 +91,12 @@ public class FeedbackDialog extends DialogFragment {
         return md;
     }
 
-    private void send(@NonNull CharSequence title, @NonNull CharSequence body) {
-        Activity context = getActivity();
+    private void send(@NonNull CharSequence title, @NonNull CharSequence message) {
         String[] recipients = {Base.SUPPORT_EMAIL};
         Intent intent = new Intent()
                 .putExtra(Intent.EXTRA_EMAIL, recipients)
                 .putExtra(Intent.EXTRA_SUBJECT, title)
-                .putExtra(Intent.EXTRA_TEXT, body);
+                .putExtra(Intent.EXTRA_TEXT, message);
 
         intent.setAction(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse("mailto:"));
