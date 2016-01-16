@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <string name="app_name">9GAG Saver</string>
@@ -21,12 +22,15 @@
     <string name="send">Send</string>
     <string name="feedback_dialog_message_hint">Your message. Device specs will be included automatically.</string>
     <string name="feedback_error_msg_too_short">Message must contain at least %1$d characters.</string>
+    <string name="feedback_error_json">Unable to obtain device specifications.</string>
 
     <string name="go_back">Go Back</string>
     <string name="proceed">Proceed</string>
     <string name="sorry">Sorry</string>
     <string name="no_internet">No Internet Connection</string>
     <string name="no_gif">No GIF Allowed</string>
+
+    <string name="crash_toast_text">Ooooops ! I crashed, but a report has been sent to my developer to help fix the issue !</string>
 
     <string name="download_failed_title">Download Failed</string>
     <string name="download_failed">Image couldn\'t downloaded. This could be due to slow network connection or non at all.</string>
@@ -53,6 +57,7 @@
         <a href=\'http://frescolib.org/\'>Fresco by Facebook</a>,
         <a href=\'https://github.com/smanikandan14/ThinDownloadManager\'>Thin Download Manager by smanikandan14</a>,
         <a href=\'#\'>Design Library by Google</a>,
+        <a href=\'https://github.com/ACRA/acra\'>acra by ACRA</a>,
         <a href=\'https://github.com/nostra13/Android-Universal-Image-Loader\'>Android Universal Image Loader by nostra13</a>,
         <a href=\'https://github.com/google/gson\'>GSON by Google</a>
     ]]></string>
@@ -65,5 +70,6 @@
         <br><b>How can I remove a gag from the main screen?</b>
         <br>Swipe the card to the right or left to remove it from the screen.
     ]]></string>
+    <string name="title_activity_main_application">MainApplication</string>
 
 </resources>
