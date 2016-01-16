@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Environment;
 
+import com.denizugur.core.TouchImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 

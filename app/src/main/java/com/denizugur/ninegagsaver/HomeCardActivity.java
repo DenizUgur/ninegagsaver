@@ -28,6 +28,7 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.internal.ThemeSingleton;
+import com.denizugur.core.SwipeableRecyclerViewTouchListener;
 import com.facebook.drawee.backends.pipeline.Fresco;
 
 import org.json.JSONException;

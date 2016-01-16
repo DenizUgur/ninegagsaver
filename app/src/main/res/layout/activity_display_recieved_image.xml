@@ -7,7 +7,7 @@
     android:animateLayoutChanges="true"
     tools:context=".DisplayReceivedImage">
 
-    <com.denizugur.ninegagsaver.TouchImageView
+    <com.denizugur.core.TouchImageView
         android:id="@+id/imageViewPhoto"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

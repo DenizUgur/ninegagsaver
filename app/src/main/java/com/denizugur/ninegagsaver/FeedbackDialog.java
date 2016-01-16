@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.denizugur.core.Base;
 
 import org.json.JSONException;
 import org.json.JSONObject;

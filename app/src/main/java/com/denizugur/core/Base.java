@@ -1,4 +1,4 @@
-package com.denizugur.ninegagsaver;
+package com.denizugur.core;
 
 import android.support.annotation.NonNull;
 

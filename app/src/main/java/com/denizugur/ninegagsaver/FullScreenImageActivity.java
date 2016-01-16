@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
+import com.denizugur.core.TouchImageView;
+
 public class FullScreenImageActivity extends AppCompatActivity {
 
     @Override

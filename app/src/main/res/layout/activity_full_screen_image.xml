@@ -5,7 +5,7 @@
     android:background="@color/background_color"
     tools:context=".FullScreenImageActivity" >
 
-    <com.denizugur.ninegagsaver.TouchImageView
+    <com.denizugur.core.TouchImageView
         android:id="@+id/imgFullScreen"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />

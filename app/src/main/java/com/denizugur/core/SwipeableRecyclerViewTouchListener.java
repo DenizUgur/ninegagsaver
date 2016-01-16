@@ -1,4 +1,4 @@
-package com.denizugur.ninegagsaver;
+package com.denizugur.core;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
