@@ -1,4 +1,4 @@
-package com.denizugur.ninegagsaver;
+package com.denizugur.dialogs;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -20,6 +20,8 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.denizugur.core.Base;
+import com.denizugur.helpers.VersionCheck;
+import com.denizugur.ninegagsaver.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,15 +63,17 @@ public class FeedbackDialog extends DialogFragment {
                         Context context = getActivity();
                         CharSequence message = mEditText.getText();
 
-                        if (isMessageLongEnough(message)) {
-
+                        if (checkContent(message)) {
                             int type = mSpinner.getSelectedItemPosition();
-                            CharSequence title = createTitle(context, type);
+                            CharSequence title = createTitle(context, type - 1);
                             CharSequence body = createBody(context, message);
                             send(title, body);
                         } else {
-                            String toastText = getString(R.string.feedback_error_msg_too_short, 10);
-                            Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show();
+                            if (mSpinner.getSelectedItemPosition() == 0) {
+                                Toast.makeText(getContext(), R.string.feedback_spinner_err, Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(context, R.string.feedback_error_msg_too_short, Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                 })
@@ -167,8 +171,8 @@ public class FeedbackDialog extends DialogFragment {
         return msg + "\n\nExtras (added automatically & do not change):\n" + extra;
     }
 
-    private boolean isMessageLongEnough(@Nullable CharSequence message) {
-        return message != null && message.length() >= 10;
+    private boolean checkContent(@Nullable CharSequence message) {
+        return message != null && message.length() >= 10 && mSpinner.getSelectedItemPosition() != 0;
     }
 
 }

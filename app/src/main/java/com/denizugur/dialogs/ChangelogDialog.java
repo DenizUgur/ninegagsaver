@@ -1,4 +1,4 @@
-package com.denizugur.ninegagsaver;
+package com.denizugur.dialogs;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -13,6 +13,7 @@ import android.webkit.WebView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
+import com.denizugur.ninegagsaver.R;
 
 import java.io.BufferedReader;
 import java.io.InputStream;

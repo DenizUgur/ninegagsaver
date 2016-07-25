@@ -1,4 +1,4 @@
-package com.denizugur.ninegagsaver;
+package com.denizugur.helpers;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Environment;
 
 import com.denizugur.core.TouchImageView;
+import com.denizugur.ninegagsaver.DisplayReceivedImage;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -23,24 +24,6 @@ public class BitmapProcessor {
     public BitmapProcessor(Context context, DisplayReceivedImage dis) {
         this.context = context;
         this.dis = dis;
-    }
-
-    @Deprecated
-    public void cache(Uri photoURI, TouchImageView iV, Boolean customSize, Boolean process) {
-
-        ImageLoaderConfiguration iLConfig = new ImageLoaderConfiguration.Builder(context)
-                .denyCacheImageMultipleSizesInMemory()
-                .writeDebugLogs()
-                .build();
-
-        ImageLoader imageLoader = ImageLoader.getInstance();
-        imageLoader.init(iLConfig);
-
-        File f = new File(photoURI.getPath());
-        image = imageLoader.loadImageSync("file://" + f.getAbsolutePath());
-        config = image.getConfig();
-        iV.setImageBitmap(image);
-        if (process) dis.process(customSize);
     }
 
     public void cache(String extension, TouchImageView iV, Boolean customSize, Boolean process) {

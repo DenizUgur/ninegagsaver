@@ -1,4 +1,4 @@
-package com.denizugur.ninegagsaver;
+package com.denizugur.helpers;
 
 import android.util.Log;
 
