@@ -42,4 +42,12 @@
         android:summary="@string/summary_useTitleAsMessage"
         android:title="@string/title_useTitleAsMessage" /></PreferenceCategory>
 
+    <com.afollestad.materialdialogs.prefs.MaterialListPreference
+        android:title="@string/image_format"
+        android:summary="@string/summary_format"
+        android:key="image_format"
+        android:entries="@array/image_format_list"
+        android:entryValues="@array/image_format_value"
+        android:defaultValue="0" />
+
 </PreferenceScreen>
