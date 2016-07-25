@@ -11,6 +11,7 @@
     <string name="action_remove">Remove</string>
     <string name="action_help">Help</string>
     <string name="close">Close</string>
+    <string name="ok">ok</string>
     <string name="changelog">Changelog</string>
     <string name="gag_image">Gag Image</string>
     <string name="intent_label">Save with Title</string>
@@ -21,7 +22,7 @@
     <string name="action_feedback">Feedback</string>
     <string name="send">Send</string>
     <string name="feedback_dialog_message_hint">Your message. Device specs will be included automatically.</string>
-    <string name="feedback_error_msg_too_short">Message must contain at least %1$d characters.</string>
+    <string name="feedback_error_msg_too_short">Message must contain at least 10 characters.</string>
     <string name="feedback_error_json">Unable to obtain device specifications.</string>
 
     <string name="go_back">Go Back</string>
@@ -42,11 +43,12 @@
     <string name="fab_size">Edit Title Size</string>
     <string name="like_pic">likes</string>
     <string name="comment_pic">comments</string>
-    <string name="no_gags">There is no saved gag, go save some to see them here</string>
+    <string name="no_gags">There is no saved posts, go save some to see them here</string>
+    <string name="no_gags_hint">You can use <b>9GAG button</b> located right bottom of the screen to access the application quickly</string>
 
     <string name="about_body"><![CDATA[
         9GAG Saver is a free and <a href=\'https://github.com/DenizUgur/ninegagsaver\'>open source</a> application designed by <b>Deniz Ugur</b>.
-        Copyright 2015. All Rights Reserved<br/><br/>
+        Copyright 2016. All Rights Reserved<br/><br/>
         <b>Credits</b><br/>
         <a href=\'http://developer.android.com/tools/support-library/index.html\'>Android Support Library</a>,
         <a href=\'https://commons.apache.org\'>Apache Commons</a>,
@@ -71,5 +73,8 @@
         <br>Swipe the card to the right or left to remove it from the screen.
     ]]></string>
     <string name="title_activity_main_application">MainApplication</string>
+    <string name="image_format">Image Format</string>
+    <string name="summary_format">Choose format of image for saving</string>
+    <string name="feedback_spinner_err">Please choose the type of the feedback</string>
 
 </resources>

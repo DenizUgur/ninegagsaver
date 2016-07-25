@@ -25,7 +25,7 @@
             android:layout_gravity="bottom|right"
             android:layout_marginBottom="@dimen/fab_margin"
             android:layout_marginRight="@dimen/fab_margin"
-            android:src="@drawable/fab_add"
+            android:src="@drawable/ic_gag"
             app:backgroundTint="@color/primary_color"
             app:rippleColor="@color/primary_color_600"
             app:fabSize="normal"
