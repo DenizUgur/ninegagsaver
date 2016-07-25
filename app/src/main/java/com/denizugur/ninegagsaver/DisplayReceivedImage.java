@@ -3,7 +3,6 @@ package com.denizugur.ninegagsaver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -15,7 +14,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
@@ -30,11 +28,13 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.denizugur.core.TouchImageView;
+import com.denizugur.helpers.BitmapProcessor;
+import com.denizugur.helpers.WriteObjectSP;
+import com.denizugur.helpers.fetchGAG;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
-import com.nononsenseapps.filepicker.FilePickerActivity;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 import org.json.JSONObject;
@@ -59,7 +59,6 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
     Bitmap newBitmap = null;
     String gagURL = null;
     String photo_id = null;
-    Boolean isCustom;
     String file_ext;
     Uri photoURI;
     private int PICK_IMAGE_REQUEST = 1;
@@ -84,7 +83,6 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
         Intent intent = getIntent();
         gagTitle = intent.getStringExtra(GAG_TITLE);
         gagURL = intent.getStringExtra(GAG_URL);
-        isCustom = getIntent().getBooleanExtra("isCustom", false);
         file_ext = getIntent().getStringExtra(FILE_EXT);
 
         setContentView(R.layout.activity_display_recieved_image);
@@ -94,7 +92,7 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
         FloatingActionButton save = (FloatingActionButton) findViewById(R.id.save);
         FloatingActionButton share = (FloatingActionButton) findViewById(R.id.share);
         FloatingActionButton changeTitle = (FloatingActionButton) findViewById(R.id.changeTitle);
-        FloatingActionButton changeSize = (FloatingActionButton) findViewById(R.id.changeSize);
+        final FloatingActionButton changeSize = (FloatingActionButton) findViewById(R.id.changeSize);
         final TouchImageView mImageView = (TouchImageView) findViewById(R.id.imageViewPhoto);
 
         DiscreteSeekBar seekbar = (DiscreteSeekBar) findViewById(R.id.seekBar);
@@ -105,6 +103,7 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
             @Override
             public void onClick(View v) {
                 sbc.setVisibility(View.VISIBLE);
+                changeSize.setEnabled(false);
             }
         });
 
@@ -123,7 +122,6 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
 
             @Override
             public void onStopTrackingTouch(DiscreteSeekBar seekBar) {
-                sbc.setVisibility(View.INVISIBLE);
                 fam.close(true);
                 bp.cache(file_ext, mImageView, true, true);
             }
@@ -164,109 +162,10 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
         save.setOnClickListener(this);
         share.setOnClickListener(this);
 
-        if (isCustom) {
-            Intent i = new Intent(Intent.ACTION_PICK);
-            i.setType("image/*");
-            i.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-            startActivityForResult(i, PICK_IMAGE_REQUEST);
-        } else {
-            photoURI = Uri.parse(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
-                    + "/downloads/GAG" + file_ext);
+        photoURI = Uri.parse(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
+                + "/downloads/GAG" + file_ext);
 
-            bp.cache(file_ext, mImageView, false, true);
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) throws NullPointerException {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-
-            String result;
-            Cursor cursor = getContentResolver().query(data.getData(), null, null, null, null);
-            if (cursor == null) {
-                result = data.getData().getPath();
-            } else {
-                cursor.moveToFirst();
-                int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-                result = cursor.getString(idx);
-                cursor.close();
-            }
-            photoURI = Uri.parse(result);
-
-            final TouchImageView mImageView = (TouchImageView) findViewById(R.id.imageViewPhoto);
-
-            new MaterialDialog.Builder(this)
-                    .title("Set title for your image")
-                    .content("This text will be show on top the image")
-                    .inputType(InputType.TYPE_CLASS_TEXT)
-                    .theme(Theme.DARK)
-                    .cancelable(false)
-                    .alwaysCallInputCallback()
-                    .input("9gag is awesome...", "", new MaterialDialog.InputCallback() {
-                        @Override
-                        public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                            if (input.length() == 0) {
-                                dialog.getActionButton(DialogAction.POSITIVE).setEnabled(false);
-                                gagTitle = "";
-                            } else {
-                                dialog.getActionButton(DialogAction.POSITIVE).setEnabled(true);
-                                gagTitle = input.toString();
-                            }
-                        }
-                    })
-                    .negativeText("Back")
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                            bp.cache(photoURI, mImageView, false, !gagTitle.equals(""));
-                        }
-                    })
-                    .onNegative(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                            finish();
-                        }
-                    })
-                    .show();
-        } else if (requestCode == FILE_CODE && resultCode == RESULT_OK) {
-            final String modifiedTitleCustom = gagTitle.replaceAll(" ", "-");
-            assert data != null;
-            final Uri uri = data.getData();
-
-            Thread t = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    File file = new File(uri.getPath(), modifiedTitleCustom + ".png");
-
-                    FileOutputStream outo = null;
-                    try {
-                        outo = new FileOutputStream(file);
-                        bp.getBitmap(true).compress(Bitmap.CompressFormat.PNG, 100, outo);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    } finally {
-                        try {
-                            if (outo != null) {
-                                outo.close();
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                    intent.setData(Uri.fromFile(file));
-                    sendBroadcast(intent);
-
-                }
-            });
-            t.start();
-            Toast.makeText(getApplicationContext(), "Photo saved to" + uri.getPath(), Toast.LENGTH_LONG).show();
-        } else {
-            finish();
-        }
+        bp.cache(file_ext, mImageView, false, true);
     }
 
     public void process(Boolean customSize) {
@@ -386,6 +285,30 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String file_path = prefs.getString("path", null);
 
+        String format = prefs.getString("image_format", "0");
+
+        class FORMAT {
+            public String ext;
+            public Bitmap.CompressFormat bitmap_format;
+            public Integer q;
+
+            public void setString(String x) {this.ext = x;}
+            public void setBitmapFormat(Bitmap.CompressFormat x) {this.bitmap_format = x;}
+            public void setQuality(Integer x) {this.q = x;}
+        }
+
+        final FORMAT f = new FORMAT();
+
+        if (format.equals("0")) {
+            f.setString(".png");
+            f.setBitmapFormat(Bitmap.CompressFormat.PNG);
+            f.setQuality(100);
+        } else {
+            f.setString(".jpeg");
+            f.setBitmapFormat(Bitmap.CompressFormat.JPEG);
+            f.setQuality(80);
+        }
+
         assert file_path != null;
         final File dir = new File(file_path);
         if (!dir.exists()) {
@@ -398,12 +321,12 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
                 pushObjectToSP();
 
                 String modifiedTitle = gagTitle.replaceAll(" ", "-");
-                File file = new File(dir, modifiedTitle + ".png");
+                File file = new File(dir, modifiedTitle + f.ext);
 
                 FileOutputStream outo = null;
                 try {
                     outo = new FileOutputStream(file);
-                    bp.getBitmap(true).compress(Bitmap.CompressFormat.PNG, 100, outo);
+                    bp.getBitmap(true).compress(f.bitmap_format, f.q, outo);
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -425,7 +348,7 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
 
                 try {
                     outi = new FileOutputStream(dir_app);
-                    bp.getBitmap(true).compress(Bitmap.CompressFormat.PNG, 100, outi);
+                    bp.getBitmap(true).compress(f.bitmap_format, f.q, outi);
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -452,19 +375,7 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
             }
         });
 
-        if (isCustom) {
-            Intent i = new Intent(context, FilePickerActivity.class);
-
-            i.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, false);
-            i.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, true);
-            i.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_DIR);
-            i.putExtra(FilePickerActivity.EXTRA_START_PATH, Environment.getExternalStorageDirectory().getPath());
-
-            save.setIndeterminate(false);
-            startActivityForResult(i, FILE_CODE);
-        } else {
-            normal_save.start();
-        }
+        normal_save.start();
     }
 
     public void sharePhoto() {
