@@ -17,9 +17,10 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
+import com.denizugur.helpers.fetchGAG;
 import com.thin.downloadmanager.DefaultRetryPolicy;
 import com.thin.downloadmanager.DownloadRequest;
-import com.thin.downloadmanager.DownloadStatusListener;
+import com.thin.downloadmanager.DownloadStatusListenerV1;
 import com.thin.downloadmanager.ThinDownloadManager;
 
 import java.io.File;
@@ -132,13 +133,13 @@ public class MainActivity extends Activity {
                 final fetchGAG f = new fetchGAG();
                 f.setURL(gagURL);
 
-                new Thread(new Runnable() {
+                new Thread(new Runnable() { //TODO: GIF implementation via video_download()
                     @Override
                     public void run() {
                         try {
                             f.fetch();
                             if (f.isGIF) throw new Exception("GIF is not possible to process.");
-                            alt_download();
+                            img_download();
                         } catch (Exception e) {
                             runOnUiThread(new Runnable() {
                                 @Override
@@ -161,7 +162,7 @@ public class MainActivity extends Activity {
                         }
                     }
 
-                    private void alt_download() {
+                    private void img_download() {
                         File directory_download = new File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "downloads");
                         if (!directory_download.exists()) {
                             directory_download.mkdirs();
@@ -174,10 +175,10 @@ public class MainActivity extends Activity {
                         DownloadRequest downloadRequest = new DownloadRequest(downloadUri)
                                 .setRetryPolicy(new DefaultRetryPolicy())
                                 .setDestinationURI(Uri.fromFile(destinationFile)).setPriority(DownloadRequest.Priority.HIGH)
-                                .setDownloadListener(new DownloadStatusListener() {
+                                .setStatusListener(new DownloadStatusListenerV1() {
                                     @Override
-                                    public void onDownloadComplete(int id) {
-                                        Log.d(String.valueOf(id), "Finished");
+                                    public void onDownloadComplete(DownloadRequest downloadRequest) {
+                                        Log.d(String.valueOf(downloadRequest), "Finished");
                                         Intent intentImage = new Intent(context, DisplayReceivedImage.class);
                                         intentImage.putExtra(GAG_TITLE, f.getTitle());
                                         intentImage.putExtra(FILE_EXT, extension);
@@ -186,7 +187,7 @@ public class MainActivity extends Activity {
                                     }
 
                                     @Override
-                                    public void onDownloadFailed(int id, int errorCode, String errorMessage) {
+                                    public void onDownloadFailed(DownloadRequest downloadRequest, int errorCode, String errorMessage) {
                                         new MaterialDialog.Builder(context)
                                                 .title(R.string.download_failed_title)
                                                 .content(R.string.download_failed)
@@ -200,7 +201,7 @@ public class MainActivity extends Activity {
                                     }
 
                                     @Override
-                                    public void onProgress(int id, long totalBytes, long downloadedBytes, int progress) {}
+                                    public void onProgress(DownloadRequest downloadRequest, long totalBytes, long downloadedBytes, int progress) {}
                                 });
 
                         ThinDownloadManager downloadManager = new ThinDownloadManager();
