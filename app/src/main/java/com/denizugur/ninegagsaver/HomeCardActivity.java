@@ -3,6 +3,7 @@ package com.denizugur.ninegagsaver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -29,6 +30,10 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.internal.ThemeSingleton;
 import com.denizugur.core.SwipeableRecyclerViewTouchListener;
+import com.denizugur.dialogs.ChangelogDialog;
+import com.denizugur.dialogs.FeedbackDialog;
+import com.denizugur.dialogs.HelpDialog;
+import com.denizugur.helpers.VersionCheck;
 import com.facebook.drawee.backends.pipeline.Fresco;
 
 import org.json.JSONException;
@@ -43,6 +48,7 @@ import java.util.Map;
 public class HomeCardActivity extends AppCompatActivity {
 
     public static final String GAGS = "com.denizugur.ninegagsaver.gags";
+    public static final String MAIN = "com.denizugur.ninegagsaver.main";
     public List<gagInfo> list;
     private Context context;
     private gagAdapter ca;
@@ -52,7 +58,7 @@ public class HomeCardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         context = this;
 
-        Fresco.initialize(this);
+        Fresco.initialize(this); //TODO: Long image quality?
 
         VersionCheck vs = new VersionCheck(this);
         if (vs.firstRun()) {
@@ -180,22 +186,32 @@ public class HomeCardActivity extends AppCompatActivity {
 
             recList.addOnItemTouchListener(swipeTouchListener);
             populateRecyclerView(recList);
+            firstTimeHelp();
         }
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setVisibility(View.INVISIBLE);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                customPhoto();
+                Intent intent = context.getPackageManager().getLaunchIntentForPackage("com.ninegag.android.app");
+                if (intent == null) {
+                    intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse("market://details?id=com.ninegag.android.app"));
+                }
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
             }
         });
     }
 
-    @Deprecated
-    private void customPhoto() {
-        Intent i = new Intent(this, DisplayReceivedImage.class);
-        i.putExtra("isCustom", true);
-        startActivity(i);
+    private void firstTimeHelp() {
+        VersionCheck vs = new VersionCheck(this);
+        SharedPreferences prefs = getSharedPreferences(MAIN, MODE_PRIVATE);
+        Boolean first = prefs.getBoolean("HCAFirst", true);
+        if (first && !vs.firstRun()) {
+            HelpDialog hd = new HelpDialog(this);
+            hd.show();
+            prefs.edit().putBoolean("HCAFirst", false).apply();
+        }
     }
 
     public Boolean prefsCheck(Context context) {
