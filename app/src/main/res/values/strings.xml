@@ -65,16 +65,18 @@
     ]]></string>
 
     <string name="help_body"><![CDATA[
-        <b>How can I start saving the photos?</b>
-        <br>Press the <b>share</b> button on the bottom of the post to launch the application to save the photo.<br/>
-        <br><b>Can I add a title to a photo from my gallery?</b>
-        <br>Yes, press the big gray button at the right bottom corner of the screen and follow the instructions on the screen.<br/>
-        <br><b>How can I remove a gag from the main screen?</b>
-        <br>Swipe the card to the right or left to remove it from the screen.
+        <font size="5"><b>How can I save a post from 9GAG app?</b></font><br/>
+        Select <b>Share</b> button in the post then select "9GAG Saver" from the list.<br/><br/>
+        <font size="5"><b>There are few actions you can do with posts in Home Screen</b></font><br/><br/>
+        <b>Single Tap:</b> Display image in full screen.<br/>
+        <b>Long Tap:</b> Open the post in 9GAG app.<br/>
+        <b>Swipe Left/Right:</b> Remove the post from Home Screen.<br/><br/>
+        <font size="2"><b>Note:</b> Removing a post from Home Screen will not <b>delete the image</b> from storage.</font>
     ]]></string>
     <string name="title_activity_main_application">MainApplication</string>
     <string name="image_format">Image Format</string>
-    <string name="summary_format">Choose format of image for saving</string>
-    <string name="feedback_spinner_err">Please choose the type of the feedback</string>
+    <string name="summary_format">Choose format of saved images</string>
+    <string name="feedback_spinner_err">Please choose the type of feedback</string>
+    <string name="rate">Rate on Play Store</string>
 
 </resources>

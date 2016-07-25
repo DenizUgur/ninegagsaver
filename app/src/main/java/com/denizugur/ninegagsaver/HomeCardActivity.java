@@ -1,5 +1,6 @@
 package com.denizugur.ninegagsaver;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,6 +28,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.internal.ThemeSingleton;
 import com.denizugur.core.SwipeableRecyclerViewTouchListener;
@@ -195,7 +197,7 @@ public class HomeCardActivity extends AppCompatActivity {
                 Intent intent = context.getPackageManager().getLaunchIntentForPackage("com.ninegag.android.app");
                 if (intent == null) {
                     intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(Uri.parse("market://details?id=com.ninegag.android.app"));
+                    intent.setData(Uri.parse("http://9gag.com"));
                 }
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
@@ -336,6 +338,18 @@ public class HomeCardActivity extends AppCompatActivity {
                     .title(Html.fromHtml("<b>" + getResources().getString(R.string.app_name) + "</b>&nbsp;<font color='#888888'>v" + vs.getVersionName() + "</font>"))
                     .customView(tv, true)
                     .negativeText(R.string.close)
+                    .neutralText(R.string.rate)
+                    .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            final String appPackageName = getPackageName();
+                            try {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                            } catch (ActivityNotFoundException anfe) {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                            }
+                        }
+                    })
                     .show();
             return true;
         } else if (id == R.id.action_help) {
