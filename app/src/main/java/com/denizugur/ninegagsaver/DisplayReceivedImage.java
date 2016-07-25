@@ -154,7 +154,8 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                                bp.cache(file_ext, mImageView, false, !newGagTitle.equals(""));
+                                if (!newGagTitle.equals("")) gagTitle = newGagTitle;
+                                bp.cache(file_ext, mImageView, !(customPercent == 5), !newGagTitle.equals(""));
                             }
                         }).show();
             }
@@ -268,12 +269,12 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
         }
     }
 
-    public void process(Boolean customSizePercent) {
+    public void process(Boolean customSize) {
 
         Canvas newCanvas = bp.createCanvas();
         newBitmap = bp.getBitmap(false);
 
-        if (customSizePercent) {
+        if (customSize) {
             drawText(newCanvas, newBitmap, customPercent, false);
         } else if (gagTitle.length() <= 15) {
             drawText(newCanvas, newBitmap, 5, true);
