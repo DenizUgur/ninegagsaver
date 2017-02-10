@@ -82,7 +82,7 @@ public class fetchGAG {
                     photoURL = elementGIF.get(0).attr("data-image");
                     isGIF = true;
                 } else {
-                    photoURL = elementImage.get(0).attr("src");
+                    photoURL = elementImage.get(0).attr("src"); //TODO: Array out of bounds. test with ae65Wdm
                 }
 
                 Title = elementTitle.attr("content");

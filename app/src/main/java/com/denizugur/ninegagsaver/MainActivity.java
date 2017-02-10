@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
@@ -18,10 +17,6 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.denizugur.helpers.fetchGAG;
-import com.thin.downloadmanager.DefaultRetryPolicy;
-import com.thin.downloadmanager.DownloadRequest;
-import com.thin.downloadmanager.DownloadStatusListenerV1;
-import com.thin.downloadmanager.ThinDownloadManager;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -30,9 +25,8 @@ import java.net.URL;
 public class MainActivity extends Activity {
 
     public final static String GAG_TITLE = "com.denizugur.ninegagsaver.GAG_TITLE";
-    public final static String GAG_URL = "com.denizugur.ninegagsaver.GAG_URL";
-    public final static String FILE_EXT = "com.denizugur.ninegagsaver.FILE_EXT";
-    private final static String TAG = "MainActivity";
+    public final static String GAG_URL = "com.denizugur.ninegagsaver.MainGAG_URL";
+    public final static String PHOTO_URL = "com.denizugur.ninegagsaver.PHOTO_URL";
     private final static int EXIT_APP = 0;
     private Context context;
 
@@ -49,6 +43,12 @@ public class MainActivity extends Activity {
                 finish();
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        System.exit(0);
     }
 
     private static boolean checkOnlineState(Context context) {
@@ -133,7 +133,7 @@ public class MainActivity extends Activity {
                 final fetchGAG f = new fetchGAG();
                 f.setURL(gagURL);
 
-                new Thread(new Runnable() { //TODO: GIF implementation via video_download()
+                new Thread(new Runnable() {
                     @Override
                     public void run() {
                         try {
@@ -168,44 +168,12 @@ public class MainActivity extends Activity {
                             directory_download.mkdirs();
                         }
 
-                        Uri downloadUri = Uri.parse(f.getPhotoURL());
-                        final String extension = String.valueOf(downloadUri).substring(String.valueOf(downloadUri).lastIndexOf("."));
-                        final File destinationFile = new File(directory_download + "/GAG" + extension);
+                        Intent intentImage = new Intent(context, DisplayReceivedImage.class);
+                        intentImage.putExtra(GAG_TITLE, f.getTitle());
+                        intentImage.putExtra(GAG_URL, f.getURL());
+                        intentImage.putExtra(PHOTO_URL, f.getPhotoURL());
+                        startActivityForResult(intentImage, EXIT_APP);
 
-                        DownloadRequest downloadRequest = new DownloadRequest(downloadUri)
-                                .setRetryPolicy(new DefaultRetryPolicy())
-                                .setDestinationURI(Uri.fromFile(destinationFile)).setPriority(DownloadRequest.Priority.HIGH)
-                                .setStatusListener(new DownloadStatusListenerV1() {
-                                    @Override
-                                    public void onDownloadComplete(DownloadRequest downloadRequest) {
-                                        Log.d(String.valueOf(downloadRequest), "Finished");
-                                        Intent intentImage = new Intent(context, DisplayReceivedImage.class);
-                                        intentImage.putExtra(GAG_TITLE, f.getTitle());
-                                        intentImage.putExtra(FILE_EXT, extension);
-                                        intentImage.putExtra(GAG_URL, f.getURL());
-                                        startActivityForResult(intentImage, EXIT_APP);
-                                    }
-
-                                    @Override
-                                    public void onDownloadFailed(DownloadRequest downloadRequest, int errorCode, String errorMessage) {
-                                        new MaterialDialog.Builder(context)
-                                                .title(R.string.download_failed_title)
-                                                .content(R.string.download_failed)
-                                                .positiveText(R.string.go_back)
-                                                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                                    @Override
-                                                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                                                        System.exit(0);
-                                                    }
-                                                }).show();
-                                    }
-
-                                    @Override
-                                    public void onProgress(DownloadRequest downloadRequest, long totalBytes, long downloadedBytes, int progress) {}
-                                });
-
-                        ThinDownloadManager downloadManager = new ThinDownloadManager();
-                        downloadManager.add(downloadRequest);
                     }
                 }).start();
             }

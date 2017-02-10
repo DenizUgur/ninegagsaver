@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,13 +38,9 @@ public class gagAdapter extends RecyclerView.Adapter<gagAdapter.gagViewHolder> {
         return gagList.size();
     }
 
-    /**
-     * Here is the key method to apply the animation
-     */
     private void setAnimation(View viewToAnimate, int position) {
         // If the bound view wasn't previously displayed on screen, it's animated
-        if (position > lastPosition)
-        {
+        if (position > lastPosition) {
             Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
             viewToAnimate.startAnimation(animation);
             lastPosition = position;
@@ -56,7 +54,7 @@ public class gagAdapter extends RecyclerView.Adapter<gagAdapter.gagViewHolder> {
         ViewHolder.vSavedDate.setText(gi.saved_date);
         ViewHolder.vLikes.setText(gi.likes);
         ViewHolder.vComments.setText(gi.comments);
-        ViewHolder.vDraweeView.setImageURI(Uri.fromFile(new File(gi.file_path)));
+        ViewHolder.vDraweeView.setImageURI(Uri.parse(gi.file_path));
 
         setAnimation(ViewHolder.vCardView, i);
 
@@ -128,9 +126,19 @@ public class gagAdapter extends RecyclerView.Adapter<gagAdapter.gagViewHolder> {
             layoutID = R.layout.card_layout_nowhitebar;
         }
 
-        View itemView = LayoutInflater.
-                from(viewGroup.getContext()).
-                inflate(layoutID, viewGroup, false);
+        View itemView;
+        int count = 0;
+        int maxTries = 5;
+
+        do try { //TODO: Why LayoutInflater fails after third try?
+            itemView = LayoutInflater.
+                    from(viewGroup.getContext()).
+                    inflate(layoutID, viewGroup, false);
+            if (!(itemView == null)) break;
+        } catch (InflateException ie) {
+            Log.e("LayoutInflater", ie.toString());
+            if (++count == maxTries) throw ie;
+        } while (true);
 
         return new gagViewHolder(itemView);
     }

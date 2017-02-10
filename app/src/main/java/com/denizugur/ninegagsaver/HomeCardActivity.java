@@ -59,9 +59,6 @@ public class HomeCardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
-
-        Fresco.initialize(this); //TODO: Long image quality?
-
         VersionCheck vs = new VersionCheck(this);
         if (vs.firstRun()) {
             int accentColor = ThemeSingleton.get().widgetColor;
@@ -87,12 +84,14 @@ public class HomeCardActivity extends AppCompatActivity {
             list.add(gi.setEmpty());
             recList.setAdapter(new gagAdapter(list, context));
 
-            SwipeableRecyclerViewTouchListener swipeTouchListener =
+            final SwipeableRecyclerViewTouchListener swipeTouchListener =
                     new SwipeableRecyclerViewTouchListener(recList,
                             new SwipeableRecyclerViewTouchListener.SwipeListener() {
+                                Boolean active = false;
+
                                 @Override
                                 public boolean canSwipe(int position) {
-                                    return true;
+                                    return !active;
                                 }
 
                                 @Override
@@ -102,10 +101,11 @@ public class HomeCardActivity extends AppCompatActivity {
                                         ca.notifyItemRemoved(position);
                                         list.remove(position);
                                         ca.notifyDataSetChanged();
+                                        active = true;
 
                                         CoordinatorLayout crdLayout = (CoordinatorLayout) findViewById(R.id.fabContainer);
 
-                                        Snackbar.make(crdLayout, "Gag successfully removed.", Snackbar.LENGTH_LONG)
+                                        Snackbar.make(crdLayout, "Gag successfully removed.", Snackbar.LENGTH_SHORT)
                                                 .setAction("Undo", new View.OnClickListener() {
                                                     @Override
                                                     public void onClick(View v) {
@@ -113,6 +113,7 @@ public class HomeCardActivity extends AppCompatActivity {
                                                         ca = new gagAdapter(list, context);
                                                         recList.setAdapter(ca);
                                                         ca.notifyDataSetChanged();
+                                                        active = false;
                                                     }
                                                 })
                                                 .setCallback(new Snackbar.Callback() {
@@ -135,6 +136,7 @@ public class HomeCardActivity extends AppCompatActivity {
                                                                 startActivity(i);
                                                             }
                                                         }
+                                                        active = false;
                                                     }
                                                 }).show();
                                     }
@@ -147,6 +149,7 @@ public class HomeCardActivity extends AppCompatActivity {
                                         ca.notifyItemRemoved(position);
                                         list.remove(position);
                                         ca.notifyDataSetChanged();
+                                        active = true;
 
                                         CoordinatorLayout crdLayout = (CoordinatorLayout) findViewById(R.id.fabContainer);
 
@@ -158,6 +161,7 @@ public class HomeCardActivity extends AppCompatActivity {
                                                         ca = new gagAdapter(list, context);
                                                         recList.setAdapter(ca);
                                                         ca.notifyDataSetChanged();
+                                                        active = false;
                                                     }
                                                 })
                                                 .setCallback(new Snackbar.Callback() {
@@ -180,6 +184,7 @@ public class HomeCardActivity extends AppCompatActivity {
                                                                 startActivity(i);
                                                             }
                                                         }
+                                                        active = false;
                                                     }
                                                 }).show();
                                     }
@@ -203,6 +208,21 @@ public class HomeCardActivity extends AppCompatActivity {
                 context.startActivity(intent);
             }
         });
+        getIntent().setAction("Created");
+    }
+
+    @Override
+    protected void onResume() {
+        String action = getIntent().getAction();
+        if (action == null || !action.equals("Created")) {
+            Log.v("HCA", "Restart");
+            Intent intent = new Intent(this, HomeCardActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            getIntent().setAction(null);
+        }
+        super.onResume();
     }
 
     private void firstTimeHelp() {
@@ -383,5 +403,11 @@ public class HomeCardActivity extends AppCompatActivity {
         if (prev != null) ft.remove(prev);
         ft.addToBackStack(null);
         df.show(ft, tag);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Fresco.shutDown();
     }
 }

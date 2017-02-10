@@ -4,12 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.LinearGradient;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.Shader;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -17,9 +11,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
-import android.text.Layout;
-import android.text.StaticLayout;
-import android.text.TextPaint;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -27,10 +19,10 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
-import com.denizugur.core.TouchImageView;
-import com.denizugur.helpers.BitmapProcessor;
+import com.denizugur.helpers.BitmapCacher;
 import com.denizugur.helpers.WriteObjectSP;
 import com.denizugur.helpers.fetchGAG;
+import com.facebook.samples.zoomable.ZoomableDraweeView;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.gson.Gson;
@@ -47,25 +39,20 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import static com.denizugur.ninegagsaver.MainActivity.FILE_EXT;
 import static com.denizugur.ninegagsaver.MainActivity.GAG_TITLE;
 import static com.denizugur.ninegagsaver.MainActivity.GAG_URL;
+import static com.denizugur.ninegagsaver.MainActivity.PHOTO_URL;
+
 
 public class DisplayReceivedImage extends AppCompatActivity implements View.OnClickListener {
 
     String gagTitle = "";
     String newGagTitle = "";
-    Bitmap photo;
-    Bitmap newBitmap = null;
     String gagURL = null;
     String photo_id = null;
-    String file_ext;
-    Uri photoURI;
-    private int PICK_IMAGE_REQUEST = 1;
-    private int FILE_CODE = 0;
     private Context context;
-    private int customPercent = 5;
-    private BitmapProcessor bp;
+    private Integer customPercent = 5;
+    private BitmapCacher bc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,27 +70,29 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
         Intent intent = getIntent();
         gagTitle = intent.getStringExtra(GAG_TITLE);
         gagURL = intent.getStringExtra(GAG_URL);
-        file_ext = getIntent().getStringExtra(FILE_EXT);
+        String photoURL = intent.getStringExtra(PHOTO_URL);
 
         setContentView(R.layout.activity_display_recieved_image);
-        bp = new BitmapProcessor(this, DisplayReceivedImage.this);
 
         final FloatingActionMenu fam = (FloatingActionMenu) findViewById(R.id.fam);
         FloatingActionButton save = (FloatingActionButton) findViewById(R.id.save);
         FloatingActionButton share = (FloatingActionButton) findViewById(R.id.share);
         FloatingActionButton changeTitle = (FloatingActionButton) findViewById(R.id.changeTitle);
         final FloatingActionButton changeSize = (FloatingActionButton) findViewById(R.id.changeSize);
-        final TouchImageView mImageView = (TouchImageView) findViewById(R.id.imageViewPhoto);
 
         DiscreteSeekBar seekbar = (DiscreteSeekBar) findViewById(R.id.seekBar);
         final RelativeLayout sbc = (RelativeLayout) findViewById(R.id.seekBarContainer);
         sbc.setVisibility(View.INVISIBLE);
+
+        ZoomableDraweeView zdv = (ZoomableDraweeView) findViewById(R.id.zoomableDV);
+        bc = new BitmapCacher(this, zdv);
 
         changeSize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sbc.setVisibility(View.VISIBLE);
                 changeSize.setEnabled(false);
+                fam.close(true);
             }
         });
 
@@ -122,8 +111,7 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
 
             @Override
             public void onStopTrackingTouch(DiscreteSeekBar seekBar) {
-                fam.close(true);
-                bp.cache(file_ext, mImageView, true, true);
+                bc.reprocess(customPercent);
             }
         });
 
@@ -152,8 +140,12 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                                if (!newGagTitle.equals("")) gagTitle = newGagTitle;
-                                bp.cache(file_ext, mImageView, !(customPercent == 5), !newGagTitle.equals(""));
+                                if (!newGagTitle.equals("")) {
+                                    bc.reprocess(newGagTitle);
+                                } else {
+                                    bc.noprocess();
+                                }
+                                fam.close(true);
                             }
                         }).show();
             }
@@ -162,104 +154,8 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
         save.setOnClickListener(this);
         share.setOnClickListener(this);
 
-        photoURI = Uri.parse(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
-                + "/downloads/GAG" + file_ext);
-
-        bp.cache(file_ext, mImageView, false, true);
-    }
-
-    public void process(Boolean customSize) {
-
-        Canvas newCanvas = bp.createCanvas();
-        newBitmap = bp.getBitmap(false);
-
-        if (customSize) {
-            drawText(newCanvas, newBitmap, customPercent, false);
-        } else if (gagTitle.length() <= 15) {
-            drawText(newCanvas, newBitmap, 5, true);
-        } else {
-            drawText(newCanvas, newBitmap, 5, false);
-        }
-        TouchImageView mImageView = (TouchImageView) findViewById(R.id.imageViewPhoto);
-        mImageView.setImageBitmap(bp.getBitmap(true));
-    }
-
-    private void drawText(Canvas canvas, Bitmap bitmap, int percent, Boolean isShort) {
-
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        Boolean isGradient = prefs.getBoolean("gradientKey", true);
-
-        int size = 0;
-        int smallDummyHeight = 0;
-        while (smallDummyHeight < ((bitmap.getHeight() / 100) * percent)) {
-            TextPaint paintText = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-            size = size + 1;
-            paintText.setTextSize(size);
-            paintText.setStyle(Paint.Style.FILL_AND_STROKE);
-            paintText.setShadowLayer(3f, 3f, 3f, Color.BLACK);
-
-            Rect smallDummyRect = new Rect();
-            paintText.getTextBounds(gagTitle, 0, gagTitle.length(), smallDummyRect);
-
-            smallDummyHeight = smallDummyRect.height();
-        }
-
-        int pL = bitmap.getWidth() / 100;
-        int pT = bitmap.getHeight() / 100;
-
-        if (isShort) {
-
-            TextPaint paintText = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-            paintText.setColor(Color.WHITE);
-            paintText.setTextSize(size);
-            paintText.setStyle(Paint.Style.FILL_AND_STROKE);
-            paintText.setShadowLayer(3f, 3f, 3f, Color.BLACK);
-
-            Rect rectText = new Rect();
-            paintText.getTextBounds(gagTitle, 0, gagTitle.length(), rectText);
-
-            if (isGradient) {
-                int GRADIENT_HEIGHT = rectText.height();
-
-                Paint paint = new Paint();
-                LinearGradient shader = new LinearGradient(0, 0, 0, GRADIENT_HEIGHT, Color.BLACK, Color.TRANSPARENT, Shader.TileMode.CLAMP);
-                paint.setShader(shader);
-                canvas.drawRect(0, 0, newBitmap.getWidth(), GRADIENT_HEIGHT, paint);
-            }
-
-            canvas.drawText(gagTitle, pL, rectText.height() + (3 * pT) / 2, paintText);
-        } else {
-
-            TextPaint paintText = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-            paintText.setColor(Color.WHITE);
-            paintText.setTextSize(size);
-            paintText.setStyle(Paint.Style.FILL_AND_STROKE);
-            paintText.setShadowLayer(3f, 3f, 3f, Color.BLACK);
-
-            StaticLayout mTextLayout = new StaticLayout(
-                    gagTitle,
-                    paintText,
-                    canvas.getWidth(),
-                    Layout.Alignment.ALIGN_NORMAL,
-                    1.0f,
-                    0.0f,
-                    false);
-
-            if (isGradient) {
-                int GRADIENT_HEIGHT = mTextLayout.getHeight();
-
-                Paint paint = new Paint();
-                LinearGradient shader = new LinearGradient(0, 0, 0, GRADIENT_HEIGHT, Color.BLACK, Color.TRANSPARENT, Shader.TileMode.CLAMP);
-                paint.setShader(shader);
-                canvas.drawRect(0, 0, newBitmap.getWidth(), GRADIENT_HEIGHT, paint);
-            }
-
-            canvas.save();
-            canvas.translate(pL, pT);
-            mTextLayout.draw(canvas);
-            canvas.restore();
-
-        }
+        bc.setUri(Uri.parse(photoURL));
+        bc.process(gagTitle, customPercent); //TODO: Zoom not working on zdv
     }
 
     public void onClick(View v) {
@@ -292,9 +188,17 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
             public Bitmap.CompressFormat bitmap_format;
             public Integer q;
 
-            public void setString(String x) {this.ext = x;}
-            public void setBitmapFormat(Bitmap.CompressFormat x) {this.bitmap_format = x;}
-            public void setQuality(Integer x) {this.q = x;}
+            public void setString(String x) {
+                this.ext = x;
+            }
+
+            public void setBitmapFormat(Bitmap.CompressFormat x) {
+                this.bitmap_format = x;
+            }
+
+            public void setQuality(Integer x) {
+                this.q = x;
+            }
         }
 
         final FORMAT f = new FORMAT();
@@ -326,7 +230,7 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
                 FileOutputStream outo = null;
                 try {
                     outo = new FileOutputStream(file);
-                    bp.getBitmap(true).compress(f.bitmap_format, f.q, outo);
+                    bc.getBitmap(false).compress(f.bitmap_format, f.q, outo);
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -343,12 +247,12 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
                 if (!directory_gags.exists()) {
                     directory_gags.mkdirs();
                 }
-                File dir_app = new File(directory_gags + File.separator + photo_id);
+                File dir_app = new File(directory_gags + File.separator + photo_id + ".png");
                 FileOutputStream outi = null;
 
                 try {
                     outi = new FileOutputStream(dir_app);
-                    bp.getBitmap(true).compress(f.bitmap_format, f.q, outi);
+                    bc.getBitmap(false).compress(f.bitmap_format, f.q, outi);
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -394,12 +298,12 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
                 if (!directory_gags.exists()) {
                     directory_gags.mkdirs();
                 }
-                final File dir_app = new File(directory_gags + File.separator + photo_id);
+                final File dir_app = new File(directory_gags + File.separator + photo_id + ".png");
 
                 FileOutputStream out = null;
                 try {
                     out = new FileOutputStream(dir_app);
-                    bp.getBitmap(true).compress(Bitmap.CompressFormat.PNG, 100, out);
+                    bc.getBitmap(false).compress(Bitmap.CompressFormat.PNG, 100, out);
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -462,7 +366,13 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
                 File.separator +
                 "gags" +
                 File.separator +
-                photo_id);
+                photo_id +
+                ".png");
+
+        Uri file_uri = new Uri.Builder()
+                .scheme("file")
+                .path(file_path.toString())
+                .build();
 
         try {
             Gson gson = new Gson();
@@ -474,7 +384,9 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
             gi.setComments(comments);
             gi.setSaved_Date(saved_date);
             gi.setPhotoId(photo_id);
-            gi.setFile_Path(String.valueOf(file_path));
+            gi.setFile_Path(file_uri.toString());
+
+            Log.d("wwwwww", file_uri.toString());
 
             String jsonStr = jsonParser.parse(gson.toJson(gi)).toString();
             JSONObject JSONObject = new JSONObject(jsonStr);
@@ -495,22 +407,8 @@ public class DisplayReceivedImage extends AppCompatActivity implements View.OnCl
                 new File(dir, aChildren).delete();
             }
         }
-
         Intent returnIntent = new Intent();
         setResult(RESULT_CANCELED, returnIntent);
         finish();
-    }
-
-    @Override
-    public void onDestroy() {
-        bp.cleanUp();
-        File dir = new File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + File.separator + "downloads");
-        if (dir.isDirectory()) {
-            String[] children = dir.list();
-            for (String aChildren : children) {
-                new File(dir, aChildren).delete();
-            }
-        }
-        super.onDestroy();
     }
 }
