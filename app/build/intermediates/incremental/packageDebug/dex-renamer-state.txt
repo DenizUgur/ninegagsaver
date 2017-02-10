@@ -1,0 +1,7 @@
+#Sat Feb 04 21:15:47 EET 2017
+base.0=/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_6ff167d4543cf68d2091be6920626800e62cfe35
+renamed.1=classes2.dex
+renamed.0=classes.dex
+file.1=/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_29c5b94d8df9badb1b67e87a8f821c5b478a73da/classes.dex
+base.1=/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_29c5b94d8df9badb1b67e87a8f821c5b478a73da
+file.0=/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_6ff167d4543cf68d2091be6920626800e62cfe35/classes.dex

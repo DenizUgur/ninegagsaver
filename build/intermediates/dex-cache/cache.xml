@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/kaya/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.7/751f548c85fa49f330cecbb1875893f971b33c4e/gson-2.7.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="751f548c85fa49f330cecbb1875893f971b33c4e">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/gson-2.7_30af6bf520ea5689b044942733b5a763f695f32c/classes.dex" />
+    </item>
+    <item
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="9ec29ca7dbe11dca35eefb158c0360b2f19f39c2">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_6ff167d4543cf68d2091be6920626800e62cfe35/classes.dex" />
+    </item>
+    <item
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.mani/ThinDownloadManager/1.2.5/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="f83ce05d9bee3aa384135330fa6a4fdab65d0e35">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.mani-ThinDownloadManager-1.2.5_9036397c03608eb294027b20cc5c92743288ff75/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.android.support/support-fragment/25.1.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="e2719c102dca3a7a5b02ce07f769362da6ddb4ab">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-fragment-25.1.1_8147148cedac890f6379e6e85d3d8528be841341/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.android.support/support-media-compat/25.1.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="7bde4c34162092e0a77e7f12dc85ed77c484cf5c">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-media-compat-25.1.1_662eba166ebae173f22f9b432c40f0904a00fc9d/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.github.clans/fab/1.6.4/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="1c3b9743fe8bb166a90a7e98b9b9f1f8021d80cd">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.github.clans-fab-1.6.4_c619f9e72d3f6f6b550a4cad833f539ffb7bf0da/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.afollestad.material-dialogs/core/0.8.6.2/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="cbdf1602ce622f3445dc7513237f30930c6e4a5a">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.afollestad.material-dialogs-core-0.8.6.2_ce1d980e92cb8d19f3b61cf4a622b443953a3842/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.afollestad.material-dialogs/commons/0.8.6.2/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="38955f75e5bdc80a7856eccbd256f75c1bc4bb41">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.afollestad.material-dialogs-commons-0.8.6.2_1aa9d2ed9442772e9d6b290336ea083086aaa421/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="041171cea137bff560cc419f4bf3067bf9ebb5cc">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_29c5b94d8df9badb1b67e87a8f821c5b478a73da/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/kaya/.gradle/caches/modules-2/files-2.1/com.nineoldandroids/library/2.4.0/e9b63380f3a242dbdbf103a2355ad7e43bad17cb/library-2.4.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="e9b63380f3a242dbdbf103a2355ad7e43bad17cb">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/library-2.4.0_685140f6e8b82cad39c08262f16dfd13f3c4bdec/classes.dex" />
+    </item>
+    <item
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/org.adw.library/discrete-seekbar/1.0.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="7be042dd2aa8157a2b63934902f472952d2ea1fe">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/org.adw.library-discrete-seekbar-1.0.1_e50127f24167390144da3dc00e2d23cfe7446fc1/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.facebook.fresco/fresco/0.12.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="a540784239c611ea490593e2053a5e2890675c68">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.facebook.fresco-fresco-0.12.0_5f2b4f3db5eed380f727d34bb486200924c82f21/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.1.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="ecb496cc08dd52551fc5ec6db3bc0632e95a89bb">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-appcompat-v7-25.1.1_085984b30eb0bbdbed55f54b4d160eae59d185a9/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.facebook.fresco/drawee/0.12.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="1e346707e4770db216049a532ab3eb5e317cf82a">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.facebook.fresco-drawee-0.12.0_150b0994035c40233847fb1b0c2f43be2341ec61/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/25.1.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="c03bf57f358aa10d253f21989e93bcf6014b3b17">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-vector-drawable-25.1.1_8562a42a841e652ea8fafe10d38205c7a3470983/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.nononsenseapps/filepicker/3.0.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="f604578234b3cd14eec270df021d86cecde41395">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.nononsenseapps-filepicker-3.0.0_3f738a8187088e8108863482dfbd9cfb95ba4aa2/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.android.support/transition/25.1.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="15b049fedbd8e3926bf99d9e45dfc9b2a1043bb9">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-transition-25.1.1_50c38306f3c0b0b0d6c9bf81162f4c09fdac826a/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline-base/0.12.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="c9a86e6bc8300fc00c191949ac61a2f7165e35c7">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.facebook.fresco-imagepipeline-base-0.12.0_c06fa247f0225c51a086aa80fbc7845018fe84e4/classes.dex" />
+    </item>
+    <item
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/libs/jsoup-1.8.2.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="580e4dd2a6125cc4037450b40623ac6a552c11df">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/2/jsoup-1.8.2_7cf2cb72d64c4d2ac7d23b4cbc1f18386d12ccb2/classes.dex" />
+    </item>
+    <item
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="2e29df81ca253a3efd97d8ddd8e6424b3ddfd8ae">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_29c5b94d8df9badb1b67e87a8f821c5b478a73da/classes.dex" />
+    </item>
+    <item
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.afollestad.material-dialogs/core/0.8.6.2/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="cbdf1602ce622f3445dc7513237f30930c6e4a5a">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.afollestad.material-dialogs-core-0.8.6.2_ce1d980e92cb8d19f3b61cf4a622b443953a3842/classes.dex" />
+    </item>
+    <item
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.afollestad.material-dialogs/commons/0.8.6.2/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="38955f75e5bdc80a7856eccbd256f75c1bc4bb41">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.afollestad.material-dialogs-commons-0.8.6.2_1aa9d2ed9442772e9d6b290336ea083086aaa421/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.facebook.fresco/fbcore/0.12.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="40e5cb8708fc25fe57cb403cc82e9ef98376b648">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.facebook.fresco-fbcore-0.12.0_024374bbfc5cf69347314d802863687eb77517ac/classes.dex" />
+    </item>
+    <item
+        jar="/Users/kaya/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-tasks/1.4.0/d85884acf6810a3bbbecb587f239005cbc846dc4/bolts-tasks-1.4.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="d85884acf6810a3bbbecb587f239005cbc846dc4">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/bolts-tasks-1.4.0_93775419d36e77decb350264119936de3e6b226d/classes.dex" />
+    </item>
+    <item
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.facebook.fresco/fresco/0.12.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="a540784239c611ea490593e2053a5e2890675c68">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.facebook.fresco-fresco-0.12.0_5f2b4f3db5eed380f727d34bb486200924c82f21/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/25.1.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="c9649557905bf7a80fca9e0d54cbcb7662627860">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-recyclerview-v7-25.1.1_70dc6b9064926d74c7dba96d0f82f991049c273a/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/me.zhanghai.android.materialprogressbar/library/1.1.7/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="1478a113f04bf0b679037b4f6bd88bd1837b96a3">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/me.zhanghai.android.materialprogressbar-library-1.1.7_2b817302b86e71d89a7f7ae6a7f12d15109a2e4a/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/kaya/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/25.1.1/support-annotations-25.1.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="b59b6ee8d6ecc03e672d253800430343493a6ed8">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-25.1.1_34d5e0a988eee166b9f161d75472482495a715f9/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline/0.12.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="145da27a459a63ea0c4e318930365cf0a8b8e891">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.facebook.fresco-imagepipeline-0.12.0_af36d15aa08fb5d6fd0f2c2ad6da39d7e5e8fe40/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="d81998b2fb0fe36bcecdf7c748b7c61f25b2545e">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_6ff167d4543cf68d2091be6920626800e62cfe35/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/kaya/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.7/751f548c85fa49f330cecbb1875893f971b33c4e/gson-2.7.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="751f548c85fa49f330cecbb1875893f971b33c4e">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/gson-2.7_30af6bf520ea5689b044942733b5a763f695f32c/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.mani/ThinDownloadManager/1.2.5/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="f83ce05d9bee3aa384135330fa6a4fdab65d0e35">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.mani-ThinDownloadManager-1.2.5_9036397c03608eb294027b20cc5c92743288ff75/classes.dex" />
+    </item>
+    <item
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/me.zhanghai.android.materialprogressbar/library/1.1.7/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="1478a113f04bf0b679037b4f6bd88bd1837b96a3">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/me.zhanghai.android.materialprogressbar-library-1.1.7_2b817302b86e71d89a7f7ae6a7f12d15109a2e4a/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/25.1.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="a8ae156c2726ac9c56daaf4b49452ec2cdb7bba9">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-cardview-v7-25.1.1_56168f47431d5ca0eeb0663a4f009e17ccd3bc04/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.android.support/design/25.1.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="cd7951e04cfb9a8bf008d544a478d9a8d8192d38">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-design-25.1.1_328dd43122a27e9a0137b933d2c2de2430b9aea1/classes.dex" />
+    </item>
+    <item
+        jar="/Users/kaya/.gradle/caches/modules-2/files-2.1/com.nineoldandroids/library/2.4.0/e9b63380f3a242dbdbf103a2355ad7e43bad17cb/library-2.4.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="e9b63380f3a242dbdbf103a2355ad7e43bad17cb">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/library-2.4.0_685140f6e8b82cad39c08262f16dfd13f3c4bdec/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.android.support/support-core-utils/25.1.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="0fb891e8f0cfba0513043a7bb357513d229ca2cd">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-core-utils-25.1.1_f82142491975493cd2500567a583b8dd2b02a4da/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.android.support/support-core-ui/25.1.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="3e04ac8ca644ea7baddf6fdcf72e15c79e9df94a">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-core-ui-25.1.1_991cd3a15b80fabd28b98fda498b3209746349bf/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/org.adw.library/discrete-seekbar/1.0.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="7be042dd2aa8157a2b63934902f472952d2ea1fe">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/org.adw.library-discrete-seekbar-1.0.1_e50127f24167390144da3dc00e2d23cfe7446fc1/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/libs/jsoup-1.8.2.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="580e4dd2a6125cc4037450b40623ac6a552c11df">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/2/jsoup-1.8.2_7cf2cb72d64c4d2ac7d23b4cbc1f18386d12ccb2/classes.dex" />
+    </item>
+    <item
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.github.clans/fab/1.6.4/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="1c3b9743fe8bb166a90a7e98b9b9f1f8021d80cd">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.github.clans-fab-1.6.4_c619f9e72d3f6f6b550a4cad833f539ffb7bf0da/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.android.support/support-v4/25.1.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-v4-25.1.1_3f8ccafedd0e290c792850fa497dfb89b0d664c4/classes.dex" />
+    </item>
+    <item
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline/0.12.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="145da27a459a63ea0c4e318930365cf0a8b8e891">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.facebook.fresco-imagepipeline-0.12.0_af36d15aa08fb5d6fd0f2c2ad6da39d7e5e8fe40/classes.dex" />
+    </item>
+    <item
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.facebook.fresco/drawee/0.12.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="1e346707e4770db216049a532ab3eb5e317cf82a">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.facebook.fresco-drawee-0.12.0_150b0994035c40233847fb1b0c2f43be2341ec61/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.android.support/support-compat/25.1.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="02741d05d4b697fba5e279e9881aaa1da0ca7c7f">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-compat-25.1.1_20aed3f486681e4504514b387bc1cd617f4e880c/classes.dex" />
+    </item>
+    <item
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline-base/0.12.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="c9a86e6bc8300fc00c191949ac61a2f7165e35c7">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.facebook.fresco-imagepipeline-base-0.12.0_c06fa247f0225c51a086aa80fbc7845018fe84e4/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/kaya/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-tasks/1.4.0/d85884acf6810a3bbbecb587f239005cbc846dc4/bolts-tasks-1.4.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="d85884acf6810a3bbbecb587f239005cbc846dc4">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/bolts-tasks-1.4.0_93775419d36e77decb350264119936de3e6b226d/classes.dex" />
+    </item>
+    <item
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.facebook.fresco/fbcore/0.12.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="40e5cb8708fc25fe57cb403cc82e9ef98376b648">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.facebook.fresco-fbcore-0.12.0_024374bbfc5cf69347314d802863687eb77517ac/classes.dex" />
+    </item>
+    <item
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.nononsenseapps/filepicker/3.0.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="f604578234b3cd14eec270df021d86cecde41395">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.nononsenseapps-filepicker-3.0.0_3f738a8187088e8108863482dfbd9cfb95ba4aa2/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/25.1.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.1"
+        sha1="0d191c1a09e4892d059e5ce749e4ad4e08129e35">
+        <dex dex="/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-animated-vector-drawable-25.1.1_eedbb9fbbfcbd8bbd5d1346c3222b120b5df0253/classes.dex" />
+    </item>
+
+</items>

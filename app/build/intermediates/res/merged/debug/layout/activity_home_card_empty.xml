@@ -1,0 +1,49 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeCardActivity">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fabContainer">
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_marginBottom="@dimen/fab_margin"
+            android:layout_marginRight="@dimen/fab_margin"
+            android:src="@drawable/ic_gag"
+            app:backgroundTint="@color/primary_color"
+            app:rippleColor="@color/primary_color_600"
+            app:fabSize="normal"
+            app:borderWidth="0dp"/>
+    </android.support.design.widget.CoordinatorLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_gags"
+        android:gravity="center"
+        android:textColor="@color/darker_gray"
+        android:textSize="30sp"
+        android:id="@+id/tv"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_gags_hint"
+        android:gravity="center"
+        android:textColor="@color/darker_gray"
+        android:textSize="12sp"
+        android:id="@+id/textView"
+        android:layout_below="@+id/tv"
+        android:layout_centerHorizontal="true"
+        android:padding="10dp" />
+
+</RelativeLayout>

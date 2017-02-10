@@ -1,0 +1,117 @@
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    card_view:cardCornerRadius="4dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/photo"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/image_nobar"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/photo"
+            fresco:placeholderImage="@drawable/fry"
+            fresco:actualImageScaleType="focusCrop" />
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/image_nobar"
+            android:background="@drawable/gradient_shape">
+
+            <TextView
+                android:id="@+id/title"
+                style="@android:style/TextAppearance.DeviceDefault.Medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin"
+                android:layout_marginRight="@dimen/margin"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="2"
+                android:minLines="1"
+                android:textColor="@android:color/white"
+                android:layout_above="@+id/likes"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true" />
+
+            <TextView
+                android:id="@+id/likes"
+                style="@android:style/TextAppearance.DeviceDefault.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:layout_alignParentBottom="true"
+                android:layout_toEndOf="@+id/likePhoto"
+                android:layout_toRightOf="@id/likePhoto" />
+
+            <TextView
+                android:id="@+id/comments"
+                style="@android:style/TextAppearance.DeviceDefault.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:layout_alignParentBottom="true"
+                android:layout_toEndOf="@+id/imageView2"
+                android:layout_toRightOf="@id/imageView2" />
+
+            <TextView
+                android:id="@+id/saved_date"
+                style="@android:style/TextAppearance.DeviceDefault.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/margin"
+                android:textColor="@android:color/white"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true" />
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/comment_pic"
+                android:src="@drawable/comment_white"
+                android:layout_alignParentBottom="true"
+                android:layout_toEndOf="@+id/likes"
+                android:layout_toRightOf="@id/likes"
+                android:layout_marginStart="@dimen/margin"
+                android:layout_marginLeft="@dimen/margin" />
+
+            <ImageView
+                android:id="@+id/likePhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/like_pic"
+                android:src="@drawable/like_white"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignTop="@+id/likes" />
+
+            <Button
+                android:id="@+id/shareButton"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/action_share"
+                android:textColor="@color/holo_blue_light"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

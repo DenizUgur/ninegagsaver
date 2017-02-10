@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/res/merged/debug/drawable-anydpi-v21/nnf_ic_save_black_24dp.xml",
+        "source": "/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.nononsenseapps/filepicker/3.0.0/res/drawable-anydpi-v21/nnf_ic_save_black_24dp.xml"
+    },
+    {
+        "merged": "/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/res/merged/debug/drawable-anydpi-v21/design_ic_visibility_off.xml",
+        "source": "/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.android.support/design/25.1.1/res/drawable-anydpi-v21/design_ic_visibility_off.xml"
+    },
+    {
+        "merged": "/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/res/merged/debug/drawable-anydpi-v21/nnf_ic_folder_black_48dp.xml",
+        "source": "/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.nononsenseapps/filepicker/3.0.0/res/drawable-anydpi-v21/nnf_ic_folder_black_48dp.xml"
+    },
+    {
+        "merged": "/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/res/merged/debug/drawable-anydpi-v21/md_nav_back.xml",
+        "source": "/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.afollestad.material-dialogs/core/0.8.6.2/res/drawable-anydpi-v21/md_nav_back.xml"
+    },
+    {
+        "merged": "/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/res/merged/debug/drawable-anydpi-v21/design_ic_visibility.xml",
+        "source": "/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.android.support/design/25.1.1/res/drawable-anydpi-v21/design_ic_visibility.xml"
+    },
+    {
+        "merged": "/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/res/merged/debug/drawable-anydpi-v21/nnf_ic_create_new_folder_white_24dp.xml",
+        "source": "/Users/kaya/Documents/PROJECTS/ninegagsaver/app/build/intermediates/exploded-aar/com.nononsenseapps/filepicker/3.0.0/res/drawable-anydpi-v21/nnf_ic_create_new_folder_white_24dp.xml"
+    }
+]

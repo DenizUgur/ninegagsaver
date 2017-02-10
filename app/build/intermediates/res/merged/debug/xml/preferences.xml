@@ -1,0 +1,53 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/main_header">
+        <com.afollestad.materialdialogs.prefs.MaterialListPreference
+            android:title="@string/title_list"
+            android:summary="@string/summary_list"
+            android:key="card_view"
+            android:entries="@array/card_view_list"
+            android:entryValues="@array/card_view_value"
+            android:defaultValue="1" />
+
+        <Preference
+            android:key="chooseFolder"
+            android:title="@string/title_chooseFolder">
+            <intent
+                android:action="android.intent.action.GET_CONTENT"
+                android:targetClass="com.nononsenseapps.filepicker.FilePickerActivity"
+                android:targetPackage="com.denizugur.ninegagsaver" />
+        </Preference>
+
+        <Preference
+            android:key="clearGags"
+            android:summary="@string/summary_clearGags"
+            android:title="@string/title_clearGags" /></PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/photo_header">
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="backTo9gag"
+        android:summary="@string/summary_backTo9gag"
+        android:title="@string/title_backTo9gag" />
+
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="gradientKey"
+        android:summary="@string/summary_gradientKey"
+        android:title="@string/title_gradientKey" />
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="useTitleAsMessage"
+        android:summary="@string/summary_useTitleAsMessage"
+        android:title="@string/title_useTitleAsMessage" /></PreferenceCategory>
+
+    <com.afollestad.materialdialogs.prefs.MaterialListPreference
+        android:title="@string/image_format"
+        android:summary="@string/summary_format"
+        android:key="image_format"
+        android:entries="@array/image_format_list"
+        android:entryValues="@array/image_format_value"
+        android:defaultValue="0" />
+
+</PreferenceScreen>
