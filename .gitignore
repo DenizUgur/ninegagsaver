@@ -1,7 +1,8 @@
 .gradle
 /local.properties
-/.idea/workspace.xml
-/.idea/libraries
+/.idea
+/.idea
+/9GAG\ Saver\ Icon
 .DS_Store
 /build
 /captures
