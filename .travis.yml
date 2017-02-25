@@ -1,20 +1,30 @@
 language: android
-
-script:
-   - ./gradlew build connectedCheck
+sudo: false
+cache: false
+env:
+  global:
+    - ANDROID_TARGET=android-25  
+    - ANDROID_ABI=armeabi-v7a
+    - ADB_INSTALL_TIMEOUT=20 # minutes (2 minutes by default)
 
 android:
   components:
-    
-    # Tools
+    - platform-tools
+    - tools
     - build-tools-25.0.2
     - android-25
-    
     # Extras
     - extra-android-m2repository
     - extra-android-support
     - extra-google-m2repository
-    
     # Emulator
-    - sys-img-armeabi-v7a-android-22
     - sys-img-armeabi-v7a-android-25
+
+before_script:
+  # Run emulator
+  - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
+  - emulator -avd test -no-skin -no-audio -no-window &
+  - android-wait-for-emulator
+  - adb shell input keyevent 82 &
+
+script: ./gradlew connectedCheck 
