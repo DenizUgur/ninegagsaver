@@ -1,9 +1,20 @@
-.gradle
+.gradle/
 /local.properties
-/.idea
+.idea/
 /9GAG\ Saver\ Icon
 .DS_Store
-/build
-/captures
+build/
+captures/
 
 *.iml
+
+app/google-services.json
+app/app.iml
+gradlew.bat
+gradlew
+gradle/wrapper/gradle-wrapper.jar
+gradle/wrapper/gradle-wrapper.properties
+settings.gradle
+ninegagsaver.iml
+gradle.properties
+build.gradle
