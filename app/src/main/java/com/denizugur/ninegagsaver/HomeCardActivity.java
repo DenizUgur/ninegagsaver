@@ -37,6 +37,7 @@ import com.denizugur.dialogs.FeedbackDialog;
 import com.denizugur.dialogs.HelpDialog;
 import com.denizugur.helpers.VersionCheck;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.google.firebase.crash.FirebaseCrash;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -69,6 +70,7 @@ public class HomeCardActivity extends AppCompatActivity {
         }
 
         if (prefsCheck(this)) {
+            FirebaseCrash.report(new Exception("My first Android non-fatal error"));
             setContentView(R.layout.activity_home_card_empty);
         } else {
             setContentView(R.layout.activity_home_card);
