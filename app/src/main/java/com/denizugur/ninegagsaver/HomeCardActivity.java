@@ -70,7 +70,6 @@ public class HomeCardActivity extends AppCompatActivity {
         }
 
         if (prefsCheck(this)) {
-            FirebaseCrash.report(new Exception("My first Android non-fatal error"));
             setContentView(R.layout.activity_home_card_empty);
         } else {
             setContentView(R.layout.activity_home_card);

@@ -1,6 +1,6 @@
 # 9GAG SAVER
 [![Build Status](https://travis-ci.org/DenizUgur/ninegagsaver.svg?branch=master)](https://travis-ci.org/DenizUgur/ninegagsaver)
-[![Version](https://img.shields.io/badge/version-1.2.4-brightgreen.svg)](#)
+[![Version](https://img.shields.io/badge/version-1.2.5-brightgreen.svg)](#)
 [![API](https://img.shields.io/badge/API-14%2B-yellow.svg)](#)
 [![License](https://img.shields.io/badge/license-Apache%202-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 <img alt="Main screen: saved gags" align="right" height="300"
@@ -44,7 +44,7 @@ For more information on SemVer, please visit http://semver.org/.
 License
 ----------------
 ```
-Copyright 2015 Deniz Uğur
+Copyright 2017 Deniz Uğur
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
