@@ -16,13 +16,61 @@
 #   public *;
 #}
 
+-keepattributes Exceptions, InnerClasses, *Annotation*, EnclosingMethod, Signature
+
+
+-dontskipnonpubliclibraryclasses
+-dontskipnonpubliclibraryclassmembers
+-dontpreverify
+-verbose
+
+# standard, except v4.app.Fragment, its required when app uses Fragments
+
+-keep public class * extends android.app.Activity
+-keep public class * extends android.support.v7.app.ActionBarActivity
+-keep public class * extends android.support.v4.app.Fragment
+-keep public class * extends android.app.Application
+-keep public class * extends android.app.Service
+-keep public class * extends android.content.BroadcastReceiver
+-keep public class * extends android.content.ContentProvider
+
+-keepclasseswithmembers class * {
+    native <methods>;
+}
+
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context, android.util.AttributeSet);
+}
+
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context, android.util.AttributeSet, int);
+}
+
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
+-keep class * implements android.os.Parcelable {
+  public static final android.os.Parcelable$Creator *;
+}
+
+-keepclassmembers class * extends android.app.Activity {
+       public void *(android.view.View);
+}
+
+-keep class com.afollestad.** { *; }
+-keep class com.github.clans.** { *; }
+-keep class java.** { *; }
+-keep class android.** { *; }
+-keep class org.** { *; }
+-keep class com.google.** { *; }
 -keep class com.firebase.** { *; }
--keep class org.apache.** { *; }
 -keepnames class com.fasterxml.jackson.** { *; }
 -keepnames class javax.servlet.** { *; }
--keepnames class org.ietf.jgss.** { *; }
--dontwarn org.apache.**
--dontwarn org.w3c.dom.**
 -keep class com.facebook.** { *; }
 -keep interface com.facebook.** { *; }
 -dontwarn com.facebook.**
+-keep class com.mani.** { *; }
+-keep class com.nononsenseapps.** { *; }
+-keep class com.google.gson.examples.android.model.** { *; }
