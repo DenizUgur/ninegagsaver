@@ -1,4 +1,5 @@
 # 9GAG SAVER
+[![Build Status](https://img.shields.io/badge/status-crashing-red.svg?style=flat)](#)
 [![Build Status](https://travis-ci.org/DenizUgur/ninegagsaver.svg?branch=master)](https://travis-ci.org/DenizUgur/ninegagsaver)
 [![Version](https://img.shields.io/badge/version-1.2.5-brightgreen.svg)](#)
 [![API](https://img.shields.io/badge/API-14%2B-yellow.svg)](#)
