@@ -76,13 +76,17 @@ public class fetchGAG {
                 Elements elementComments = doc.select("span[class=badge-item-comment-count]");
                 Elements elementLikes = doc.select("span[class=badge-item-love-count]");
 
-                Elements elementGIF = doc.select("div.badge-animated-container-animated");
                 Elements elementImage = doc.select("img.badge-item-img");
-                if (!elementGIF.isEmpty()) {
+
+                try {
+                    Elements elementGIF = doc.select("div.badge-animated-container-animated");
+
                     photoURL = elementGIF.get(0).attr("data-image");
                     isGIF = true;
-                } else {
-                    photoURL = elementImage.get(0).attr("src"); //TODO: Array out of bounds. test with ae65Wdm
+                } catch (Exception e) {
+                    photoURL = elementImage.get(0).attr("src"); //TODO: Array out of bounds. test with ae65Wdm (Sensitive Content)
+                    Log.d("IMAGE", photoURL);
+                    isGIF = false;
                 }
 
                 Title = elementTitle.attr("content");

@@ -73,41 +73,40 @@ public class MainActivity extends Activity {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String str = prefs.getString("path", null);
 
-        if (Intent.ACTION_SEND.equals(action) && type != null) {
-            try {
-                assert str != null;
-                new File(str);
-                if ("text/plain".equals(type) && checkOnlineState(this)) {
-                    handleSendText(intent);
-                } else {
-                    new MaterialDialog.Builder(this)
-                            .title(R.string.sorry)
-                            .content(R.string.no_internet)
-                            .positiveText(R.string.go_back)
-                            .theme(Theme.DARK)
-                            .cancelable(false)
-                            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                @Override
-                                public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                                    System.exit(0);
-                                }
-                            })
-                            .show();
+        if (str != null) {
+            if (Intent.ACTION_SEND.equals(action) && type != null) {
+                try {
+                    if ("text/plain".equals(type) && checkOnlineState(this)) {
+                        handleSendText(intent);
+                    } else {
+                        new MaterialDialog.Builder(this)
+                                .title(R.string.sorry)
+                                .content(R.string.no_internet)
+                                .positiveText(R.string.go_back)
+                                .theme(Theme.DARK)
+                                .cancelable(false)
+                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                                        System.exit(0);
+                                    }
+                                })
+                                .show();
+                    }
+                } catch (Exception e) {
+                    Log.e("onCreate1", e.toString());
+                    finish();
                 }
-            } catch (Exception e) {
-                Intent i = new Intent(this, SettingsActivity.class);
-                Toast.makeText(getApplicationContext(), getString(R.string.choose_folder_toast), Toast.LENGTH_LONG).show();
+            } else try {
+                Intent i = new Intent(this, HomeCardActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
                 finish();
+            } catch (Exception e) {
+                Log.e("onCreate2", e.toString());
+                finish();
             }
-        } else try {
-            assert str != null;
-            new File(str);
-            Intent i = new Intent(this, HomeCardActivity.class);
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(i);
-            finish();
-        } catch (Exception e) {
+        } else {
             Intent i = new Intent(this, SettingsActivity.class);
             Toast.makeText(getApplicationContext(), getString(R.string.choose_folder_toast), Toast.LENGTH_LONG).show();
             startActivity(i);
@@ -120,11 +119,11 @@ public class MainActivity extends Activity {
         if (sharedText != null) {
             if (sharedText.contains("9gag")) {
                 String gagURL = null;
-                String[] splitted = sharedText.split("http://");
+                String[] splitted = sharedText.split("https://");
                 try {
-                    URL url = new URL("http://" + splitted[1]);
+                    URL url = new URL("https://" + splitted[1]);
                     gagURL = url.getPath();
-                    gagURL = "http://9gag.com" + gagURL;
+                    gagURL = "https://9gag.com" + gagURL;
                     Log.d("URL", gagURL);
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
